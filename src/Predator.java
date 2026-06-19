@@ -1,6 +1,6 @@
 public class Predator extends Creature{
-    protected Predator(int healthPoints, int speed, Food foodType) {
-        super(healthPoints, speed, foodType);
+    protected Predator(int coordinateX, int coordinateY,int healthPoints, int speed) {
+        super(coordinateX,coordinateY,healthPoints, speed, Food.HERBIVORE);
     }
 
     @Override

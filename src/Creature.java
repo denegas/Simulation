@@ -1,5 +1,6 @@
 public abstract class Creature extends Entity {
-    protected Creature(int healthPoints,int speed,Food foodType){
+    protected Creature(int coordinateX, int coordinateY,int healthPoints,int speed,Food foodType){
+        super(coordinateX,coordinateY);
         this.speed = speed;
         this.foodType = foodType;
         this.healthPoints = healthPoints;
