@@ -1,20 +1,20 @@
+package Model;
+
 public abstract class Entity {
-   protected Entity(int coordinateX,int coordinateY){
-      this.coordinateX = coordinateX;
-      this.coordinateY = coordinateY;
+   protected Entity(Coordinates coordinates,EntityType entityType){
+      this.coordinates = coordinates;
+      this.entityType = entityType;
    }
-   protected int coordinateX;
-   protected int coordinateY;
-   protected int getCoordinateX(){
-      return coordinateX;
+   protected Coordinates coordinates;
+   public Coordinates getCoordinates(){
+      return coordinates;
    }
-   protected int getCoordinateY(){
-      return coordinateY;
+
+   protected void setCoordinates(Coordinates coordinates){
+      this.coordinates = coordinates;
    }
-   protected void setCoordinateX(int coordinateX){
-      this.coordinateX = coordinateX;
-   }
-   protected void setCoordinateY(int coordinateY){
-      this.coordinateY = coordinateY;
+   protected EntityType entityType;
+   public EntityType getType(){
+      return entityType;
    }
 }

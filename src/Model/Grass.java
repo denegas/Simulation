@@ -1,5 +1,7 @@
+package Model;
+
 public class Grass extends Entity{
-    public Grass(int coordinateX, int coordinateY) {
-        super(coordinateX, coordinateY);
+    public Grass(Coordinates coordinates) {
+        super(coordinates,EntityType.GRASS);
     }
 }

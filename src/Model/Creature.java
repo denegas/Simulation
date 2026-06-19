@@ -1,6 +1,8 @@
+package Model;
+
 public abstract class Creature extends Entity {
-    protected Creature(int coordinateX, int coordinateY,int healthPoints,int speed,Food foodType){
-        super(coordinateX,coordinateY);
+    protected Creature(Coordinates coordinates,EntityType entityType,int healthPoints,int speed,Food foodType){
+        super(coordinates,entityType);
         this.speed = speed;
         this.foodType = foodType;
         this.healthPoints = healthPoints;
@@ -16,5 +18,8 @@ public abstract class Creature extends Entity {
     }
     protected int getHealthPoints(){
         return healthPoints;
+    }
+    protected Food getFoodType(){
+        return foodType;
     }
 }

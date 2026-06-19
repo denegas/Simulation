@@ -1,3 +1,5 @@
+package Model;
+
 public enum EntityType {
  PREDATOR("🦁"),HERBIVORE("🦓"),TREE("🌳"),ROCK("🌑"),GRASS("🍀"),VOID("--");
  private final String entityView;

@@ -1,5 +1,7 @@
-public class Tree  extends Entity{
-    public Tree(int coordinateX, int coordinateY) {
-        super(coordinateX, coordinateY);
+package Model;
+
+public class Tree extends Entity{
+    public Tree(Coordinates coordinates) {
+        super(coordinates,EntityType.TREE);
     }
 }

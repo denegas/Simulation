@@ -1,5 +1,7 @@
+package Model;
+
 public class Rock extends Entity{
-    public Rock(int coordinateX, int coordinateY) {
-        super(coordinateX, coordinateY);
+    public Rock(Coordinates coordinates) {
+        super(coordinates,EntityType.ROCK);
     }
 }

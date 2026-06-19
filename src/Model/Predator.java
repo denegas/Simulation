@@ -1,6 +1,8 @@
+package Model;
+
 public class Predator extends Creature{
-    protected Predator(int coordinateX, int coordinateY,int healthPoints, int speed) {
-        super(coordinateX,coordinateY,healthPoints, speed, Food.HERBIVORE);
+    public Predator(Coordinates coordinates,int healthPoints, int speed) {
+        super(coordinates,EntityType.PREDATOR,healthPoints, speed, Food.HERBIVORE);
     }
 
     @Override
