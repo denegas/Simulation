@@ -1,15 +1,21 @@
+import Controller.EntityCreator;
+import Controller.MapCreator;
 import Model.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 class Main{
     public static void main(String[] args) {
-        Coordinates a = new Coordinates(1,0);
-        Coordinates b = new Coordinates(0,0);
-        Creature herb = new Herbivore(a,1,2);
-        Creature pred = new Predator(b,1,2);
+        MapCreator mapCreator = new MapCreator();
+        mapCreator.execute();
 
-        EntityMap.add(herb.getCoordinates(),herb);
-        EntityMap.add(pred.getCoordinates(),pred);
-        EntityMap.getMap().forEach((coordinates, entity) -> System.out.println(coordinates.getCoordinateX()+ entity.getType().getEntityView()));
-
-    }
+        EntityCreator entityCreator = new EntityCreator();
+        entityCreator.execute();
+        Map<Coordinates,Entity> map = new HashMap<>(EntityMap.getMap());
+        map.forEach((k,v)-> {
+            if(v != null){
+            System.out.println(k.getCoordinateX() + " : " + k.getCoordinateY() + v.getType().getEntityView());
+        }})
+    ;}
 }

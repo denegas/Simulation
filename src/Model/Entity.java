@@ -15,6 +15,6 @@ public abstract class Entity {
    }
    protected EntityType entityType;
    public EntityType getType(){
-      return entityType;
+      return entityType != null? entityType: EntityType.VOID;
    }
 }

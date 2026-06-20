@@ -18,5 +18,4 @@ private final static Map<Coordinates, Entity> map = new HashMap<>();//будет
  public static void remove(Coordinates coordinates,Entity entity){
      map.remove(coordinates,entity);
  }
-
 }
