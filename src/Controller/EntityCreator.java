@@ -34,46 +34,40 @@ public final class EntityCreator implements Action {
             }
 
         }
-        if (!isAtLeastOneHerbivore()){
-            addOneHerbivore();
+        if (hasNoEntity(EntityType.HERBIVORE)){
+            addOneEntity(EntityType.HERBIVORE);
         }
-        if(!isAtLeastOnePredator()){
-            addOnePredator();
+        if(hasNoEntity(EntityType.PREDATOR)){
+            addOneEntity(EntityType.PREDATOR);
         }
         Simulation.setMap(EntityMap.getMap());
     }
 
-    private static boolean isAtLeastOnePredator() {
+    private static boolean hasNoEntity(EntityType entityType) {
             for (Entity entity: EntityMap.getMap().values().stream().filter(Objects::nonNull).toList()){
-                if (entity.getType() == EntityType.PREDATOR) return true;
+                if (entity.getType() == entityType) return false;
             }
-            return false;
+            return true;
     }
-    private static boolean isAtLeastOneHerbivore() {
-        for (Entity entity: EntityMap.getMap().values().stream().filter(Objects::nonNull).toList()){
-            if (entity.getType() == EntityType.HERBIVORE) return true;
+    private void addOneEntity(EntityType entityType){
+        List<Coordinates> voidFields = EntityMap.getMap()
+                .entrySet()
+                .stream()
+                .filter(e->e.getValue() == null)
+                .map(e ->e.getKey())
+                .toList();
+        Coordinates randomCoordinates = voidFields.get(random.nextInt(voidFields.size()));
+        switch(entityType){
+            case EntityType.PREDATOR:
+                EntityMap.add(randomCoordinates,new Predator(randomCoordinates, PREDATOR_HP, PREDATOR_SPEED));
+                break;
+            case EntityType.HERBIVORE:
+                EntityMap.add(randomCoordinates,new Herbivore(randomCoordinates, HERBIVORE_HP, HERBIVORE_SPEED));
+                break;
+            case EntityType.GRASS:
+                EntityMap.add(randomCoordinates,new Grass(randomCoordinates));
         }
-        return false;
-    }
-    private  void addOnePredator(){
-        List<Coordinates> voidFields = EntityMap.getMap()
-                .entrySet()
-                .stream()
-                .filter(e->e.getValue() == null)
-                .map(e ->e.getKey())
-                .toList();
-        Coordinates randomCoordinates = voidFields.get(random.nextInt(voidFields.size()));
-        EntityMap.add(randomCoordinates,new Predator(randomCoordinates, PREDATOR_HP, PREDATOR_SPEED));
-    }
-    private  void addOneHerbivore(){
-        List<Coordinates> voidFields = EntityMap.getMap()
-                .entrySet()
-                .stream()
-                .filter(e->e.getValue() == null)
-                .map(e ->e.getKey())
-                .toList();
-        Coordinates randomCoordinates = voidFields.get(random.nextInt(voidFields.size()));
-        EntityMap.add(randomCoordinates,new Herbivore(randomCoordinates, HERBIVORE_HP, HERBIVORE_SPEED));
+
     }
 
 }
