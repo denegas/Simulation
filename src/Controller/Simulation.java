@@ -1,5 +1,4 @@
 package Controller;
-
 import Model.Coordinates;
 import Model.Entity;
 
@@ -12,6 +11,7 @@ public class Simulation {
 
     public static void setMap(Map<Coordinates, Entity> map) {
         Simulation.map = map;
+
     }
  public static Map<Coordinates,Entity> getMap(){
         return map;
