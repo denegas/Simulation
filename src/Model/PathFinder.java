@@ -97,9 +97,9 @@ public final class PathFinder {
         }
 
         Collections.reverse(path);
-        if (!path.isEmpty()) {
-            path.removeFirst();
-        }
+//        if (!path.isEmpty()) {
+//            path.removeFirst();
+//        }
         return path;
     }
 }

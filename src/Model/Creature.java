@@ -11,7 +11,7 @@ public abstract class Creature extends Entity {
     protected final Food foodType;
     protected int healthPoints;
 
-    public abstract void makeMove();
+    public abstract void makeMove(Coordinates coordinates);
     public abstract void eat();
     protected void setHealthPoints(int healthPoints){
         this.healthPoints = healthPoints;
