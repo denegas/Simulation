@@ -10,13 +10,14 @@ public class MapCreator implements Action{
     private final EntityMap map;
     @Override
     public void execute(){
-        int mapSize = Simulation.getMapSize();
+        int mapSize = map.getSIZE();
         for (int i =0;i<mapSize;i++){
             for (int j =0; j<mapSize;j++){
                 map.add(new Coordinates(i,j));
             }
         }
-        Simulation.setMap(map.getMap());
+        Simulation.setMap(map);
+
         }
     }
 

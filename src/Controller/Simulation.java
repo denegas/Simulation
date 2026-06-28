@@ -1,20 +1,21 @@
 package Controller;
 import Model.Coordinates;
 import Model.Entity;
+import Model.EntityMap;
 
 import java.util.Map;
 
-public class Simulation {
- private static final int MAP_SIZE =10;
+public final class Simulation {
+ private static int MAP_SIZE;
  private static int turnsCounter = 0;
- private static Map<Coordinates, Entity> map;
+ private static EntityMap map;
 
-    public static void setMap(Map<Coordinates, Entity> map) {
+    public static void setMap(EntityMap map) {
         Simulation.map = map;
-
+        MAP_SIZE = map.getSIZE();
     }
  public static Map<Coordinates,Entity> getMap(){
-        return map;
+        return map.getMap();
  }
  public static int getMapSize(){
      return Simulation.MAP_SIZE;

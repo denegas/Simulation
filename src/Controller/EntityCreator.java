@@ -9,7 +9,7 @@ public final class EntityCreator implements Action {
     public EntityCreator(EntityMap map){
         this.map = map;
     }
-    private  EntityMap map;
+    private EntityMap map;
     private final double HERBIVORE_CHANCE = 0.14;
     private final double PREDATOR_CHANCE = 0.1;
     private final double GRASS_CHANCE = 0.09;
@@ -39,22 +39,18 @@ public final class EntityCreator implements Action {
         if(hasNoEntity(EntityType.PREDATOR)){
             addOneEntity(EntityType.PREDATOR);
         }
-        Simulation.setMap(map.getMap());
+        Simulation.setMap(map);
     }
 
     private boolean hasNoEntity(EntityType entityType) {
-            for (Entity entity: map.getMap().values().stream().filter(Objects::nonNull).toList()){
+            for (Entity entity: map.getNotNullEntities()){
                 if (entity.getType() == entityType) return false;
             }
             return true;
     }
     private void addOneEntity(EntityType entityType){
-        List<Coordinates> voidFields = map.getMap()
-                .entrySet()
-                .stream()
-                .filter(e->e.getValue() == null)
-                .map(e ->e.getKey())
-                .toList();
+        List<Coordinates> voidFields = map.getVoidFields();
+
         Coordinates randomCoordinates = voidFields.get(random.nextInt(voidFields.size()));
         switch(entityType){
             case EntityType.PREDATOR: map.add(randomCoordinates,new Predator(randomCoordinates, PREDATOR_HP, PREDATOR_SPEED));

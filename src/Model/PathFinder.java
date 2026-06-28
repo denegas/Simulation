@@ -7,7 +7,6 @@ public final class PathFinder {
     private PathFinder() {
     }
 
-    //private static List<Coordinates> pathResult;
     private static final int[][] directions = {
             {0, 1},
             {0, -1},
@@ -26,11 +25,11 @@ public final class PathFinder {
         Map<Coordinates,Coordinates> parent = new HashMap<>();
         Set<Coordinates> visitedDirections = new HashSet<>();
         visitedDirections.add(startPosition);
-        int counter = 0;
+       // int counter = 0;
 
         while (!queue.isEmpty()) {
             Coordinates cell = queue.poll();
-            if (counter > 1000) throw new RuntimeException("infinity loop");
+           // if (counter > 1000) throw new RuntimeException("infinity loop");
             for (var dir : directions) {
                 Coordinates nextCell = new Coordinates(cell.getCoordinateX() + dir[0], cell.getCoordinateY() + dir[1]);
                 if (!mapHasCell(map, nextCell) || !isCellAvailable(map, nextCell)) {
@@ -43,7 +42,7 @@ public final class PathFinder {
                     queue.add(nextCell);
                     continue;
                 } else if (map.getMap().get(nextCell).getType().equals(target)) {
-                    System.out.println("target");
+                   // System.out.println("target");
                     parent.put(nextCell,cell);
                     visitedDirections.add(nextCell);
                     return buildPath(parent,nextCell);
@@ -52,7 +51,7 @@ public final class PathFinder {
                 visitedDirections.add(nextCell);
                 queue.add(nextCell);
             }
-            counter++;
+            //counter++;
         }
         return buildPath(parent,null);
     }
@@ -98,6 +97,9 @@ public final class PathFinder {
         }
 
         Collections.reverse(path);
+        if (!path.isEmpty()) {
+            path.removeFirst();
+        }
         return path;
     }
 }

@@ -1,7 +1,9 @@
 package Model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class EntityMap {
     public EntityMap(int size) {
@@ -28,5 +30,14 @@ public class EntityMap {
     public int getSIZE(){
         return this.SIZE;
     }
-
+    public List<Entity> getNotNullEntities(){
+        return map.values().stream().filter(Objects::nonNull).toList();
+    }
+    public List<Coordinates> getVoidFields(){
+        return map.entrySet()
+                .stream()
+                .filter(e->e.getValue() == null)
+                .map(e ->e.getKey())
+                .toList();
+    }
 }
