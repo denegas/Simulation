@@ -14,11 +14,6 @@ public class CreatureMove{
         Coordinates nextCell;
       map.add(path.getFirst(),null);// animal has left cell, so now it null
         nextCell = isLastCell(path) ? path.get(1) : path.get(creature.getSpeed());
-        /* if (path.size() >2) {
-            nextCell = path.get(creature.getSpeed());
-        } else{
-            nextCell = path.get(1);
-        } */
         creature.makeMove(nextCell);
         map.add(nextCell,creature);
         Simulation.setMap(map);

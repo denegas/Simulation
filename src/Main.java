@@ -1,21 +1,19 @@
+import Controller.CreatureMove;
 import Controller.EntityCreator;
 import Controller.MapCreator;
+import Controller.Simulation;
 import Model.*;
+import View.Renderer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-class Main{
+class Main {
     public static void main(String[] args) {
-        MapCreator mapCreator = new MapCreator();
-        mapCreator.execute();
+     Simulation.initialize(10);
+     Simulation.nextNTurns(5);
+    }
 
-        EntityCreator entityCreator = new EntityCreator();
-        entityCreator.execute();
-        Map<Coordinates,Entity> map = new HashMap<>(EntityMap.getMap());
-        map.forEach((k,v)-> {
-            if(v != null){
-            System.out.println(k.getCoordinateX() + " : " + k.getCoordinateY() + v.getType().getEntityView());
-        }})
-    ;}
 }
