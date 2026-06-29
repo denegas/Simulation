@@ -6,21 +6,27 @@ import Model.EntityMap;
 
 import java.util.List;
 
-public class CreatureMove implements Action{
-    public CreatureMove(Creature creature, List<Coordinates> path, EntityMap map){
-     this.creature = creature;
-     this.map = map;
-     this.path = path;
+public class CreatureMove{
+    private CreatureMove(){
     }
-    private final Creature creature;
-    private EntityMap map;
-    private final List<Coordinates> path;
-    @Override
-    public void execute() {
+
+    public static void execute(Creature creature, List<Coordinates> path, EntityMap map) {
+        Coordinates nextCell;
       map.add(path.getFirst(),null);// animal has left cell, so now it null
-        Coordinates nextCell = path.get(1);
+        nextCell = isLastCell(path) ? path.get(1) : path.get(creature.getSpeed());
+        /* if (path.size() >2) {
+            nextCell = path.get(creature.getSpeed());
+        } else{
+            nextCell = path.get(1);
+        } */
         creature.makeMove(nextCell);
         map.add(nextCell,creature);
         Simulation.setMap(map);
+    }
+    private static boolean isLastCell (List<Coordinates> path){
+        if (path.size() >2) {
+            return false;
+        }
+        return true;
     }
 }
