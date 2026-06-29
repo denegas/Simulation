@@ -32,6 +32,7 @@ public final class Simulation {
     for (Action turnAction: turnActions){
         turnAction.execute();
     }
+    turnsCounter++;
  }
  public static void nextNTurns(int n){
         for(int i = 0;i<n;i++){
