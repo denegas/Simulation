@@ -15,7 +15,7 @@ public final class PathFinder {
     };
     private static EntityType target;
 
-    public static List<Coordinates>
+    public static Optional<List<Coordinates>>
     getPath(EntityMap map, Coordinates startPosition, Creature creature) {
         setCreatureTarget(creature);
 
@@ -45,7 +45,7 @@ public final class PathFinder {
                    // System.out.println("target");
                     parent.put(nextCell,cell);
                     visitedDirections.add(nextCell);
-                    return buildPath(parent,nextCell);
+                    return Optional.of(buildPath(parent,nextCell));
                 }
                 parent.put(nextCell,cell);
                 visitedDirections.add(nextCell);
@@ -53,7 +53,7 @@ public final class PathFinder {
             }
             //counter++;
         }
-        return buildPath(parent,null);
+        return Optional.empty();
     }
 
     private static void setCreatureTarget(Creature creature) {
