@@ -15,7 +15,7 @@ public final class EntityCreator implements Action {
     private final double GRASS_CHANCE = 0.09;
     private final double ROCK_CHANCE = 0.03;
     private final double TREE_CHANCE = 0.05;
-    private final int PREDATOR_SPEED = 1;
+    private final int PREDATOR_SPEED = 2;
     private final int HERBIVORE_SPEED = 1;
     private final int PREDATOR_HP = 1;
     private final int HERBIVORE_HP = 1;
@@ -23,7 +23,7 @@ public final class EntityCreator implements Action {
 
     @Override
     public void execute() {
-        for (var field : Simulation.getMap().keySet()) {
+        for (var field : Simulation.getEntityMap().getMap().keySet()) {
             double randomChance = random.nextDouble();
             if (randomChance < ROCK_CHANCE) { map.add(field, new Rock(field));
             } else if (randomChance < TREE_CHANCE) { map.add(field, new Tree(field));
