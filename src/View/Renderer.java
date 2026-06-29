@@ -22,6 +22,7 @@ public final class Renderer {
          }
          System.out.println();
      }
+     System.out.println();
 
  }
 }
