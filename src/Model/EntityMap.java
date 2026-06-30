@@ -38,7 +38,7 @@ public class EntityMap {
         return map.values().stream().filter(Objects::nonNull).toList();
     }
 
-    public List<Coordinates> getVoidFields() {
+    public List<Coordinates> getVoidCells() {
         return map.entrySet()
                 .stream()
                 .filter(e -> e.getValue() == null)

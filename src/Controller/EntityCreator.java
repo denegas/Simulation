@@ -14,6 +14,8 @@ public final class EntityCreator implements Action {
     private static final int HERBIVORE_SPEED = 1;
     private static final int PREDATOR_HP = 1;
     private static final int HERBIVORE_HP = 1;
+
+    // it's spawn entities spawn chance PER 1 CELL in map, not for all map
     private static final double HERBIVORE_SPAWN_CHANCE = 0.14;
     private static final double PREDATOR_SPAWN_CHANCE = 0.1;
     private static final double GRASS_SPAWN_CHANCE = 0.09;
@@ -23,12 +25,12 @@ public final class EntityCreator implements Action {
 
     @Override
     public void execute() {
-        for (var field : Simulation.getEntityMap().getMap().keySet()) {
+        for (var cell : Simulation.getEntityMap().getMap().keySet()) { // get all cells with coordinates from map
             double randomChance = random.nextDouble();
             var entry = entityChances.ceilingEntry(randomChance);
             if (entry != null) {
                 EntityType type = entry.getValue();
-                map.add(field, getEntityFromType(type, field));
+                map.add(cell, getEntityFromType(type, cell));
             }
         }
         if (hasNoEntity(EntityType.HERBIVORE)) {
@@ -46,12 +48,12 @@ public final class EntityCreator implements Action {
         }
         return true;
     }
-
+    // add 1 entity to a random void cell in map
     private void addOneEntity(EntityType entityType) {
 
-        List<Coordinates> voidFields = map.getVoidFields();
+        List<Coordinates> voidCells = map.getVoidCells();
 
-        Coordinates randomCoordinates = voidFields.get(random.nextInt(voidFields.size()));
+        Coordinates randomCoordinates = voidCells.get(random.nextInt(voidCells.size()));
 
         map.add(randomCoordinates,getEntityFromType(entityType,randomCoordinates));
 
@@ -65,15 +67,14 @@ public final class EntityCreator implements Action {
         entityChances.put(TREE_SPAWN_CHANCE, EntityType.TREE);
     }
 
-    private Entity getEntityFromType(EntityType type, Coordinates field) {
+    private Entity getEntityFromType(EntityType type, Coordinates cell) {
         return switch (type) {
-            case EntityType.HERBIVORE -> new Herbivore(field, HERBIVORE_HP, HERBIVORE_SPEED);
-            case EntityType.PREDATOR -> new Predator(field, PREDATOR_HP, PREDATOR_SPEED);
-            case EntityType.GRASS -> new Grass(field);
-            case EntityType.ROCK -> new Rock(field);
-            case EntityType.TREE -> new Tree(field);
+            case EntityType.HERBIVORE -> new Herbivore(cell, HERBIVORE_HP, HERBIVORE_SPEED);
+            case EntityType.PREDATOR -> new Predator(cell, PREDATOR_HP, PREDATOR_SPEED);
+            case EntityType.GRASS -> new Grass(cell);
+            case EntityType.ROCK -> new Rock(cell);
+            case EntityType.TREE -> new Tree(cell);
             default -> throw new IllegalArgumentException("Unexpected entity type: " + type);
         };
-
     }
 }
