@@ -1,10 +1,6 @@
 package Controller;
-import Model.Coordinates;
-import Model.Entity;
 import Model.EntityMap;
-
 import java.util.List;
-import java.util.Map;
 
 public final class Simulation {
  private static final int MAP_SIZE = 10;
