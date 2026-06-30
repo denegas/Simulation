@@ -3,7 +3,7 @@ import Controller.Simulation;
 class Main {
     public static void main(String[] args) {
      Simulation.initialize(10);
-     Simulation.nextNTurns(5);
+     Simulation.nextNTurns(15);
     }
 
 }

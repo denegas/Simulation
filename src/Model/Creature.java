@@ -10,7 +10,13 @@ public abstract class Creature extends Entity {
     protected final int speed;
     protected final Food foodType;
     protected int healthPoints;
-
+    protected boolean isAlive = true;
+    public void kill(){
+        this.isAlive =false;
+    }
+    public boolean isAlive(){
+        return isAlive;
+    }
     public abstract void makeMove(Coordinates coordinates);
     public abstract void eat();
     public int getSpeed(){

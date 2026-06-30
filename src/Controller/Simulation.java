@@ -1,5 +1,7 @@
 package Controller;
 import Model.EntityMap;
+import View.Renderer;
+
 import java.util.List;
 
 public final class Simulation {
@@ -33,6 +35,13 @@ public final class Simulation {
  public static void nextNTurns(int n){
         for(int i = 0;i<n;i++){
             nextTurn();
+        }
+ }
+ public static void nTicks(int n){ // nextTurnWithEachCreatureMoveRender
+        for (int i = 0;i<n;i++) {
+            RenderEveryCreatureAtTurn renderEveryCreatureAtTurn = new RenderEveryCreatureAtTurn();
+            renderEveryCreatureAtTurn.execute();
+            turnsCounter++;
         }
  }
  public void startSimulation(){
