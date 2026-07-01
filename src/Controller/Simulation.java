@@ -33,15 +33,18 @@ public final class Simulation {
     turnsCounter++;
  }
  public static void nextNTurns(int n){
-        for(int i = 0;i<n;i++){
+        for(int i = 0;i<n;i++) {
             nextTurn();
+            pause(1800);
         }
+
  }
- public static void nTicks(int n){ // nextTurnWithEachCreatureMoveRender
+ public static void nTicks(int n) { // nextTurnWithEachCreatureMoveRender
         for (int i = 0;i<n;i++) {
             RenderEveryCreatureAtTurn renderEveryCreatureAtTurn = new RenderEveryCreatureAtTurn();
             renderEveryCreatureAtTurn.execute();
             turnsCounter++;
+
         }
  }
  public void startSimulation(){
@@ -50,5 +53,12 @@ public final class Simulation {
  public void pauseSimulation(){
 
  }
+ public static void pause(int millis){
+     try {
+         Thread.sleep(millis);
+     } catch (InterruptedException e) {
+         throw new RuntimeException(e);
 
+     }
+ }
 }
