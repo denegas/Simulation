@@ -9,6 +9,7 @@ public class CreatureMove {
     }
 
     public static void execute(Creature creature, List<Coordinates> path, EntityMap map) {
+        if (path.isEmpty()) return;
         Coordinates nextCell;
 
         if (isRandomMove(path)) {

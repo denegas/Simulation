@@ -101,10 +101,13 @@ public final class PathFinder {
     private static List<Coordinates> randomNextCell(){
         Coordinates nextCell;
         Random random = new Random();
+        int counter =0;
         while (true){
+            if (counter > 30){return new ArrayList<>();}
             int[] dir = DIRECTIONS[random.nextInt(0,4)];
             nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
             if (!mapHasCell(map, nextCell) || !isCellAvailable(map, nextCell)) {
+                counter++;
                 continue;
             }
             return List.of(nextCell);
