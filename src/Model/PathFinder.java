@@ -14,11 +14,12 @@ public final class PathFinder {
             {-1, 0}
     };
     private static EntityType target;
-
-    public static Optional<List<Coordinates>>
-    getPath(EntityMap map, Coordinates startPosition, Creature creature) {
+    private static EntityMap map;
+    private static Coordinates startPosition;
+    public static List<Coordinates> getPath(EntityMap map, Coordinates startPosition, Creature creature) {
         setCreatureTarget(creature);
-
+        PathFinder.map = map;
+        PathFinder.startPosition = startPosition;
         Queue<Coordinates> queue = new LinkedList<>();
         queue.add(startPosition);
 
@@ -43,7 +44,7 @@ public final class PathFinder {
                 } else if (map.getMap().get(nextCell).getType().equals(target)) {
                     parent.put(nextCell,cell);
                     visitedDirections.add(nextCell);
-                    return Optional.of(buildPath(parent,nextCell));
+                    return buildPath(parent,nextCell);
                 }
                 parent.put(nextCell,cell);
                 visitedDirections.add(nextCell);
@@ -51,7 +52,7 @@ public final class PathFinder {
             }
 
         }
-        return Optional.empty();
+        return randomNextCell();
     }
 
     private static void setCreatureTarget(Creature creature) {
@@ -85,7 +86,7 @@ public final class PathFinder {
 
     }
 
-    static List<Coordinates> buildPath(Map<Coordinates, Coordinates> parent, Coordinates target) {
+    private static List<Coordinates> buildPath(Map<Coordinates, Coordinates> parent, Coordinates target) {
         List<Coordinates> path = new ArrayList<>();
         Coordinates cur = target;
 
@@ -95,9 +96,18 @@ public final class PathFinder {
         }
 
         Collections.reverse(path);
-//        if (!path.isEmpty()) {
-//            path.removeFirst();
-//        }
         return path;
+    }
+    private static List<Coordinates> randomNextCell(){
+        Coordinates nextCell;
+        Random random = new Random();
+        while (true){
+            int[] dir = DIRECTIONS[random.nextInt(0,4)];
+            nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
+            if (!mapHasCell(map, nextCell) || !isCellAvailable(map, nextCell)) {
+                continue;
+            }
+            return List.of(nextCell);
+        }
     }
 }

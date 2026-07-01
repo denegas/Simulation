@@ -6,7 +6,6 @@ import Model.PathFinder;
 import View.Renderer;
 
 import java.util.List;
-import java.util.Optional;
 
 public class AllCreaturesMove implements Action {
 
@@ -17,11 +16,10 @@ public class AllCreaturesMove implements Action {
             if (!creature.isAlive()) {
                 continue;
             }
-            Optional<List<Coordinates>> path = PathFinder.getPath(Simulation.getEntityMap(), creature.getCoordinates(), creature);
-            if (path.isPresent()) {
-                CreatureMove.execute(creature, path.get(), Simulation.getEntityMap());
+            List<Coordinates> path = PathFinder.getPath(Simulation.getEntityMap(), creature.getCoordinates(), creature);
+            CreatureMove.execute(creature, path, Simulation.getEntityMap());
 
-            }
+
         }
         Renderer.render(Simulation.getEntityMap().getMap());
     }
