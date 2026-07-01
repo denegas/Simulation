@@ -1,11 +1,13 @@
 package Controller;
 import Model.EntityMap;
+import View.ConsoleInput;
+import View.ConsoleWriter;
 import View.Renderer;
 
 import java.util.List;
 
 public final class Simulation {
- private static final int MAP_SIZE = 10;
+ private static int MAP_SIZE;
  private static int turnsCounter = 0;
     private static EntityMap map;
    // private static final List<Action> initActions = List.of(new MapCreator(MAP_SIZE), new EntityCreator(map));
@@ -17,6 +19,7 @@ public final class Simulation {
  public static EntityMap getEntityMap(){
         return map;
  }
+ public static void setMapSize(int mapSize){MAP_SIZE = mapSize;}
  public static int getMapSize(){
      return Simulation.MAP_SIZE;
  }
@@ -58,6 +61,25 @@ public final class Simulation {
          Thread.sleep(millis);
      } catch (InterruptedException e) {
          throw new RuntimeException(e.getMessage());
+     }
+ }
+ public static void userConfiguresSettings(){
+     ConsoleWriter.printHello();
+     ConsoleWriter.printMapSizeAsk();
+
+     initialize(ConsoleInput.getInt());
+     ConsoleWriter.printOptions();
+     switch (ConsoleInput.getInt()){
+         case 1:
+             ConsoleWriter.printRepeatsAsk();
+             nextNTurns(ConsoleInput.getInt());
+             break;
+         case 2:
+             ConsoleWriter.printRepeatsAsk();
+             nTicks(ConsoleInput.getInt());
+             break;
+         default:
+             ConsoleWriter.printError();
      }
  }
 }

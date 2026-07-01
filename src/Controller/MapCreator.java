@@ -17,6 +17,7 @@ public class MapCreator implements Action{
             }
         }
         Simulation.setMap(map);
+        Simulation.setMapSize(map.getSIZE());
         }
     }
 
