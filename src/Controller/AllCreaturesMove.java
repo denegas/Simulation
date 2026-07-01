@@ -12,6 +12,8 @@ public class AllCreaturesMove implements Action {
     @Override
     public void execute() {
         List<Creature> creatures = getCreatures();
+        Renderer.render(Simulation.getEntityMap().getMap());
+
         for (Creature creature : creatures) {
             if (!creature.isAlive()) {
                 continue;
@@ -21,7 +23,7 @@ public class AllCreaturesMove implements Action {
 
 
         }
-        Renderer.render(Simulation.getEntityMap().getMap());
+        //Renderer.render(Simulation.getEntityMap().getMap());
     }
 
     private static List<Creature> getCreatures() {

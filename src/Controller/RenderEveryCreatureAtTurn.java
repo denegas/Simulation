@@ -13,10 +13,10 @@ public class RenderEveryCreatureAtTurn implements Action{
         List<Creature> creatures = getCreatures();
         for (Creature creature: creatures){
             if(!creature.isAlive()){continue;}
+            Renderer.render(Simulation.getEntityMap().getMap());
             List<Coordinates> path = PathFinder.getPath(Simulation.getEntityMap(),creature.getCoordinates(),creature);
             CreatureMove.execute(creature, path, Simulation.getEntityMap());
 
-            Renderer.render(Simulation.getEntityMap().getMap());
             Simulation.pause(500);
         }
 
