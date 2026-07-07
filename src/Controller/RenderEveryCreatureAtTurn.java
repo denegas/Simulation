@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Coordinates;
 import Model.Creature;
+import Model.EntityMap;
 import Model.PathFinder;
 import View.Renderer;
 
@@ -9,8 +10,8 @@ import java.util.List;
 
 public class RenderEveryCreatureAtTurn implements Action{
     @Override
-    public void execute() {
-        List<Creature> creatures = getCreatures();
+    public void execute(EntityMap map) {
+        List<Creature> creatures = getCreatures(map);
         for (Creature creature: creatures){
             if(!creature.isAlive()){continue;}
             Renderer.render(Simulation.getEntityMap().getMap());
@@ -21,8 +22,8 @@ public class RenderEveryCreatureAtTurn implements Action{
         }
 
     }
-    private static List<Creature> getCreatures(){
-        return Simulation.getEntityMap().getCreatures().values().stream().toList();
+    private static List<Creature> getCreatures(EntityMap map){
+        return map.getCreatures().values().stream().toList();
     }
     }
 

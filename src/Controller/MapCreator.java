@@ -4,15 +4,12 @@ import Model.Coordinates;
 import Model.EntityMap;
 
 public class MapCreator implements Action{
-    public MapCreator(int mapSize){
-        this.mapSize = mapSize;
-    }
-    private final int mapSize;
     @Override
-    public void execute(){
+    public void execute(EntityMap entityMap){
+        int mapSize = entityMap.getSIZE();
         EntityMap map = new EntityMap(mapSize);
-        for (int i =0;i<mapSize;i++){
-            for (int j =0; j<mapSize;j++){
+        for (int i = 0; i < mapSize; i++){
+            for (int j = 0; j < mapSize;j++){
                 map.add(new Coordinates(i,j));
             }
         }

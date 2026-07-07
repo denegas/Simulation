@@ -10,7 +10,7 @@ public final class Simulation {
  private static int MAP_SIZE;
  private static int turnsCounter = 0;
     private static EntityMap map;
-   // private static final List<Action> initActions = List.of(new MapCreator(MAP_SIZE), new EntityCreator(map));
+    private static final List<Action> initActions = List.of(new MapCreator(), new EntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove());
 
     public static void setMap(EntityMap map) {
@@ -24,14 +24,15 @@ public final class Simulation {
      return Simulation.MAP_SIZE;
  }
  public static void initialize(int mapSize){
-        MapCreator mapCreator = new MapCreator(mapSize);
-        mapCreator.execute();
-        EntityCreator entityCreator = new EntityCreator(map);
-        entityCreator.execute();
+        map = new EntityMap(mapSize);
+        for (Action initAction:initActions){
+            initAction.execute(map);
+        }
+
  }
     public static void nextTurn(){
     for (Action turnAction: turnActions){
-        turnAction.execute();
+        turnAction.execute(map);
     }
     turnsCounter++;
  }
@@ -45,7 +46,7 @@ public final class Simulation {
  public static void nTicks(int n) { // nextTurnWithEachCreatureMoveRender
         for (int i = 0;i<n;i++) {
             RenderEveryCreatureAtTurn renderEveryCreatureAtTurn = new RenderEveryCreatureAtTurn();
-            renderEveryCreatureAtTurn.execute();
+            renderEveryCreatureAtTurn.execute(map);
             turnsCounter++;
 
         }

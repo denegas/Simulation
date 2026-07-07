@@ -4,11 +4,9 @@ import Model.*;
 import java.util.*;
 
 public final class EntityCreator implements Action {
-    public EntityCreator(EntityMap map) {
-        this.map = map;
-        initEntityChances();
+    public EntityCreator() {
+
     }
-    private final EntityMap map;
     private final NavigableMap<Double, EntityType> entityChances = new TreeMap<>();
     private static final int PREDATOR_SPEED = 2;
     private static final int HERBIVORE_SPEED = 1;
@@ -24,7 +22,8 @@ public final class EntityCreator implements Action {
     private static final Random random = new Random();
 
     @Override
-    public void execute() {
+    public void execute(EntityMap map) {
+        initEntityChances();
         for (var cell : Simulation.getEntityMap().getMap().keySet()) { // get all cells with coordinates from map
             double randomChance = random.nextDouble();
             var entry = entityChances.ceilingEntry(randomChance);
@@ -33,23 +32,23 @@ public final class EntityCreator implements Action {
                 map.add(cell, getEntityFromType(type, cell));
             }
         }
-        if (hasNoEntity(EntityType.HERBIVORE)) {
-            addOneEntity(EntityType.HERBIVORE);
+        if (hasNoEntity(EntityType.HERBIVORE,map)) {
+            addOneEntity(EntityType.HERBIVORE,map);
         }
-        if (hasNoEntity(EntityType.PREDATOR)) {
-            addOneEntity(EntityType.PREDATOR);
+        if (hasNoEntity(EntityType.PREDATOR,map)) {
+            addOneEntity(EntityType.PREDATOR,map);
         }
         Simulation.setMap(map);
     }
 
-    private boolean hasNoEntity(EntityType entityType) {
+    private boolean hasNoEntity(EntityType entityType, EntityMap map) {
         for (Entity entity : map.getNotNullEntities()) {
             if (entity.getType() == entityType) return false;
         }
         return true;
     }
     // add 1 entity to a random void cell in map
-    private void addOneEntity(EntityType entityType) {
+    private void addOneEntity(EntityType entityType, EntityMap map) {
 
         List<Coordinates> voidCells = map.getVoidCells();
 
