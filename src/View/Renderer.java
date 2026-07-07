@@ -3,6 +3,7 @@ package View;
 import Controller.Simulation;
 import Model.Coordinates;
 import Model.Entity;
+import Model.EntityMap;
 import Model.EntityType;
 
 import java.util.Map;
@@ -12,8 +13,8 @@ public final class Renderer {
     private Renderer() {
     }
 
-    public static void render(Map<Coordinates, Entity> map) {
-        Map<Coordinates, Entity> sortedMap = new TreeMap<>(map);
+    public static void render(EntityMap map) {
+        Map<Coordinates, Entity> sortedMap = new TreeMap<>(map.getMap());
         int mapSize = Simulation.getMapSize();
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {

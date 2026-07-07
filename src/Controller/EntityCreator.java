@@ -24,7 +24,7 @@ public final class EntityCreator implements Action {
     @Override
     public void execute(EntityMap map) {
         initEntityChances();
-        for (var cell : Simulation.getEntityMap().getMap().keySet()) { // get all cells with coordinates from map
+        for (var cell : map.getMap().keySet()) { // get all cells with coordinates from map
             double randomChance = random.nextDouble();
             var entry = entityChances.ceilingEntry(randomChance);
             if (entry != null) {

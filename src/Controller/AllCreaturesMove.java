@@ -12,23 +12,23 @@ public class AllCreaturesMove implements Action {
 
     @Override
     public void execute(EntityMap map) {
-        List<Creature> creatures = getCreatures();
-        Renderer.render(map.getMap());
+        List<Creature> creatures = getCreatures(map);
+        Renderer.render(map);
 
         for (Creature creature : creatures) {
             if (!creature.isAlive()) {
                 continue;
             }
-            List<Coordinates> path = PathFinder.getPath(Simulation.getEntityMap(), creature.getCoordinates(), creature);
-            CreatureMove.execute(creature, path, Simulation.getEntityMap());
+            List<Coordinates> path = PathFinder.getPath(map, creature.getCoordinates(), creature);
+            CreatureMove.execute(creature, path, map);
 
 
         }
 
     }
 
-    private static List<Creature> getCreatures() {
-        return Simulation.getEntityMap().getCreatures().values().stream().toList();
+    private static List<Creature> getCreatures(EntityMap map) {
+        return map.getCreatures().values().stream().toList();
     }
 
 }
