@@ -17,7 +17,9 @@ public abstract class Creature extends Entity {
     public boolean isAlive(){
         return isAlive;
     }
-    public abstract void makeMove(Coordinates coordinates);
+    public void makeMove(Coordinates newCoordinates){
+       setCoordinates(newCoordinates);
+    }
     public abstract void eat();
     public int getSpeed(){
         return this.speed;
@@ -28,7 +30,7 @@ public abstract class Creature extends Entity {
     protected int getHealthPoints(){
         return healthPoints;
     }
-    protected Food getFoodType(){
+    public Food getFoodType(){
         return foodType;
     }
 

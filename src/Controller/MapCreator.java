@@ -6,7 +6,7 @@ import Model.EntityMap;
 public class MapCreator implements Action{
     @Override
     public void execute(EntityMap entityMap){
-        int mapSize = entityMap.getSIZE();
+        int mapSize = entityMap.getSize();
         EntityMap map = new EntityMap(mapSize);
         for (int i = 0; i < mapSize; i++){
             for (int j = 0; j < mapSize;j++){
@@ -14,7 +14,7 @@ public class MapCreator implements Action{
             }
         }
         Simulation.setMap(map);
-        Simulation.setMapSize(map.getSIZE());
+        Simulation.setMapSize(map.getSize());
         }
     }
 

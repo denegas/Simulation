@@ -2,7 +2,6 @@ package Controller;
 import Model.EntityMap;
 import View.ConsoleInput;
 import View.ConsoleWriter;
-import View.Renderer;
 
 import java.util.List;
 
@@ -10,8 +9,8 @@ public final class Simulation {
  private static int MAP_SIZE;
  private static int turnsCounter = 0;
     private static EntityMap map;
-    private static final List<Action> initActions = List.of(new MapCreator(), new EntityCreator());
-    private static final List<Action> turnActions = List.of(new AllCreaturesMove());
+    private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
+    private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
 
     public static void setMap(EntityMap map) {
         Simulation.map = map;

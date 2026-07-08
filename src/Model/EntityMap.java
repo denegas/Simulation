@@ -30,7 +30,7 @@ public class EntityMap {
         map.remove(coordinates, entity);
     }
 
-    public int getSIZE() {
+    public int getSize() {
         return this.SIZE;
     }
 

@@ -67,7 +67,7 @@ public final class PathFinder {
     }
 
     private static boolean mapHasCell(EntityMap map, Coordinates cell) {
-        int border = map.getSIZE();
+        int border = map.getSize();
         int x = cell.getCoordinateX();
         int y = cell.getCoordinateY();
         if (x < 0 || y < 0) {

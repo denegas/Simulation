@@ -5,10 +5,10 @@ public class Herbivore extends Creature{
         super(coordinates,EntityType.HERBIVORE,healthPoints,speed,Food.GRASS);
     }
 
-    @Override
-    public void makeMove(Coordinates newCoordinates) {
-          setCoordinates(newCoordinates);
-    }
+//    @Override
+//    public void makeMove(Coordinates newCoordinates) {
+//          setCoordinates(newCoordinates);
+//    }
     @Override
     public void eat() {
 
