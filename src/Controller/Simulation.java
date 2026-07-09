@@ -43,8 +43,9 @@ public final class Simulation {
 
  }
  public static void nTicks(int n) { // nextTurnWithEachCreatureMoveRender
+     RenderEveryCreatureAtTurn renderEveryCreatureAtTurn = new RenderEveryCreatureAtTurn();
+
         for (int i = 0;i<n;i++) {
-            RenderEveryCreatureAtTurn renderEveryCreatureAtTurn = new RenderEveryCreatureAtTurn();
             renderEveryCreatureAtTurn.execute(map);
             turnsCounter++;
 

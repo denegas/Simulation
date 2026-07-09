@@ -19,16 +19,26 @@ public class AllCreaturesMove implements Action {
             if (!creature.isAlive()) {
                 continue;
             }
+
+
             List<Coordinates> path = PathFinder.getPath(map, creature.getCoordinates(), creature);
             CreatureMove.execute(creature, path, map);
 
 
         }
+        cleanMapFromDeadCreatures(map);
 
     }
 
     private static List<Creature> getCreatures(EntityMap map) {
         return map.getCreatures().values().stream().toList();
+    }
+    private static void cleanMapFromDeadCreatures(EntityMap map){
+        for(Creature creature: getCreatures(map)){
+            if (!creature.isAlive()){
+                map.add(creature.getCoordinates(),null);
+            }
+        }
     }
 
 }

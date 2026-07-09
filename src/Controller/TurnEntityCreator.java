@@ -11,14 +11,13 @@ public class TurnEntityCreator extends EntityCreator implements Action {
     public TurnEntityCreator(){
         super();
     }
-    private final int MAX_TURNS_WITHOUT_FOOD = 3;
+    private final int MAX_TURNS_WITHOUT_FOOD = 4;
     private int withoutHerbivoreFoodCounter = 0;
     private int withoutPredatorFoodCounter = 0;
 
 
     @Override
     public void execute(EntityMap map) {
-
 
         boolean hasPredatorFood = false;
         boolean hasHerbivoreFood = false;

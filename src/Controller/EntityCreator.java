@@ -13,8 +13,8 @@ public class EntityCreator {
     protected final NavigableMap<Double, EntityType> entityChances = new TreeMap<>();
     protected static final int PREDATOR_SPEED = 2;
     protected static final int HERBIVORE_SPEED = 1;
-    protected static final int PREDATOR_HP = 1;
-    protected static final int HERBIVORE_HP = 1;
+    protected static final int PREDATOR_HP = 10;
+    protected static final int HERBIVORE_HP = 15;
 
     // it's spawn entities spawn chance PER 1 CELL in map, not for all map
     protected static final double HERBIVORE_SPAWN_CHANCE = 0.14;

@@ -7,10 +7,20 @@ public abstract class Creature extends Entity {
         this.foodType = foodType;
         this.healthPoints = healthPoints;
     }
-    protected final int speed;
+
+
+
+    protected final int MAX_TURNS_WITHOUT_FOOD = 5;
+    protected  int speed;
     protected final Food foodType;
     protected int healthPoints;
     protected boolean isAlive = true;
+    protected boolean isHungry = false;
+    protected int turnsWithoutFood = 0;
+    public int getMAX_TURNS_WITHOUT_FOOD() {
+        return MAX_TURNS_WITHOUT_FOOD;
+    }
+    public abstract void restoreHealthPoints();
     public void kill(){
         this.isAlive =false;
     }
@@ -24,14 +34,28 @@ public abstract class Creature extends Entity {
     public int getSpeed(){
         return this.speed;
     }
-    protected void setHealthPoints(int healthPoints){
+    public void setSpeed(int newValue){
+        this.speed = newValue;
+    }
+    public void setHealthPoints(int healthPoints){
+        if (healthPoints < 1){
+            kill();
+//            System.out.println("hungred for deaths: " + getType());
+        }
         this.healthPoints = healthPoints;
     }
-    protected int getHealthPoints(){
+    public int getHealthPoints(){
         return healthPoints;
     }
     public Food getFoodType(){
         return foodType;
     }
+    public void setTurnsWithoutFood(int newValue){
+        turnsWithoutFood = newValue;
+    }
+    public int getTurnsWithoutFood(){
+        return turnsWithoutFood;
+    }
+
 
 }
