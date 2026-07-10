@@ -36,12 +36,14 @@ public final class PathFinder {
                     continue;
                 } else if (visitedDirections.contains(nextCell)) {
                     continue;
-                } else if (map.getMap().get(nextCell) == null) {
+                } else if (isCellFree(nextCell)) {
                     parent.put(nextCell,cell);
                     visitedDirections.add(nextCell);
                     queue.add(nextCell);
                     continue;
-                } else if (map.getMap().get(nextCell).getType().equals(target)) {
+
+                } else if (isCellTarget(nextCell,map)) {
+
                     parent.put(nextCell,cell);
                     visitedDirections.add(nextCell);
                     return buildPath(parent,nextCell);
@@ -112,5 +114,11 @@ public final class PathFinder {
             }
             return List.of(nextCell);
         }
+    }
+    private static boolean isCellFree(Coordinates cell){
+        return map.getMap().get(cell) == null;
+    }
+    private static boolean isCellTarget(Coordinates cell, EntityMap map){
+     return map.getMap().get(cell).getType().equals(target);
     }
 }
