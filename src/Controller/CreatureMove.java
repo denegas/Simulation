@@ -67,6 +67,9 @@ public class CreatureMove {
         predator.setSpeed(1);
     }
     private static void hungerLowsCreatureHP(Creature creature){
+        if(creature.getHealthPoints() < 1){
+            creature.kill();
+        }
         creature.setHealthPoints(creature.getHealthPoints()-1);
     }
 

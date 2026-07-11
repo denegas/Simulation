@@ -38,10 +38,6 @@ public abstract class Creature extends Entity {
         this.speed = newValue;
     }
     public void setHealthPoints(int healthPoints){
-        if (healthPoints < 1){
-            kill();
-//            System.out.println("hungred for deaths: " + getType());
-        }
         this.healthPoints = healthPoints;
     }
     public int getHealthPoints(){
