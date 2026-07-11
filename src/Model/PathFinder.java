@@ -32,7 +32,7 @@ public final class PathFinder {
             Coordinates cell = queue.poll();
             for (var dir : DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getCoordinateX() + dir[0], cell.getCoordinateY() + dir[1]);
-                if (!mapHasCell(map, nextCell) || !isCellAvailable(map, nextCell)) {
+                if (!mapHasCell(nextCell) || (!isCellFree(nextCell) && !isCellTarget(nextCell))) {
                     continue;
                 } else if (visitedDirections.contains(nextCell)) {
                     continue;
@@ -42,7 +42,7 @@ public final class PathFinder {
                     queue.add(nextCell);
                     continue;
 
-                } else if (isCellTarget(nextCell,map)) {
+                } else if (isCellTarget(nextCell)) {
 
                     parent.put(nextCell,cell);
                     visitedDirections.add(nextCell);
@@ -68,7 +68,7 @@ public final class PathFinder {
         }
     }
 
-    private static boolean mapHasCell(EntityMap map, Coordinates cell) {
+    private static boolean mapHasCell(Coordinates cell) {
         int border = map.getSize();
         int x = cell.getCoordinateX();
         int y = cell.getCoordinateY();
@@ -78,15 +78,6 @@ public final class PathFinder {
         return (x < border) && (y < border);
     }
 
-    private static boolean isCellAvailable(EntityMap map, Coordinates cell) {
-        if (map.getMap().get(cell) == null) return true;
-        EntityType entityType = map.getMap().get(cell).getType();
-        if (entityType.equals(target)) {
-            return true;
-        }
-        return false;
-
-    }
 
     private static List<Coordinates> buildPath(Map<Coordinates, Coordinates> parent, Coordinates target) {
         List<Coordinates> path = new ArrayList<>();
@@ -108,7 +99,7 @@ public final class PathFinder {
             if (counter > 30){return new ArrayList<>();}
             int[] dir = DIRECTIONS[random.nextInt(0,4)];
             nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
-            if (!mapHasCell(map, nextCell) || !isCellAvailable(map, nextCell)) {
+            if (!mapHasCell(nextCell) || (!isCellTarget(nextCell) && !isCellFree(nextCell))) {
                 counter++;
                 continue;
             }
@@ -118,7 +109,8 @@ public final class PathFinder {
     private static boolean isCellFree(Coordinates cell){
         return map.getMap().get(cell) == null;
     }
-    private static boolean isCellTarget(Coordinates cell, EntityMap map){
+    private static boolean isCellTarget(Coordinates cell){
+        if (map.getMap().get(cell) == null) return false;
      return map.getMap().get(cell).getType().equals(target);
     }
 }
