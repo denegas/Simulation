@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 
 import java.util.List;
+import java.util.Random;
 
 public class CreatureMove {
     private CreatureMove() {
@@ -10,7 +11,9 @@ public class CreatureMove {
 
     public static void execute(Creature creature, List<Coordinates> path, EntityMap map) {
         if (path.isEmpty()) return;
+
         Coordinates nextCell;
+
         if(creature.getTurnsWithoutFood() > creature.getMAX_TURNS_WITHOUT_FOOD()){
             hungerEffect(creature);
         }
@@ -21,23 +24,33 @@ public class CreatureMove {
             map.add(path.getFirst(), null);// animal has left cell, so now it's cell null
             nextCell = isLastCell(path) ? path.get(1) : path.get(creature.getSpeed());
         }
-        creature.makeMove(nextCell);
+
+
         if (isNotVoidCell(nextCell,map)) {
 
-            creature.setTurnsWithoutFood(0);
-            creature.restoreHealthPoints();
+            if (isHerbivoreTryToEat(nextCell,map)) {
+                recoverCreature(creature);
 
-            if (isHerbivoreOnCell(nextCell,map)) {
-                ((Herbivore) map.getMap().get(nextCell)).kill();
-                creature.setSpeed(2); // predator returns it normal speed
+            }
+            else if (isPredatorTryToEat(nextCell,map)) {
 
+                if( isSuccessfulPredatorAttack() ) {
+                    recoverCreature(creature);
+                    ((Herbivore) map.getMap().get(nextCell)).kill();
+
+                } else {//FAIL ATTACK
+
+                    nextCell = path.getFirst();
+                    creature.setTurnsWithoutFood(
+                            creature.getTurnsWithoutFood() + 1);
+                }
             }
 
         } else {
             creature.setTurnsWithoutFood(
                     creature.getTurnsWithoutFood() + 1);
         }
-
+        creature.makeMove(nextCell);
         map.add(nextCell, creature);
         Simulation.setMap(map);
     }
@@ -54,9 +67,6 @@ public class CreatureMove {
     private static boolean isNotVoidCell(Coordinates nextCell, EntityMap map){
         return map.getMap().get(nextCell) != null;
     }
-    private static boolean isHerbivoreOnCell(Coordinates nextCell, EntityMap map){
-        return map.getMap().get(nextCell).getType().equals(EntityType.HERBIVORE);
-    }
     private static void hungerEffect(Creature creature){
         if (creature.getType().equals(EntityType.PREDATOR)){
             hungerLowsPredatorSpeed(creature);
@@ -69,8 +79,27 @@ public class CreatureMove {
     private static void hungerLowsCreatureHP(Creature creature){
         if(creature.getHealthPoints() < 1){
             creature.kill();
+            return;
         }
         creature.setHealthPoints(creature.getHealthPoints()-1);
+    }
+    private static boolean isPredatorTryToEat(Coordinates nextCell, EntityMap map){
+        return map.getMap().get(nextCell).getType().equals(EntityType.HERBIVORE);
+    }
+    private static boolean isHerbivoreTryToEat(Coordinates nextCell, EntityMap map){
+        return map.getMap().get(nextCell).getType().equals(EntityType.GRASS);
+    }
+    private static boolean isSuccessfulPredatorAttack(){
+        Random random = new Random();
+        double chanceToFailAttack = random.nextDouble();
+        return chanceToFailAttack < Predator.getATTACK_CHANCE();
+    }
+    private static void recoverCreature(Creature creature){
+        creature.setTurnsWithoutFood(0);
+        creature.restoreHealthPoints();
+        if(creature.getType().equals(EntityType.PREDATOR)){
+            creature.setSpeed(2);// predator returns to it normal speed
+        }
     }
 
 }
