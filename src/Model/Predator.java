@@ -6,7 +6,7 @@ public class Predator extends Creature{
     }
     private final int MAX_HEALTH_POINTS = 10;
     private static final double ATTACK_CHANCE = 0.75;
-    private static final int ATTACK_POWER = 3;
+    private static final int ATTACK_POWER = 4;
     @Override
     public void restoreHealthPoints() {
         setHealthPoints(MAX_HEALTH_POINTS);
