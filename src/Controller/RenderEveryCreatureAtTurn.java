@@ -33,7 +33,7 @@ public class RenderEveryCreatureAtTurn implements Action {
     private static void cleanMapFromDeadCreatures(EntityMap map){
         for(Creature creature: getCreatures(map)){
             if (!creature.isAlive()){
-                map.add(creature.getCoordinates(),null);
+                map.removeEntity(creature.getCoordinates());
             }
         }
     }

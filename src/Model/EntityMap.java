@@ -26,8 +26,8 @@ public class EntityMap {
         map.put(coordinates, null);
     }
 
-    public void remove(Coordinates coordinates, Entity entity) {
-        map.remove(coordinates, entity);
+    public void removeEntity(Coordinates coordinates) {
+        map.put(coordinates, null);
     }
 
     public int getSize() {
