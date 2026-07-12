@@ -2,6 +2,7 @@ package Controller;
 import Model.EntityMap;
 import View.ConsoleInput;
 import View.ConsoleWriter;
+import View.Renderer;
 
 import java.util.List;
 
@@ -38,13 +39,14 @@ public final class Simulation {
  public static void nextNTurns(int n){
         for(int i = 0;i<n;i++) {
             nextTurn();
-            pause(1800);
+            sleep(1800);
         }
 
  }
  public static void nTicks(int n) { // nextTurnWithEachCreatureMoveRender
      RenderEveryCreatureAtTurn renderEveryCreatureAtTurn = new RenderEveryCreatureAtTurn();
      TurnEntityCreator turnEntityCreator = new TurnEntityCreator();
+     Renderer.render(map);
         for (int i = 0;i<n;i++) {
             renderEveryCreatureAtTurn.execute(map);
             turnEntityCreator.execute(map);
@@ -58,7 +60,7 @@ public final class Simulation {
  public void pauseSimulation(){
 
  }
- public static void pause(int millis){
+ public static void sleep(int millis){
      try {
          Thread.sleep(millis);
      } catch (InterruptedException e) {

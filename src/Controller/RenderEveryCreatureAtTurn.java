@@ -13,7 +13,7 @@ public class RenderEveryCreatureAtTurn implements Action {
     @Override
     public void execute(EntityMap map) {
         List<Creature> creatures = getCreatures(map);
-        Renderer.render(map);
+
         for (Creature creature: creatures){
             if(!creature.isAlive()){continue;}
 
@@ -21,7 +21,7 @@ public class RenderEveryCreatureAtTurn implements Action {
             List<Coordinates> path = PathFinder.getPath(map,creature.getCoordinates(),creature);
             CreatureMove.execute(creature, path, map);
 
-            Simulation.pause(500);
+            Simulation.sleep(500);
         }
         cleanMapFromDeadCreatures(map);
 

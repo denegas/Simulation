@@ -10,7 +10,7 @@ public abstract class Creature extends Entity {
 
 
 
-    protected final int MAX_TURNS_WITHOUT_FOOD = 5;
+    protected final int MAX_TURNS_WITHOUT_FOOD = 7;
     protected  int speed;
     protected final Food foodType;
     protected int healthPoints;

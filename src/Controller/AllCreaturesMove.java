@@ -1,11 +1,9 @@
 package Controller;
 
-import Model.Coordinates;
-import Model.Creature;
-import Model.EntityMap;
-import Model.PathFinder;
+import Model.*;
 import View.Renderer;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class AllCreaturesMove implements Action {
