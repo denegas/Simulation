@@ -32,72 +32,6 @@ public final class CreatureMove {
         finishMove(creature, oldCell, nextCell);
     }
 
-    private static void finishMove(Creature creature, Coordinates oldCell, Coordinates nextCell) {
-        map.removeEntity(oldCell);
-        creature.makeMove(nextCell);
-        map.add(nextCell, creature);
-        Simulation.setMap(map);
-    }
-
-    private static void predatorMove(Creature predator, Coordinates oldCell, Coordinates targetCell) {
-
-        if (canAttack(nextCell, targetCell)) {
-            predatorAttack(predator, oldCell, targetCell);
-
-        } else {
-            addHungryTurn(predator);
-        }
-
-    }
-
-    private static void predatorAttack(Creature predator, Coordinates oldCell, Coordinates targetCell) {
-        Herbivore attackedHerbivore = (Herbivore) map.getMap().get(targetCell);
-        if (isSuccessfulPredatorAttack()) {
-
-            predatorDamagesHerbivore(attackedHerbivore);
-
-            if (isPredatorKilledHerbivore(attackedHerbivore)) {
-                restoreAfterEating(predator);
-
-                if (canMoveOnTarget(oldCell, targetCell)) {
-                    nextCell = targetCell;
-                }
-                map.removeEntity(targetCell);
-            }
-
-        } else {//FAIL ATTACK
-            addHungryTurn(predator);
-        }
-
-    }
-
-    private static boolean canAttack(Coordinates nextCell, Coordinates targetCell) {
-        Entity targetEntity = map.getMap().get(targetCell);
-        boolean herbivoreStillAtTarget = (targetEntity != null) && isHerbivore(targetEntity);
-
-        return (herbivoreStillAtTarget && isNeighbours(nextCell, targetCell));
-    }
-
-    private static void herbivoreMove(Creature herbivore) {
-
-        if (isGrass(nextCell)) {
-            restoreAfterEating(herbivore);
-
-        } else {
-            addHungryTurn(herbivore);
-        }
-    }
-
-    private static void addHungryTurn(Creature creature) {
-        creature.setTurnsWithoutFood(creature.getTurnsWithoutFood() + 1);
-    }
-
-    private static boolean canMoveOnTarget(Coordinates oldCell, Coordinates targetCell) {
-        int dx = Math.abs(oldCell.getCoordinateX() - targetCell.getCoordinateX());
-        int dy = Math.abs(oldCell.getCoordinateY() - targetCell.getCoordinateY());
-        return dx + dy <= 2;
-    }
-
     private static Coordinates getNextCell(Creature creature, List<Coordinates> path) {
         Coordinates nextCell;
 
@@ -114,30 +48,6 @@ public final class CreatureMove {
         return nextCell;
     }
 
-    private static boolean isHerbivore(Creature creature) {
-        return creature.getType().equals(EntityType.HERBIVORE);
-    }
-
-    private static boolean isHerbivore(Entity creature) {
-        return creature.getType().equals(EntityType.HERBIVORE);
-    }
-
-    private static boolean isPredator(Creature creature) {
-        return creature.getType().equals(EntityType.PREDATOR);
-    }
-
-    private static boolean isRandomMove(List<Coordinates> path) {
-        return path.size() == 1;
-    }
-
-    private static boolean isGrass(Coordinates nextCell) {
-        Entity entity = map.getMap().get(nextCell);
-        if (entity == null) {
-            return false;
-        }
-        return entity.getType().equals(EntityType.GRASS);
-    }
-
     private static void applyHungry(Creature creature) {
         if (creature.getTurnsWithoutFood() > creature.getMAX_TURNS_WITHOUT_FOOD()) {
             hungerEffect(creature);
@@ -149,6 +59,10 @@ public final class CreatureMove {
             hungerLowsPredatorSpeed(creature);
         }
         hungerLowsCreatureHP(creature);
+    }
+
+    private static boolean isPredator(Creature creature) {
+        return creature.getType().equals(EntityType.PREDATOR);
     }
 
     private static void hungerLowsPredatorSpeed(Creature predator) {
@@ -163,11 +77,25 @@ public final class CreatureMove {
         creature.setHealthPoints(creature.getHealthPoints() - 1);
     }
 
+    private static boolean isHerbivore(Creature creature) {
+        return creature.getType().equals(EntityType.HERBIVORE);
+    }
 
-    private static boolean isSuccessfulPredatorAttack() {
-        Random random = new Random();
-        double chanceToFailAttack = random.nextDouble();
-        return chanceToFailAttack < Predator.getATTACK_CHANCE();
+    private static void herbivoreMove(Creature herbivore) {
+        if (isGrass(nextCell)) {
+            restoreAfterEating(herbivore);
+
+        } else {
+            addHungryTurn(herbivore);
+        }
+    }
+
+    private static boolean isGrass(Coordinates nextCell) {
+        Entity entity = map.getMap().get(nextCell);
+        if (entity == null) {
+            return false;
+        }
+        return entity.getType().equals(EntityType.GRASS);
     }
 
     private static void restoreAfterEating(Creature creature) {
@@ -178,18 +106,29 @@ public final class CreatureMove {
         }
     }
 
-    private static boolean isPredatorKilledHerbivore(Herbivore herbivore) {
-        return !herbivore.isAlive();
+    private static void addHungryTurn(Creature creature) {
+        creature.setTurnsWithoutFood(creature.getTurnsWithoutFood() + 1);
     }
 
-    private static void predatorDamagesHerbivore(Herbivore herbivore) {
+    private static void predatorMove(Creature predator, Coordinates oldCell, Coordinates targetCell) {
+        if (canAttack(nextCell, targetCell)) {
+            predatorAttack(predator, oldCell, targetCell);
 
-        herbivore.setHealthPoints(herbivore.getHealthPoints() - Predator.getATTACK_POWER());
-        if (herbivore.getHealthPoints() < 1) {
-            herbivore.kill();
-            map.removeEntity(herbivore.getCoordinates());
-
+        } else {
+            addHungryTurn(predator);
         }
+
+    }
+
+    private static boolean canAttack(Coordinates nextCell, Coordinates targetCell) {
+        Entity targetEntity = map.getMap().get(targetCell);
+        boolean herbivoreStillAtTarget = (targetEntity != null) && isHerbivore(targetEntity);
+
+        return (herbivoreStillAtTarget && isNeighbours(nextCell, targetCell));
+    }
+
+    private static boolean isHerbivore(Entity creature) {
+        return creature.getType().equals(EntityType.HERBIVORE);
     }
 
     private static boolean isNeighbours(Coordinates nextCell, Coordinates targetCell) {
@@ -197,4 +136,61 @@ public final class CreatureMove {
         int dy = Math.abs(nextCell.getCoordinateY() - targetCell.getCoordinateY());
         return dx + dy == 1;
     }
+
+    private static void predatorAttack(Creature predator, Coordinates oldCell, Coordinates targetCell) {
+        Herbivore attackedHerbivore = (Herbivore) map.getMap().get(targetCell);
+        if (isSuccessfulPredatorAttack()) {
+
+            predatorDamagesHerbivore(attackedHerbivore);
+
+            if (isPredatorKilledHerbivore(attackedHerbivore)) {
+                restoreAfterEating(predator);
+
+                if (canMoveOnTarget(oldCell, targetCell)) {
+                    nextCell = targetCell;
+                }
+                attackedHerbivore.kill();
+                map.removeEntity(targetCell);
+            }
+
+        } else { // if predator fails it's attack
+            addHungryTurn(predator);
+        }
+
+    }
+
+    private static boolean isSuccessfulPredatorAttack() {
+        Random random = new Random();
+        double chanceToFailAttack = random.nextDouble();
+        return chanceToFailAttack < Predator.getATTACK_CHANCE();
+    }
+
+    private static void predatorDamagesHerbivore(Herbivore herbivore) {
+        herbivore.setHealthPoints(herbivore.getHealthPoints() - Predator.getATTACK_POWER());
+        System.out.println("attack");
+        if (herbivore.getHealthPoints() <1){
+            herbivore.kill();
+//            map.removeEntity(herbivore.getCoordinates());
+        }
+    }
+
+    private static boolean isPredatorKilledHerbivore(Herbivore herbivore) {
+        return !herbivore.isAlive();
+    }
+
+    private static boolean canMoveOnTarget(Coordinates oldCell, Coordinates targetCell) {
+        int dx = Math.abs(oldCell.getCoordinateX() - targetCell.getCoordinateX());
+        int dy = Math.abs(oldCell.getCoordinateY() - targetCell.getCoordinateY());
+        return dx + dy <= 2;
+    }
+
+    private static void finishMove(Creature creature, Coordinates oldCell, Coordinates nextCell) {
+        map.removeEntity(oldCell);
+        creature.makeMove(nextCell);
+        map.add(nextCell, creature);
+        Simulation.setMap(map);
+    }
+//    private static boolean isRandomMove(List<Coordinates> path) {
+//        return path.size() == 1;
+//    }
 }
