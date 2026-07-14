@@ -13,17 +13,50 @@ public final class PathFinder {
             {1, 0},
             {-1, 0}
     };
-    private static EntityType target;
+    //private static EntityType target;
     private static EntityMap map;
     private static Coordinates startPosition;
+
     public static List<Coordinates> getPath(EntityMap map, Coordinates startPosition, Creature creature) {
-        setCreatureTarget(creature);
         PathFinder.map = map;
         PathFinder.startPosition = startPosition;
+        EntityType target = setCreatureTarget(creature);
+
+        Optional<List<Coordinates>> path = getShortestPathToTarget(target);
+
+        if (path.isPresent()){
+            return path.get();
+        }
+        return randomNextCell();
+    }
+
+    private static EntityType setCreatureTarget(Creature creature) {
+        if (isAvailableToMultiply(creature)){
+
+            return creature.getType();
+        }
+        return switch (creature.entityType) {
+            case EntityType.PREDATOR -> EntityType.HERBIVORE;
+            case EntityType.HERBIVORE -> EntityType.GRASS;
+            default -> throw new IllegalArgumentException("Unexpected Creature: " + creature.getType());
+        };
+    }
+    private static boolean isAvailableToMultiply(Creature creature){
+        return hasPartnersNear(creature) && creature.isCanMultiply();
+    }
+    private static boolean hasPartnersNear(Creature creature){
+        Optional<List<Coordinates>> path = getShortestPathToTarget(creature.getType());
+        if (path.isPresent()){
+            return path.get().size() <= Creature.MAX_DISTANCE_TO_MULTIPLY;
+        }
+        return false;
+    }
+
+    private static Optional<List<Coordinates>> getShortestPathToTarget(EntityType target) {
         Queue<Coordinates> queue = new LinkedList<>();
         queue.add(startPosition);
 
-        Map<Coordinates,Coordinates> parent = new HashMap<>();
+        Map<Coordinates, Coordinates> parent = new HashMap<>();
         Set<Coordinates> visitedDirections = new HashSet<>();
         visitedDirections.add(startPosition);
 
@@ -32,40 +65,28 @@ public final class PathFinder {
             Coordinates cell = queue.poll();
             for (var dir : DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getCoordinateX() + dir[0], cell.getCoordinateY() + dir[1]);
-                if (!mapHasCell(nextCell) || (!isCellFree(nextCell) && !isCellTarget(nextCell))) {
+                if (!mapHasCell(nextCell) || (!isCellFree(nextCell) && !isCellTarget(nextCell,target))) {
                     continue;
                 } else if (visitedDirections.contains(nextCell)) {
                     continue;
                 } else if (isCellFree(nextCell)) {
-                    parent.put(nextCell,cell);
+                    parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
                     queue.add(nextCell);
                     continue;
 
-                } else if (isCellTarget(nextCell)) {
+                } else if (isCellTarget(nextCell,target)) {
 
-                    parent.put(nextCell,cell);
+                    parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
-                    return buildPath(parent,nextCell);
+                    return Optional.of(buildPath(parent, nextCell));
                 }
-                parent.put(nextCell,cell);
+                parent.put(nextCell, cell);
                 visitedDirections.add(nextCell);
                 queue.add(nextCell);
             }
-
         }
-        return randomNextCell();
-    }
-
-    private static void setCreatureTarget(Creature creature) {
-        switch (creature.entityType) {
-            case EntityType.PREDATOR:
-                target = EntityType.HERBIVORE;
-                break;
-            case EntityType.HERBIVORE:
-                target = EntityType.GRASS;
-                break;
-        }
+        return Optional.empty();
     }
 
     private static boolean mapHasCell(Coordinates cell) {
@@ -81,36 +102,41 @@ public final class PathFinder {
 
     private static List<Coordinates> buildPath(Map<Coordinates, Coordinates> parent, Coordinates target) {
         List<Coordinates> path = new ArrayList<>();
-        Coordinates cur = target;
+        Coordinates targetCell = target;
 
-        while (cur != null) {
-            path.add(cur);
-            cur = parent.get(cur);
+        while (targetCell != null) {
+            path.add(targetCell);
+            targetCell = parent.get(targetCell);
         }
 
         Collections.reverse(path);
         return path;
     }
-    private static List<Coordinates> randomNextCell(){
+
+    private static List<Coordinates> randomNextCell() {
         Coordinates nextCell;
         Random random = new Random();
-        int counter =0;
-        while (true){
-            if (counter > 30){return new ArrayList<>();}
-            int[] dir = DIRECTIONS[random.nextInt(0,4)];
+        int counter = 0;
+        while (true) {
+            if (counter > 30) {
+                return new ArrayList<>();
+            }
+            int[] dir = DIRECTIONS[random.nextInt(0, 4)];
             nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
-            if (!mapHasCell(nextCell) || (!isCellTarget(nextCell) && !isCellFree(nextCell))) {
+            if (!mapHasCell(nextCell) || !isCellFree(nextCell)) {
                 counter++;
                 continue;
             }
             return List.of(nextCell);
         }
     }
-    private static boolean isCellFree(Coordinates cell){
+
+    private static boolean isCellFree(Coordinates cell) {
         return map.getMap().get(cell) == null;
     }
-    private static boolean isCellTarget(Coordinates cell){
+
+    private static boolean isCellTarget(Coordinates cell, EntityType target) {
         if (map.getMap().get(cell) == null) return false;
-     return map.getMap().get(cell).getType().equals(target);
+        return map.getMap().get(cell).getType().equals(target);
     }
 }

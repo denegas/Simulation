@@ -9,16 +9,20 @@ public abstract class Creature extends Entity {
     }
 
 
-
-    protected final int MAX_TURNS_WITHOUT_FOOD = 7;
+    public static final int MAX_DISTANCE_TO_MULTIPLY = 4;
+    public static final int MAX_TURNS_WITHOUT_FOOD = 7;
     protected  int speed;
     protected final Food foodType;
     protected int healthPoints;
     protected boolean isAlive = true;
-    protected boolean isHungry = false;
     protected int turnsWithoutFood = 0;
-    public int getMAX_TURNS_WITHOUT_FOOD() {
-        return MAX_TURNS_WITHOUT_FOOD;
+    protected boolean canMultiply = true;
+
+    public boolean isCanMultiply(){
+        return canMultiply;
+    }
+    public void setCanMultiply(boolean canMultiply){
+        this.canMultiply = canMultiply;
     }
     public abstract void restoreHealthPoints();
     public void kill(){

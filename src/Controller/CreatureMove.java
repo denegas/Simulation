@@ -22,11 +22,16 @@ public final class CreatureMove {
 
         applyHungry(creature);
 
-        if (isHerbivore(creature)) {
-            herbivoreMove(creature);
-
+        if (isMultiplyPath(creature, path)) {
+            multiplyMove(creature, oldCell, path);
         } else {
-            predatorMove(creature, oldCell, targetCell);
+
+            if (isHerbivore(creature)) {
+                herbivoreMove(creature);
+
+            } else {
+                predatorMove(creature, oldCell, targetCell);
+            }
         }
 
         finishMove(creature, oldCell, nextCell);
@@ -49,7 +54,7 @@ public final class CreatureMove {
     }
 
     private static void applyHungry(Creature creature) {
-        if (creature.getTurnsWithoutFood() > creature.getMAX_TURNS_WITHOUT_FOOD()) {
+        if (creature.getTurnsWithoutFood() > Creature.MAX_TURNS_WITHOUT_FOOD) {
             hungerEffect(creature);
         }
     }
@@ -75,6 +80,66 @@ public final class CreatureMove {
             return;
         }
         creature.setHealthPoints(creature.getHealthPoints() - 1);
+    }
+
+    private static boolean isMultiplyPath(Creature creature, List<Coordinates> path) {
+        if (isVoidCell(path.getLast())) {
+            return false;
+        }
+        return creature.getType().equals(map.getMap().get(path.getLast()).getType());
+    }
+
+    private static void multiplyMove(Creature creature, Coordinates oldCell, List<Coordinates> path) {
+        if (isSameCreatures(oldCell, nextCell)) {
+            Creature partner = (Creature) map.getMap().get(path.getLast());
+            if (!partner.isCanMultiply()) {
+                return;
+            }
+            nextCell = oldCell;
+
+            creature.setCanMultiply(false);
+            partner.setCanMultiply(false);
+            addToMapCreatureAfterMultiply(creature,partner);
+           // System.out.println("near");
+        }
+    }
+
+    private static boolean isSameCreatures(Coordinates cellOne, Coordinates cellTwo) {
+        if (isVoidCell(cellOne) || isVoidCell(cellTwo)) return false;
+        return map.getMap().get(cellOne).getType().equals(map.getMap().get(cellTwo).getType());
+    }
+
+    private static void addToMapCreatureAfterMultiply(Creature firstCreature, Creature secondCreature) {
+        List<Creature> parentCreatures = List.of(firstCreature, secondCreature);
+        int[][] directions = {
+                {0, 1},
+                {0, -1},
+                {1, 0},
+                {-1, 0}
+        };
+        for (Creature parent : parentCreatures) {
+            for (int[] dir : directions) {
+                Coordinates cellToAddCreature = new Coordinates(parent.getCoordinates().getCoordinateX() + dir[0],
+                                                parent.getCoordinates().getCoordinateY() + dir[1]);
+                if (isVoidCell(cellToAddCreature)){
+                    Creature child;
+                    if (isHerbivore(parent)){
+                        child = new Herbivore(cellToAddCreature,parent.getHealthPoints(),parent.getSpeed());
+                    }
+                    else {
+                        child = new Predator(cellToAddCreature,parent.getHealthPoints(),parent.getSpeed());
+                    }
+                    //child.setCanMultiply(false);
+                    map.getMap().put(cellToAddCreature, child);
+
+                    return;
+                }
+            }
+        }
+    }
+
+    private static boolean isVoidCell(Coordinates cell) {
+        return map.getMap().get(cell) == null;
     }
 
     private static boolean isHerbivore(Creature creature) {
@@ -162,13 +227,12 @@ public final class CreatureMove {
     private static boolean isSuccessfulPredatorAttack() {
         Random random = new Random();
         double chanceToFailAttack = random.nextDouble();
-        return chanceToFailAttack < Predator.getATTACK_CHANCE();
+        return chanceToFailAttack < Predator.ATTACK_CHANCE;
     }
 
     private static void predatorDamagesHerbivore(Herbivore herbivore) {
-        herbivore.setHealthPoints(herbivore.getHealthPoints() - Predator.getATTACK_POWER());
-        System.out.println("attack");
-        if (herbivore.getHealthPoints() <1){
+        herbivore.setHealthPoints(herbivore.getHealthPoints() - Predator.ATTACK_POWER);
+        if (herbivore.getHealthPoints() < 1) {
             herbivore.kill();
 //            map.removeEntity(herbivore.getCoordinates());
         }
