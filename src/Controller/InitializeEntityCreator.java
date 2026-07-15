@@ -12,7 +12,7 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
     @Override
     public void execute(EntityMap map) {
         initEntityChances();
-        for (var cell : map.getMap().keySet()) { // get all cells with coordinates from map
+        for (var cell : map.getMap().keySet()) {
             double randomChance = random.nextDouble();
             var entry = entityChances.ceilingEntry(randomChance);
             if (entry != null) {
@@ -21,10 +21,10 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
             }
         }
         if (hasNoEntity(EntityType.HERBIVORE,map)) {
-            addOneEntity(EntityType.HERBIVORE,map);
+            addOneEntityToRandomVoidCell(EntityType.HERBIVORE,map);
         }
         if (hasNoEntity(EntityType.PREDATOR,map)) {
-            addOneEntity(EntityType.PREDATOR,map);
+            addOneEntityToRandomVoidCell(EntityType.PREDATOR,map);
         }
         Simulation.setMap(map);
     }
@@ -35,8 +35,8 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
         }
         return true;
     }
-    // add 1 entity to a random void cell in map
-    private void addOneEntity(EntityType entityType, EntityMap map) {
+    //
+    private void addOneEntityToRandomVoidCell(EntityType entityType, EntityMap map) {
 
         List<Coordinates> voidCells = map.getVoidCells();
 
