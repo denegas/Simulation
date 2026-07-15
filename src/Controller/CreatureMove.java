@@ -83,7 +83,7 @@ public final class CreatureMove {
     }
 
     private static boolean isMultiplyPath(Creature creature, List<Coordinates> path) {
-        if (isVoidCell(path.getLast())) {
+        if (isCellVoid(path.getLast())) {
             return false;
         }
         return creature.getType().equals(map.getMap().get(path.getLast()).getType());
@@ -100,12 +100,11 @@ public final class CreatureMove {
             creature.setCanMultiply(false);
             partner.setCanMultiply(false);
             addToMapCreatureAfterMultiply(creature,partner);
-           // System.out.println("near");
         }
     }
 
     private static boolean isSameCreatures(Coordinates cellOne, Coordinates cellTwo) {
-        if (isVoidCell(cellOne) || isVoidCell(cellTwo)) return false;
+        if (isCellVoid(cellOne) || isCellVoid(cellTwo)) return false;
         return map.getMap().get(cellOne).getType().equals(map.getMap().get(cellTwo).getType());
     }
 
@@ -121,24 +120,22 @@ public final class CreatureMove {
             for (int[] dir : directions) {
                 Coordinates cellToAddCreature = new Coordinates(parent.getCoordinates().getCoordinateX() + dir[0],
                                                 parent.getCoordinates().getCoordinateY() + dir[1]);
-                if (isVoidCell(cellToAddCreature)){
+                if (isCellVoid(cellToAddCreature)){
                     Creature child;
                     if (isHerbivore(parent)){
-                        child = new Herbivore(cellToAddCreature,parent.getHealthPoints(),parent.getSpeed());
+                        child = new Herbivore(cellToAddCreature,Herbivore.MAX_HEALTH_POINTS,parent.getSpeed());
                     }
                     else {
-                        child = new Predator(cellToAddCreature,parent.getHealthPoints(),parent.getSpeed());
+                        child = new Predator(cellToAddCreature,Predator.MAX_HEALTH_POINTS,Predator.MAX_SPEED);
                     }
-                    //child.setCanMultiply(false);
                     map.getMap().put(cellToAddCreature, child);
-
                     return;
                 }
             }
         }
     }
 
-    private static boolean isVoidCell(Coordinates cell) {
+    private static boolean isCellVoid(Coordinates cell) {
         return map.getMap().get(cell) == null;
     }
 
@@ -207,7 +204,6 @@ public final class CreatureMove {
         if (isSuccessfulPredatorAttack()) {
 
             predatorDamagesHerbivore(attackedHerbivore);
-
             if (isPredatorKilledHerbivore(attackedHerbivore)) {
                 restoreAfterEating(predator);
 
@@ -234,7 +230,6 @@ public final class CreatureMove {
         herbivore.setHealthPoints(herbivore.getHealthPoints() - Predator.ATTACK_POWER);
         if (herbivore.getHealthPoints() < 1) {
             herbivore.kill();
-//            map.removeEntity(herbivore.getCoordinates());
         }
     }
 
@@ -254,7 +249,4 @@ public final class CreatureMove {
         map.add(nextCell, creature);
         Simulation.setMap(map);
     }
-//    private static boolean isRandomMove(List<Coordinates> path) {
-//        return path.size() == 1;
-//    }
 }

@@ -13,7 +13,6 @@ public final class PathFinder {
             {1, 0},
             {-1, 0}
     };
-    //private static EntityType target;
     private static EntityMap map;
     private static Coordinates startPosition;
 
@@ -23,15 +22,14 @@ public final class PathFinder {
         EntityType target = setCreatureTarget(creature);
 
         Optional<List<Coordinates>> path = getShortestPathToTarget(target);
-
-        if (path.isPresent()){
+        if (path.isPresent()) {
             return path.get();
         }
         return randomNextCell();
     }
 
     private static EntityType setCreatureTarget(Creature creature) {
-        if (isAvailableToMultiply(creature)){
+        if (isAvailableToMultiply(creature)) {
 
             return creature.getType();
         }
@@ -41,13 +39,16 @@ public final class PathFinder {
             default -> throw new IllegalArgumentException("Unexpected Creature: " + creature.getType());
         };
     }
-    private static boolean isAvailableToMultiply(Creature creature){
+
+    private static boolean isAvailableToMultiply(Creature creature) {
         return hasPartnersNear(creature) && creature.isCanMultiply();
     }
-    private static boolean hasPartnersNear(Creature creature){
+
+    private static boolean hasPartnersNear(Creature creature) {
         Optional<List<Coordinates>> path = getShortestPathToTarget(creature.getType());
-        if (path.isPresent()){
-            return path.get().size() <= Creature.MAX_DISTANCE_TO_MULTIPLY;
+        if (path.isPresent()) {
+            Creature partner = (Creature) map.getMap().get(path.get().getLast());
+            return path.get().size() <= Creature.MAX_DISTANCE_TO_MULTIPLY && partner.isCanMultiply();
         }
         return false;
     }
@@ -65,17 +66,17 @@ public final class PathFinder {
             Coordinates cell = queue.poll();
             for (var dir : DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getCoordinateX() + dir[0], cell.getCoordinateY() + dir[1]);
-                if (!mapHasCell(nextCell) || (!isCellFree(nextCell) && !isCellTarget(nextCell,target))) {
+                if (!mapHasCell(nextCell) || (!isCellVoid(nextCell) && !isCellTarget(nextCell, target))) {
                     continue;
                 } else if (visitedDirections.contains(nextCell)) {
                     continue;
-                } else if (isCellFree(nextCell)) {
+                } else if (isCellVoid(nextCell)) {
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
                     queue.add(nextCell);
                     continue;
 
-                } else if (isCellTarget(nextCell,target)) {
+                } else if (isCellTarget(nextCell, target)) {
 
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
@@ -123,7 +124,7 @@ public final class PathFinder {
             }
             int[] dir = DIRECTIONS[random.nextInt(0, 4)];
             nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
-            if (!mapHasCell(nextCell) || !isCellFree(nextCell)) {
+            if (!mapHasCell(nextCell) || !isCellVoid(nextCell)) {
                 counter++;
                 continue;
             }
@@ -131,7 +132,7 @@ public final class PathFinder {
         }
     }
 
-    private static boolean isCellFree(Coordinates cell) {
+    private static boolean isCellVoid(Coordinates cell) {
         return map.getMap().get(cell) == null;
     }
 

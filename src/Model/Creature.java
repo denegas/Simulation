@@ -17,7 +17,6 @@ public abstract class Creature extends Entity {
     protected boolean isAlive = true;
     protected int turnsWithoutFood = 0;
     protected boolean canMultiply = true;
-
     public boolean isCanMultiply(){
         return canMultiply;
     }
@@ -34,7 +33,6 @@ public abstract class Creature extends Entity {
     public void makeMove(Coordinates newCoordinates){
        setCoordinates(newCoordinates);
     }
-    public abstract void eat();
     public int getSpeed(){
         return this.speed;
     }
