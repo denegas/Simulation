@@ -21,12 +21,12 @@ public final class Renderer {
 
     private static void renderOneMap(EntityMap map) {
 
-        int mapSize = map.getSize();
+        int mapSize = map.size();
         for (int x = 0; x < mapSize; x++) {
             for (int y = 0; y < mapSize; y++) {
-                Entity entity = map.getMap().get(new Coordinates(x, y));
+                Entity entity = map.get(new Coordinates(x, y));
 
-                if (isVoid(entity)) {
+                if (isExist(entity)) {
                     System.out.print(EntityType.VOID.getEntityView() + SPACE_BETWEEN_ENTITIES);
                 } else {
                     System.out.print(entity.getType().getEntityView() + SPACE_BETWEEN_ENTITIES);
@@ -37,7 +37,7 @@ public final class Renderer {
         }
     }
 
-    private static boolean isVoid(Entity entity) {
+    private static boolean isExist(Entity entity) {
         return entity == null;
     }
 }

@@ -89,12 +89,12 @@ public final class CreatureMove {
         if (isCellVoid(path.getLast())) {
             return false;
         }
-        return creature.getType().equals(map.getMap().get(path.getLast()).getType());
+        return creature.getType().equals(map.get(path.getLast()).getType());
     }
 
     private static void multiplyMove(Creature creature, Coordinates oldCell, List<Coordinates> path) {
         if (isSameCreatures(oldCell, nextCell)) {
-            Creature partner = (Creature) map.getMap().get(path.getLast());
+            Creature partner = (Creature) map.get(path.getLast());
             if (!partner.isCanMultiply()) {
                 return;
             }
@@ -108,7 +108,7 @@ public final class CreatureMove {
 
     private static boolean isSameCreatures(Coordinates cellOne, Coordinates cellTwo) {
         if (isCellVoid(cellOne) || isCellVoid(cellTwo)) return false;
-        return map.getMap().get(cellOne).getType().equals(map.getMap().get(cellTwo).getType());
+        return map.get(cellOne).getType().equals(map.get(cellTwo).getType());
     }
 
     private static void addToMapCreatureAfterMultiply(Creature firstCreature, Creature secondCreature) {
@@ -130,7 +130,7 @@ public final class CreatureMove {
                     } else {
                         child = new Predator(cellToAddCreature, Predator.MAX_HEALTH_POINTS, Predator.MAX_SPEED);
                     }
-                    map.getMap().put(cellToAddCreature, child);
+                    map.add(cellToAddCreature, child);
                     return;
                 }
             }
@@ -138,7 +138,7 @@ public final class CreatureMove {
     }
 
     private static boolean isCellVoid(Coordinates cell) {
-        return map.getMap().get(cell) == null;
+        return map.get(cell) == null;
     }
 
     private static boolean isHerbivore(Creature creature) {
@@ -155,7 +155,7 @@ public final class CreatureMove {
     }
 
     private static boolean isGrass(Coordinates nextCell) {
-        Entity entity = map.getMap().get(nextCell);
+        Entity entity = map.get(nextCell);
         if (entity == null) {
             return false;
         }
@@ -185,7 +185,7 @@ public final class CreatureMove {
     }
 
     private static boolean canAttack(Coordinates nextCell, Coordinates targetCell) {
-        Entity targetEntity = map.getMap().get(targetCell);
+        Entity targetEntity = map.get(targetCell);
         boolean herbivoreStillAtTarget = (targetEntity != null) && isHerbivore(targetEntity);
 
         return (herbivoreStillAtTarget && isNeighbours(nextCell, targetCell));
@@ -202,7 +202,7 @@ public final class CreatureMove {
     }
 
     private static void predatorAttack(Creature predator, Coordinates oldCell, Coordinates targetCell) {
-        Herbivore attackedHerbivore = (Herbivore) map.getMap().get(targetCell);
+        Herbivore attackedHerbivore = (Herbivore) map.get(targetCell);
         if (isSuccessfulPredatorAttack()) {
 
             predatorDamagesHerbivore(attackedHerbivore);

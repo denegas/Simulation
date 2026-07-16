@@ -4,30 +4,17 @@ import Model.EntityMap;
 import View.ConsoleInput;
 import View.ConsoleWriter;
 import View.Renderer;
-
 import java.util.List;
 
 public final class Simulation {
-    private static int MAP_SIZE;
-    private static int turnsCounter = 0;
-    private static EntityMap map;
     private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
 
+    private static int turnsCounter = 0;
+    private static EntityMap map;
+
     public static void setMap(EntityMap map) {
         Simulation.map = map;
-    }
-
-    public static EntityMap getEntityMap() {
-        return map;
-    }
-
-    public static void setMapSize(int mapSize) {
-        MAP_SIZE = mapSize;
-    }
-
-    public static int getMapSize() {
-        return Simulation.MAP_SIZE;
     }
 
     public static void initialize(int mapSize) {
@@ -35,7 +22,6 @@ public final class Simulation {
         for (Action initAction : initActions) {
             initAction.execute(map);
         }
-
     }
 
     public static void nextTurn() {
@@ -50,10 +36,10 @@ public final class Simulation {
             nextTurn();
             sleep(1800);
         }
-
     }
 
-    public static void nTicks(int n) { // nextTurnWithEachCreatureMoveRender
+    // nextTurnWithEachCreatureMoveRender
+    public static void nTicks(int n) {
         RenderEveryCreatureAtTurn renderEveryCreatureAtTurn = new RenderEveryCreatureAtTurn();
         TurnEntityCreator turnEntityCreator = new TurnEntityCreator();
         Renderer.render(map);

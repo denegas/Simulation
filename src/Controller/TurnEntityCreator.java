@@ -63,7 +63,7 @@ public class TurnEntityCreator extends EntityCreator implements Action {
     }
 
     private void addMissingFood(EntityType hungryCreature, EntityMap map) {
-        int halfMapSize = map.getSize()/2;
+        int halfMapSize = map.size()/2;
         int foodQuantity = random.nextInt(MIN_FOOD_QUANTITY_TO_CREATE, halfMapSize);
         EntityType foodType = getFoodType(hungryCreature);
         addEntitiesToVoidCells(foodType, foodQuantity, map);
@@ -85,11 +85,11 @@ public class TurnEntityCreator extends EntityCreator implements Action {
     }
 
     private boolean hasNoPredators(EntityMap map) {
-        return map.getMap().values().stream().filter(Objects::nonNull).noneMatch(e -> e.getType().equals(EntityType.PREDATOR));
+        return map.values().stream().filter(Objects::nonNull).noneMatch(e -> e.getType().equals(EntityType.PREDATOR));
     }
 
     private void addPredators(EntityMap map) {
-        int halfMapSize = map.getSize()/2;
+        int halfMapSize = map.size()/2;
         int predatorsQuantity = random.nextInt(MIN_PREDATORS_QUANTITY_TO_CREATE, halfMapSize);
         addEntitiesToVoidCells(EntityType.PREDATOR, predatorsQuantity, map);
     }
@@ -108,7 +108,6 @@ public class TurnEntityCreator extends EntityCreator implements Action {
                 break;
             default:
                 throw new IllegalArgumentException("unexpected entityType: " + entityType);
-
         }
     }
 }

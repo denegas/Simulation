@@ -7,14 +7,13 @@ public class MapCreator implements Action {
     @Override
     public void execute(EntityMap entityMap) {
 
-        fullMap(entityMap);
+        fillMap(entityMap);
         Simulation.setMap(entityMap);
-        Simulation.setMapSize(entityMap.getSize());
 
     }
 
-    private static void fullMap(EntityMap entityMap) {
-        int mapSize = entityMap.getSize();
+    private static void fillMap(EntityMap entityMap) {
+        int mapSize = entityMap.size();
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
                 entityMap.add(new Coordinates(i, j));

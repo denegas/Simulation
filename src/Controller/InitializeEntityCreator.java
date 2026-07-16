@@ -20,7 +20,7 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
     }
 
     private void initializeEntities(EntityMap map) {
-        Set<Coordinates> allCells = map.getMap().keySet();
+        Set<Coordinates> allCells = map.keySet();
         for (var cell : allCells) {
             double randomChance = random.nextDouble();
             var entry = entityChances.ceilingEntry(randomChance);

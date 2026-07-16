@@ -5,14 +5,15 @@ import java.util.*;
 
 public final class PathFinder {
 
+    private static EntityMap map;
+    private static Coordinates startPosition;
     private static final int[][] DIRECTIONS = {
             {0, 1},
             {0, -1},
             {1, 0},
             {-1, 0}
     };
-    private static EntityMap map;
-    private static Coordinates startPosition;
+
 
     private PathFinder() {
     }
@@ -48,7 +49,7 @@ public final class PathFinder {
     private static boolean hasPartnersNear(Creature creature) {
         Optional<List<Coordinates>> path = getShortestPathToTarget(creature.getType());
         if (path.isPresent()) {
-            Creature partner = (Creature) map.getMap().get(path.get().getLast());
+            Creature partner = (Creature) map.get(path.get().getLast());
             return path.get().size() <= Creature.MAX_DISTANCE_TO_MULTIPLY && partner.isCanMultiply();
         }
         return false;
@@ -92,7 +93,7 @@ public final class PathFinder {
     }
 
     private static boolean mapHasCell(Coordinates cell) {
-        int border = map.getSize();
+        int border = map.size();
         int x = cell.getCoordinateX();
         int y = cell.getCoordinateY();
         if (x < 0 || y < 0) {
@@ -134,11 +135,11 @@ public final class PathFinder {
     }
 
     private static boolean isCellVoid(Coordinates cell) {
-        return map.getMap().get(cell) == null;
+        return map.get(cell) == null;
     }
 
     private static boolean isCellTarget(Coordinates cell, EntityType target) {
-        if (map.getMap().get(cell) == null) return false;
-        return map.getMap().get(cell).getType().equals(target);
+        if (map.get(cell) == null) return false;
+        return map.get(cell).getType().equals(target);
     }
 }

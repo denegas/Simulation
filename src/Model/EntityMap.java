@@ -1,9 +1,6 @@
 package Model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EntityMap {
@@ -15,9 +12,9 @@ public class EntityMap {
         this.SIZE = size;
     }
 
-    public Map<Coordinates, Entity> getMap() {
-        return map;
-    }
+//    public Map<Coordinates, Entity> getMap() {
+//        return map;
+//    }
 
     public void add(Coordinates coordinates, Entity entity) {
         map.put(coordinates, entity);
@@ -31,8 +28,17 @@ public class EntityMap {
         map.put(coordinates, null);
     }
 
-    public int getSize() {
+    public int size() {
         return this.SIZE;
+    }
+    public Entity get(Coordinates coordinates){
+        return map.get(coordinates);
+    }
+    public Set<Coordinates> keySet(){
+        return map.keySet();
+    }
+    public Collection<Entity> values(){
+        return map.values();
     }
 
     public List<Entity> getNotNullEntities() {
