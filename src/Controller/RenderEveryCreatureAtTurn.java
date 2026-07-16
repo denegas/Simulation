@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import Model.utils.MapUtils;
 import View.Renderer;
 
 import java.util.List;

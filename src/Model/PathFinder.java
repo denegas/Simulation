@@ -1,5 +1,7 @@
 package Model;
 
+import Model.utils.CellUtils;
+
 import java.util.*;
 
 
@@ -68,17 +70,17 @@ public final class PathFinder {
             Coordinates cell = queue.poll();
             for (var dir : DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getCoordinateX() + dir[0], cell.getCoordinateY() + dir[1]);
-                if (mapHasNoCell(nextCell) || (!isCellVoid(nextCell) && !isCellTarget(nextCell, target))) {
+                if (mapHasNoCell(nextCell) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
                     continue;
                 } else if (visitedDirections.contains(nextCell)) {
                     continue;
-                } else if (isCellVoid(nextCell)) {
+                } else if (CellUtils.isCellVoid(nextCell, map)) {
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
                     queue.add(nextCell);
                     continue;
 
-                } else if (isCellTarget(nextCell, target)) {
+                } else if (CellUtils.isCellTarget(nextCell, target, map)) {
 
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
@@ -126,20 +128,11 @@ public final class PathFinder {
             visitedDirections.add(dir);
 
             nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
-            if (mapHasNoCell(nextCell) || !isCellVoid(nextCell)) {
+            if (mapHasNoCell(nextCell) || !CellUtils.isCellVoid(nextCell, map)) {
                 continue;
             }
             return List.of(nextCell);
         }
         return List.of();
-    }
-
-    private static boolean isCellVoid(Coordinates cell) {
-        return map.get(cell) == null;
-    }
-
-    private static boolean isCellTarget(Coordinates cell, EntityType target) {
-        if (map.get(cell) == null) return false;
-        return map.get(cell).getType().equals(target);
     }
 }

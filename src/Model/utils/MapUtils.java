@@ -1,4 +1,7 @@
-package Model;
+package Model.utils;
+
+import Model.Creature;
+import Model.EntityMap;
 
 import java.util.List;
 

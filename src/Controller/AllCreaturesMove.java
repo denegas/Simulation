@@ -1,12 +1,10 @@
 package Controller;
 
 import Model.*;
+import Model.utils.MapUtils;
 import View.Renderer;
 
-import java.util.Comparator;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AllCreaturesMove implements Action {
 
