@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Coordinates;
-import Model.Creature;
-import Model.EntityMap;
-import Model.PathFinder;
+import Model.*;
 import View.Renderer;
 
 import java.util.List;
@@ -12,7 +9,7 @@ public class RenderEveryCreatureAtTurn implements Action {
 
     @Override
     public void execute(EntityMap map) {
-        List<Creature> creatures = getCreatures(map);
+        List<Creature> creatures = MapUtils.getCreatures(map);
 
         for (Creature creature : creatures) {
             if (creature.isDead()) {
@@ -25,21 +22,10 @@ public class RenderEveryCreatureAtTurn implements Action {
 
             Simulation.sleep(Simulation.TICK_SLEEP_MC);
         }
-        cleanMapFromDeadCreatures(map);
+        MapUtils.cleanMapFromDeadCreatures(map);
 
     }
 
-    private static List<Creature> getCreatures(EntityMap map) {
-        return map.getCreatures().values().stream().toList();
-    }
-
-    private static void cleanMapFromDeadCreatures(EntityMap map) {
-        for (Creature creature : getCreatures(map)) {
-            if (creature.isDead()) {
-                map.removeEntity(creature.getCoordinates());
-            }
-        }
-    }
 }
 
 

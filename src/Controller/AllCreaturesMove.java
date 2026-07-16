@@ -12,7 +12,7 @@ public class AllCreaturesMove implements Action {
 
     @Override
     public void execute(EntityMap map) {
-        List<Creature> creatures = getCreatures(map);
+        List<Creature> creatures = MapUtils.getCreatures(map);
         Renderer.render(map);
 
         for (Creature creature : creatures) {
@@ -22,19 +22,8 @@ public class AllCreaturesMove implements Action {
             List<Coordinates> path = PathFinder.getPath(map, creature.getCoordinates(), creature);
             CreatureMove.execute(creature, path, map);
         }
-        cleanMapFromDeadCreatures(map);
+        MapUtils.cleanMapFromDeadCreatures(map);
     }
 
-    private static List<Creature> getCreatures(EntityMap map) {
-        return map.getCreatures().values().stream().toList();
-    }
-
-    private static void cleanMapFromDeadCreatures(EntityMap map) {
-        for (Creature creature : getCreatures(map)) {
-            if (creature.isDead()) {
-                map.removeEntity(creature.getCoordinates());
-            }
-        }
-    }
 
 }

@@ -49,7 +49,7 @@ public class EntityMap {
                 .toList();
     }
 
-    public Map<Coordinates, Creature> getCreatures() {
+    public Map<Coordinates, Creature> getCellsWithCreatures() {
         return map.entrySet().stream()
                 .filter(entry -> {
                     if (entry.getValue() == null) {
