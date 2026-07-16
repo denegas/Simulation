@@ -5,14 +5,15 @@ import java.util.*;
 
 public final class PathFinder {
 
-    private static EntityMap map;
-    private static Coordinates startPosition;
+    private static final Random RANDOM = new Random();
     private static final int[][] DIRECTIONS = {
             {0, 1},
             {0, -1},
             {1, 0},
             {-1, 0}
     };
+    private static EntityMap map;
+    private static Coordinates startPosition;
 
     private PathFinder() {
     }
@@ -116,12 +117,12 @@ public final class PathFinder {
     }
 
     private static List<Coordinates> randomNextCell() {
-        Random random = new Random();
+
         Coordinates nextCell;
         Set<int[]> visitedDirections = new HashSet<>();
 
         while (visitedDirections.size() != DIRECTIONS.length) {
-            int[] dir = DIRECTIONS[random.nextInt(DIRECTIONS.length)];
+            int[] dir = DIRECTIONS[PathFinder.RANDOM.nextInt(DIRECTIONS.length)];
             visitedDirections.add(dir);
 
             nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
