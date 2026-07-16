@@ -2,32 +2,29 @@ package Controller;
 
 import Model.*;
 
-import java.util.NavigableMap;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
-import java.util.TreeMap;
+import java.util.stream.Stream;
 
 public class EntityCreator {
 
-    protected final NavigableMap<Double, EntityType> entityChances = new TreeMap<>();
-
+    protected static final Random RANDOM = new Random();
     protected static final double HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL = 0.14;
     protected static final double PREDATOR_SPAWN_CHANCE_PER_ONE_CELL = 0.1;
     protected static final double GRASS_SPAWN_CHANCE_PER_ONE_CELL = 0.09;
-    protected static final double ROCK_SPAWN_CHANCE_PER_ONE_CELL = 0.03;
     protected static final double TREE_SPAWN_CHANCE_PER_ONE_CELL = 0.05;
-    protected static final Random random = new Random();
+    protected static final double ROCK_SPAWN_CHANCE_PER_ONE_CELL = 0.03;
 
-    public EntityCreator(){
-        initEntityChances();
-    }
-
-    protected void initEntityChances() {
-        entityChances.put(HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL, EntityType.HERBIVORE);
-        entityChances.put(PREDATOR_SPAWN_CHANCE_PER_ONE_CELL, EntityType.PREDATOR);
-        entityChances.put(GRASS_SPAWN_CHANCE_PER_ONE_CELL, EntityType.GRASS);
-        entityChances.put(ROCK_SPAWN_CHANCE_PER_ONE_CELL, EntityType.ROCK);
-        entityChances.put(TREE_SPAWN_CHANCE_PER_ONE_CELL, EntityType.TREE);
-    }
+    protected static final List<EntitySpawnChance> spawnChances = Stream.of(
+            new EntitySpawnChance(EntityType.HERBIVORE, HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(EntityType.PREDATOR, PREDATOR_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(EntityType.GRASS, GRASS_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(EntityType.ROCK, ROCK_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(EntityType.TREE, TREE_SPAWN_CHANCE_PER_ONE_CELL)
+    )
+            .sorted(Comparator.comparingDouble(EntitySpawnChance::chance))
+            .toList();
 
     protected Entity getEntityFromType(EntityType type, Coordinates cell) {
         return switch (type) {

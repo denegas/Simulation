@@ -17,10 +17,6 @@ public class TurnEntityCreator extends EntityCreator implements Action {
     private int withoutHerbivoreFoodCounter = 0;
     private int withoutPredatorFoodCounter = 0;
 
-    public TurnEntityCreator() {
-        super();
-    }
-
     @Override
     public void execute(EntityMap map) {
         Map<EntityType, Boolean> hasFoodForCreature = getEntityTypeBooleanMap(map);
@@ -64,7 +60,7 @@ public class TurnEntityCreator extends EntityCreator implements Action {
 
     private void addMissingFood(EntityType hungryCreature, EntityMap map) {
         int halfMapSize = map.size()/2;
-        int foodQuantity = random.nextInt(MIN_FOOD_QUANTITY_TO_CREATE, halfMapSize);
+        int foodQuantity = RANDOM.nextInt(MIN_FOOD_QUANTITY_TO_CREATE, halfMapSize);
         EntityType foodType = getFoodType(hungryCreature);
         addEntitiesToVoidCells(foodType, foodQuantity, map);
     }
@@ -72,14 +68,14 @@ public class TurnEntityCreator extends EntityCreator implements Action {
         return switch (creatureType) {
             case HERBIVORE -> EntityType.GRASS;
             case PREDATOR -> EntityType.HERBIVORE;
-            default -> throw new IllegalArgumentException("unexpected creature type: " + creatureType);
+            default -> throw new IllegalArgumentException("Unexpected creature type: " + creatureType);
         };
     }
 
     private void addEntitiesToVoidCells(EntityType entityTypeToCreate, int quantityToCreate, EntityMap map) {
         for (int i = 0; i < quantityToCreate; i++) {
             List<Coordinates> voidCells = map.getVoidCells();
-            Coordinates voidCell = voidCells.get(random.nextInt(voidCells.size()));
+            Coordinates voidCell = voidCells.get(RANDOM.nextInt(voidCells.size()));
             map.add(voidCell, getEntityFromType(entityTypeToCreate, voidCell));
         }
     }
@@ -90,7 +86,7 @@ public class TurnEntityCreator extends EntityCreator implements Action {
 
     private void addPredators(EntityMap map) {
         int halfMapSize = map.size()/2;
-        int predatorsQuantity = random.nextInt(MIN_PREDATORS_QUANTITY_TO_CREATE, halfMapSize);
+        int predatorsQuantity = RANDOM.nextInt(MIN_PREDATORS_QUANTITY_TO_CREATE, halfMapSize);
         addEntitiesToVoidCells(EntityType.PREDATOR, predatorsQuantity, map);
     }
 
