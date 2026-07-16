@@ -8,12 +8,6 @@ import java.util.*;
 public final class PathFinder {
 
     private static final Random RANDOM = new Random();
-    private static final int[][] DIRECTIONS = {
-            {0, 1},
-            {0, -1},
-            {1, 0},
-            {-1, 0}
-    };
     private static EntityMap map;
     private static Coordinates startPosition;
 
@@ -68,7 +62,7 @@ public final class PathFinder {
 
         while (!queue.isEmpty()) {
             Coordinates cell = queue.poll();
-            for (var dir : DIRECTIONS) {
+            for (var dir : Directions.FOUR_NEAR_DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getCoordinateX() + dir[0], cell.getCoordinateY() + dir[1]);
                 if (mapHasNoCell(nextCell) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
                     continue;
@@ -123,8 +117,8 @@ public final class PathFinder {
         Coordinates nextCell;
         Set<int[]> visitedDirections = new HashSet<>();
 
-        while (visitedDirections.size() != DIRECTIONS.length) {
-            int[] dir = DIRECTIONS[PathFinder.RANDOM.nextInt(DIRECTIONS.length)];
+        while (visitedDirections.size() != Directions.FOUR_NEAR_DIRECTIONS.length) {
+            int[] dir = Directions.FOUR_NEAR_DIRECTIONS[PathFinder.RANDOM.nextInt(Directions.FOUR_NEAR_DIRECTIONS.length)];
             visitedDirections.add(dir);
 
             nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);

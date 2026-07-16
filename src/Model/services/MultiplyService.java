@@ -38,14 +38,9 @@ public final class MultiplyService {
 
     private static void addToMapCreatureAfterMultiply(Creature firstCreature, Creature secondCreature, EntityMap map) {
         List<Creature> parentCreatures = List.of(firstCreature, secondCreature);
-        int[][] directions = {
-                {0, 1},
-                {0, -1},
-                {1, 0},
-                {-1, 0}
-        };
+
         for (Creature parent : parentCreatures) {
-            for (int[] dir : directions) {
+            for (int[] dir : Directions.FOUR_NEAR_DIRECTIONS) {
                 Coordinates cellToAddCreature = new Coordinates(parent.getCoordinates().getCoordinateX() + dir[0],
                         parent.getCoordinates().getCoordinateY() + dir[1]);
                 if (CellUtils.isCellVoid(cellToAddCreature, map)) {

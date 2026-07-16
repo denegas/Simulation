@@ -61,20 +61,12 @@ public final class CreatureMove {
     }
 
     private static void herbivoreMove(Creature herbivore) {
-        if (isGrass(nextCell)) {
+        if (CellUtils.isCellGrass(nextCell, map)) {
             restoreAfterEating(herbivore);
 
         } else {
             HungryService.addHungryTurn(herbivore);
         }
-    }
-
-    private static boolean isGrass(Coordinates nextCell) {
-        Entity entity = map.get(nextCell);
-        if (entity == null) {
-            return false;
-        }
-        return entity.getType().equals(EntityType.GRASS);
     }
 
     private static void restoreAfterEating(Creature creature) {
@@ -85,7 +77,6 @@ public final class CreatureMove {
             creature.setSpeed(Predator.MAX_SPEED);
         }
     }
-
 
     private static void predatorMove(Creature predator, Coordinates oldCell, Coordinates targetCell) {
         if (canAttack(nextCell, targetCell)) {
@@ -144,7 +135,7 @@ public final class CreatureMove {
     private static boolean canMoveOnTarget(Coordinates oldCell, Coordinates targetCell) {
         int dx = Math.abs(oldCell.getCoordinateX() - targetCell.getCoordinateX());
         int dy = Math.abs(oldCell.getCoordinateY() - targetCell.getCoordinateY());
-        return dx + dy <= 2;
+        return dx + dy <= Predator.MAX_SPEED;
     }
 
     private static void finishMove(Creature creature, Coordinates oldCell, Coordinates nextCell) {

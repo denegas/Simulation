@@ -1,6 +1,7 @@
 package Model.utils;
 
 import Model.Coordinates;
+import Model.Entity;
 import Model.EntityMap;
 import Model.EntityType;
 
@@ -15,6 +16,13 @@ public final class CellUtils {
     public static boolean isCellTarget(Coordinates cell, EntityType target, EntityMap map) {
         if (map.get(cell) == null) return false;
         return map.get(cell).getType().equals(target);
+    }
+    public static boolean isCellGrass(Coordinates nextCell, EntityMap map) {
+        Entity entity = map.get(nextCell);
+        if (entity == null) {
+            return false;
+        }
+        return entity.getType().equals(EntityType.GRASS);
     }
 
     public static boolean isNeighbours(Coordinates nextCell, Coordinates targetCell) {
