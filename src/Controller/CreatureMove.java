@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import Model.services.HungryService;
 import Model.utils.CellUtils;
 import Model.utils.CreatureUtils;
 
@@ -8,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 public final class CreatureMove {
-    private static final int HUNGER_HP_LOSS = 1;
     private static EntityMap map;
     private static Coordinates nextCell;
 
@@ -25,7 +25,7 @@ public final class CreatureMove {
         Coordinates targetCell = path.getLast();
         nextCell = getNextCell(creature, path);
 
-        applyHungry(creature);
+        HungryService.apply(creature);
 
         if (isMultiplyPath(creature, path)) {
             multiplyMove(creature, oldCell, path);
@@ -58,40 +58,15 @@ public final class CreatureMove {
         return nextCell;
     }
 
-    private static void applyHungry(Creature creature) {
-        if (creature.getTurnsWithoutFood() > Creature.MAX_TURNS_WITHOUT_FOOD) {
-            hungerEffect(creature);
-        }
-    }
-
-    private static void hungerEffect(Creature creature) {
-        if (CreatureUtils.isPredator(creature)) {
-            hungerLowsPredatorSpeed(creature);
-        }
-        hungerLowsCreatureHP(creature);
-    }
-
-    private static void hungerLowsPredatorSpeed(Creature predator) {
-        predator.setSpeed(Predator.LOW_SPEED);
-    }
-
-    private static void hungerLowsCreatureHP(Creature creature) {
-        if (creature.getHealthPoints() < 1) {
-            creature.kill();
-            return;
-        }
-        creature.setHealthPoints(creature.getHealthPoints() - HUNGER_HP_LOSS);
-    }
-
     private static boolean isMultiplyPath(Creature creature, List<Coordinates> path) {
-        if (CellUtils.isCellVoid(path.getLast(),map)) {
+        if (CellUtils.isCellVoid(path.getLast(), map)) {
             return false;
         }
         return creature.getType().equals(map.get(path.getLast()).getType());
     }
 
     private static void multiplyMove(Creature creature, Coordinates oldCell, List<Coordinates> path) {
-        if (isSameCreatures(oldCell, nextCell)) {
+        if (CellUtils.isSameCreaturesOnCells(oldCell, nextCell, map)) {
             Creature partner = (Creature) map.get(path.getLast());
             if (!partner.isCanMultiply()) {
                 return;
@@ -102,11 +77,6 @@ public final class CreatureMove {
             partner.setCanMultiply(false);
             addToMapCreatureAfterMultiply(creature, partner);
         }
-    }
-
-    private static boolean isSameCreatures(Coordinates cellOne, Coordinates cellTwo) {
-        if (CellUtils.isCellVoid(cellOne,map) || CellUtils.isCellVoid(cellTwo, map)) return false;
-        return map.get(cellOne).getType().equals(map.get(cellTwo).getType());
     }
 
     private static void addToMapCreatureAfterMultiply(Creature firstCreature, Creature secondCreature) {
@@ -194,13 +164,12 @@ public final class CreatureMove {
                     nextCell = targetCell;
                 }
                 attackedHerbivore.kill();
-                map.removeEntity(targetCell);
+                map.clearCell(targetCell);
             }
 
         } else { // if predator fails it's attack
             addHungryTurn(predator);
         }
-
     }
 
     private static boolean isSuccessfulPredatorAttack() {
@@ -227,7 +196,7 @@ public final class CreatureMove {
     }
 
     private static void finishMove(Creature creature, Coordinates oldCell, Coordinates nextCell) {
-        map.removeEntity(oldCell);
+        map.clearCell(oldCell);
         creature.makeMove(nextCell);
         map.add(nextCell, creature);
         Simulation.setMap(map);

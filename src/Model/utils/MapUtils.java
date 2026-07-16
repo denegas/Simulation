@@ -2,7 +2,6 @@ package Model.utils;
 
 import Model.Creature;
 import Model.EntityMap;
-
 import java.util.List;
 
 public final class MapUtils {
@@ -16,7 +15,7 @@ public final class MapUtils {
     public static void cleanMapFromDeadCreatures(EntityMap map) {
         for (Creature creature : getCreatures(map)) {
             if (creature.isDead()) {
-                map.removeEntity(creature.getCoordinates());
+                map.clearCell(creature.getCoordinates());
             }
         }
     }

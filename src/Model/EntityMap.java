@@ -20,7 +20,7 @@ public class EntityMap {
         map.put(coordinates, null);
     }
 
-    public void removeEntity(Coordinates coordinates) {
+    public void clearCell(Coordinates coordinates) {
         map.put(coordinates, null);
     }
 
