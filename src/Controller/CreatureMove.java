@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import Model.services.HungryService;
+import Model.services.MultiplyService;
 import Model.utils.CellUtils;
 import Model.utils.CreatureUtils;
 
@@ -27,8 +28,9 @@ public final class CreatureMove {
 
         HungryService.apply(creature);
 
-        if (isMultiplyPath(creature, path)) {
-            multiplyMove(creature, oldCell, path);
+        if (MultiplyService.isMultiplyPath(creature, path, map)) {
+            nextCell = MultiplyService.multiplyMove(creature, nextCell, path, map);
+
         } else {
 
             if (CreatureUtils.isHerbivore(creature)) {
@@ -58,59 +60,12 @@ public final class CreatureMove {
         return nextCell;
     }
 
-    private static boolean isMultiplyPath(Creature creature, List<Coordinates> path) {
-        if (CellUtils.isCellVoid(path.getLast(), map)) {
-            return false;
-        }
-        return creature.getType().equals(map.get(path.getLast()).getType());
-    }
-
-    private static void multiplyMove(Creature creature, Coordinates oldCell, List<Coordinates> path) {
-        if (CellUtils.isSameCreaturesOnCells(oldCell, nextCell, map)) {
-            Creature partner = (Creature) map.get(path.getLast());
-            if (!partner.isCanMultiply()) {
-                return;
-            }
-            nextCell = oldCell;
-
-            creature.setCanMultiply(false);
-            partner.setCanMultiply(false);
-            addToMapCreatureAfterMultiply(creature, partner);
-        }
-    }
-
-    private static void addToMapCreatureAfterMultiply(Creature firstCreature, Creature secondCreature) {
-        List<Creature> parentCreatures = List.of(firstCreature, secondCreature);
-        int[][] directions = {
-                {0, 1},
-                {0, -1},
-                {1, 0},
-                {-1, 0}
-        };
-        for (Creature parent : parentCreatures) {
-            for (int[] dir : directions) {
-                Coordinates cellToAddCreature = new Coordinates(parent.getCoordinates().getCoordinateX() + dir[0],
-                        parent.getCoordinates().getCoordinateY() + dir[1]);
-                if (CellUtils.isCellVoid(cellToAddCreature, map)) {
-                    Creature child;
-                    if (CreatureUtils.isHerbivore(parent)) {
-                        child = new Herbivore(cellToAddCreature, Herbivore.MAX_HEALTH_POINTS, parent.getSpeed());
-                    } else {
-                        child = new Predator(cellToAddCreature, Predator.MAX_HEALTH_POINTS, Predator.MAX_SPEED);
-                    }
-                    map.add(cellToAddCreature, child);
-                    return;
-                }
-            }
-        }
-    }
-
     private static void herbivoreMove(Creature herbivore) {
         if (isGrass(nextCell)) {
             restoreAfterEating(herbivore);
 
         } else {
-            addHungryTurn(herbivore);
+            HungryService.addHungryTurn(herbivore);
         }
     }
 
@@ -131,16 +86,13 @@ public final class CreatureMove {
         }
     }
 
-    private static void addHungryTurn(Creature creature) {
-        creature.setTurnsWithoutFood(creature.getTurnsWithoutFood() + 1);
-    }
 
     private static void predatorMove(Creature predator, Coordinates oldCell, Coordinates targetCell) {
         if (canAttack(nextCell, targetCell)) {
             predatorAttack(predator, oldCell, targetCell);
 
         } else {
-            addHungryTurn(predator);
+            HungryService.addHungryTurn(predator);
         }
 
     }
@@ -168,7 +120,7 @@ public final class CreatureMove {
             }
 
         } else { // if predator fails it's attack
-            addHungryTurn(predator);
+            HungryService.addHungryTurn(predator);
         }
     }
 

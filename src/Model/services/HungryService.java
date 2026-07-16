@@ -14,6 +14,9 @@ public final class HungryService {
             hungerEffect(creature);
         }
     }
+    public static void addHungryTurn(Creature creature) {
+        creature.setTurnsWithoutFood(creature.getTurnsWithoutFood() + 1);
+    }
 
     private static void hungerEffect(Creature creature) {
         if (CreatureUtils.isPredator(creature)) {
