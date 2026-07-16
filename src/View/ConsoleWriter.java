@@ -1,9 +1,10 @@
 package View;
 
-import java.sql.SQLOutput;
 
 public final class ConsoleWriter {
+
     private ConsoleWriter(){}
+
     public static void printOptions(){
         System.out.println("""
                 1. Render after one turn

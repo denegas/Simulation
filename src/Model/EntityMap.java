@@ -7,12 +7,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class EntityMap {
+
+    private final int SIZE;
+    private final Map<Coordinates, Entity> map = new HashMap<>();
+
     public EntityMap(int size) {
         this.SIZE = size;
     }
-
-    private final int SIZE;
-    private final Map<Coordinates, Entity> map = new HashMap<>();//будет хранить координаты всех сущностей
 
     public Map<Coordinates, Entity> getMap() {
         return map;

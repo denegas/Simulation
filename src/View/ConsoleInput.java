@@ -14,11 +14,4 @@ public final class ConsoleInput {
         }
 
     }
-//    public static int getDecision(){
-//        try {
-//            return scanner.nextInt();
-//        }catch (RuntimeException e){
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

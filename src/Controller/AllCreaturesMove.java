@@ -16,7 +16,7 @@ public class AllCreaturesMove implements Action {
         Renderer.render(map);
 
         for (Creature creature : creatures) {
-            if (!creature.isAlive()) {
+            if (creature.isDead()) {
                 continue;
             }
             List<Coordinates> path = PathFinder.getPath(map, creature.getCoordinates(), creature);
@@ -31,7 +31,7 @@ public class AllCreaturesMove implements Action {
 
     private static void cleanMapFromDeadCreatures(EntityMap map) {
         for (Creature creature : getCreatures(map)) {
-            if (!creature.isAlive()) {
+            if (creature.isDead()) {
                 map.removeEntity(creature.getCoordinates());
             }
         }

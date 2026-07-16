@@ -4,8 +4,6 @@ import java.util.*;
 
 
 public final class PathFinder {
-    private PathFinder() {
-    }
 
     private static final int[][] DIRECTIONS = {
             {0, 1},
@@ -15,6 +13,9 @@ public final class PathFinder {
     };
     private static EntityMap map;
     private static Coordinates startPosition;
+
+    private PathFinder() {
+    }
 
     public static List<Coordinates> getPath(EntityMap map, Coordinates startPosition, Creature creature) {
         PathFinder.map = map;

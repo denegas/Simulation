@@ -1,32 +1,43 @@
 package View;
 
-import Controller.Simulation;
+
 import Model.Coordinates;
 import Model.Entity;
 import Model.EntityMap;
 import Model.EntityType;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 public final class Renderer {
+    private static final String SPACE_BETWEEN_ENTITIES = " ";
+
     private Renderer() {
     }
 
     public static void render(EntityMap map) {
-        Map<Coordinates, Entity> sortedMap = new TreeMap<>(map.getMap());
-        int mapSize = Simulation.getMapSize();
-        for (int i = 0; i < mapSize; i++) {
-            for (int j = 0; j < mapSize; j++) {
-                if (sortedMap.get(new Coordinates(i, j)) == null)
-                    System.out.print(EntityType.VOID.getEntityView() + " ");
-                else {
-                    System.out.print(sortedMap.get(new Coordinates(i, j)).getType().getEntityView() + " ");
+        renderOneMap(map);
+        // space between two maps
+        System.out.println();
+
+    }
+
+    private static void renderOneMap(EntityMap map) {
+
+        int mapSize = map.getSize();
+        for (int x = 0; x < mapSize; x++) {
+            for (int y = 0; y < mapSize; y++) {
+                Entity entity = map.getMap().get(new Coordinates(x, y));
+
+                if (isVoid(entity)) {
+                    System.out.print(EntityType.VOID.getEntityView() + SPACE_BETWEEN_ENTITIES);
+                } else {
+                    System.out.print(entity.getType().getEntityView() + SPACE_BETWEEN_ENTITIES);
                 }
             }
-            System.out.println();//next row
+            //next row
+            System.out.println();
         }
-        System.out.println(); // space between two maps
+    }
 
+    private static boolean isVoid(Entity entity) {
+        return entity == null;
     }
 }

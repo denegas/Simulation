@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Random;
 
 public final class CreatureMove {
-    private CreatureMove() {
-    }
 
     private static EntityMap map;
     private static Coordinates nextCell;
 
+    private CreatureMove() {
+    }
+
     public static void execute(Creature creature, List<Coordinates> path, EntityMap map) {
-        if (path.isEmpty()) return;
+        if (path.isEmpty()) {
+            return;
+        }
 
         CreatureMove.map = map;
         Coordinates oldCell = creature.getCoordinates();
@@ -41,11 +44,11 @@ public final class CreatureMove {
         Coordinates nextCell;
 
         if (isHerbivore(creature)) {
-            int step = Math.min(creature.getSpeed(), path.size() - 1);
+            int step = Math.min(creature.getSpeed(), path.size() - creature.getSpeed());
             nextCell = path.get(step);
 
         } else {
-            int step = Math.min(creature.getSpeed(), path.size() - 2);
+            int step = Math.min(creature.getSpeed(), path.size() - Predator.MAX_SPEED);
             step = Math.max(step, 0);
             nextCell = path.get(step);
         }
@@ -99,7 +102,7 @@ public final class CreatureMove {
 
             creature.setCanMultiply(false);
             partner.setCanMultiply(false);
-            addToMapCreatureAfterMultiply(creature,partner);
+            addToMapCreatureAfterMultiply(creature, partner);
         }
     }
 
@@ -119,14 +122,13 @@ public final class CreatureMove {
         for (Creature parent : parentCreatures) {
             for (int[] dir : directions) {
                 Coordinates cellToAddCreature = new Coordinates(parent.getCoordinates().getCoordinateX() + dir[0],
-                                                parent.getCoordinates().getCoordinateY() + dir[1]);
-                if (isCellVoid(cellToAddCreature)){
+                        parent.getCoordinates().getCoordinateY() + dir[1]);
+                if (isCellVoid(cellToAddCreature)) {
                     Creature child;
-                    if (isHerbivore(parent)){
-                        child = new Herbivore(cellToAddCreature,Herbivore.MAX_HEALTH_POINTS,parent.getSpeed());
-                    }
-                    else {
-                        child = new Predator(cellToAddCreature,Predator.MAX_HEALTH_POINTS,Predator.MAX_SPEED);
+                    if (isHerbivore(parent)) {
+                        child = new Herbivore(cellToAddCreature, Herbivore.MAX_HEALTH_POINTS, parent.getSpeed());
+                    } else {
+                        child = new Predator(cellToAddCreature, Predator.MAX_HEALTH_POINTS, Predator.MAX_SPEED);
                     }
                     map.getMap().put(cellToAddCreature, child);
                     return;
@@ -164,7 +166,7 @@ public final class CreatureMove {
         creature.setTurnsWithoutFood(0);
         creature.restoreHealthPoints();
         if (isPredator(creature)) {
-            creature.setSpeed(2);// predator returns to it normal speed
+            creature.setSpeed(Predator.MAX_SPEED);
         }
     }
 
@@ -234,7 +236,7 @@ public final class CreatureMove {
     }
 
     private static boolean isPredatorKilledHerbivore(Herbivore herbivore) {
-        return !herbivore.isAlive();
+        return herbivore.isDead();
     }
 
     private static boolean canMoveOnTarget(Coordinates oldCell, Coordinates targetCell) {

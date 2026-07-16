@@ -9,15 +9,17 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TurnEntityCreator extends EntityCreator implements Action {
+
+    private static final int MAX_TURNS_WITHOUT_FOOD = 4;
+    private static final int MIN_FOOD_QUANTITY_TO_CREATE = 1;
+    private static final int MIN_PREDATORS_QUANTITY_TO_CREATE = 3;
+
+    private int withoutHerbivoreFoodCounter = 0;
+    private int withoutPredatorFoodCounter = 0;
+
     public TurnEntityCreator() {
         super();
     }
-
-    private static final int MAX_TURNS_WITHOUT_FOOD = 4;
-    private int withoutHerbivoreFoodCounter = 0;
-    private int withoutPredatorFoodCounter = 0;
-    private static final int MIN_FOOD_QUANTITY_TO_CREATE = 1;
-    private static final int MIN_PREDATORS_QUANTITY_TO_CREATE = 3;
 
     @Override
     public void execute(EntityMap map) {
@@ -66,7 +68,13 @@ public class TurnEntityCreator extends EntityCreator implements Action {
         EntityType foodType = getFoodType(hungryCreature);
         addEntitiesToVoidCells(foodType, foodQuantity, map);
     }
-
+    private EntityType getFoodType(EntityType creatureType) {
+        return switch (creatureType) {
+            case HERBIVORE -> EntityType.GRASS;
+            case PREDATOR -> EntityType.HERBIVORE;
+            default -> throw new IllegalArgumentException("unexpected creature type: " + creatureType);
+        };
+    }
 
     private void addEntitiesToVoidCells(EntityType entityTypeToCreate, int quantityToCreate, EntityMap map) {
         for (int i = 0; i < quantityToCreate; i++) {
@@ -84,14 +92,6 @@ public class TurnEntityCreator extends EntityCreator implements Action {
         int halfMapSize = map.getSize()/2;
         int predatorsQuantity = random.nextInt(MIN_PREDATORS_QUANTITY_TO_CREATE, halfMapSize);
         addEntitiesToVoidCells(EntityType.PREDATOR, predatorsQuantity, map);
-    }
-
-    private EntityType getFoodType(EntityType creatureType) {
-        return switch (creatureType) {
-            case HERBIVORE -> EntityType.GRASS;
-            case PREDATOR -> EntityType.HERBIVORE;
-            default -> throw new IllegalArgumentException("unexpected creature type: " + creatureType);
-        };
     }
 
     private static boolean hasNoFood(Map.Entry<EntityType, Boolean> entryWithCreatureAndFood) {

@@ -1,32 +1,46 @@
 package Controller;
 
 import Model.*;
+
 import java.util.*;
 
 public final class InitializeEntityCreator extends EntityCreator implements Action {
 
-    public InitializeEntityCreator(){
+    public InitializeEntityCreator() {
         super();
     }
 
     @Override
     public void execute(EntityMap map) {
-        initEntityChances();
-        for (var cell : map.getMap().keySet()) {
+        initializeEntities(map);
+
+        addMissingCreatures(map);
+
+        Simulation.setMap(map);
+    }
+
+    private void initializeEntities(EntityMap map) {
+        Set<Coordinates> allCells = map.getMap().keySet();
+        for (var cell : allCells) {
             double randomChance = random.nextDouble();
             var entry = entityChances.ceilingEntry(randomChance);
-            if (entry != null) {
+
+            if (isEntityExist(entry)) {
                 EntityType type = entry.getValue();
                 map.add(cell, getEntityFromType(type, cell));
             }
         }
-        if (hasNoEntity(EntityType.HERBIVORE,map)) {
-            addOneEntityToRandomVoidCell(EntityType.HERBIVORE,map);
+    }
+    private boolean isEntityExist(Map.Entry<Double,EntityType> entry){
+        return entry != null;
+    }
+    private void addMissingCreatures(EntityMap map) {
+        if (hasNoEntity(EntityType.HERBIVORE, map)) {
+            addOneEntityToRandomVoidCell(EntityType.HERBIVORE, map);
         }
-        if (hasNoEntity(EntityType.PREDATOR,map)) {
-            addOneEntityToRandomVoidCell(EntityType.PREDATOR,map);
+        if (hasNoEntity(EntityType.PREDATOR, map)) {
+            addOneEntityToRandomVoidCell(EntityType.PREDATOR, map);
         }
-        Simulation.setMap(map);
     }
 
     private boolean hasNoEntity(EntityType entityType, EntityMap map) {
@@ -35,6 +49,7 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
         }
         return true;
     }
+
     //
     private void addOneEntityToRandomVoidCell(EntityType entityType, EntityMap map) {
 
@@ -42,11 +57,9 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
 
         Coordinates randomCoordinates = voidCells.get(random.nextInt(voidCells.size()));
 
-        map.add(randomCoordinates,getEntityFromType(entityType,randomCoordinates));
+        map.add(randomCoordinates, getEntityFromType(entityType, randomCoordinates));
 
     }
-
-
 
 
 }
