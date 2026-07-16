@@ -27,9 +27,9 @@ public final class Renderer {
                 Entity entity = map.get(new Coordinates(x, y));
 
                 if (isExist(entity)) {
-                    System.out.print(EntityType.VOID.getEntityView() + SPACE_BETWEEN_ENTITIES);
+                    printVoid();
                 } else {
-                    System.out.print(entity.getType().getEntityView() + SPACE_BETWEEN_ENTITIES);
+                    printEntity(entity);
                 }
             }
             //next row
@@ -39,5 +39,13 @@ public final class Renderer {
 
     private static boolean isExist(Entity entity) {
         return entity == null;
+    }
+
+    private static void printVoid() {
+        System.out.print(EntityType.VOID.getEntityView() + SPACE_BETWEEN_ENTITIES);
+    }
+
+    private static void printEntity(Entity entity) {
+        System.out.print(entity.getType().getEntityView() + SPACE_BETWEEN_ENTITIES);
     }
 }

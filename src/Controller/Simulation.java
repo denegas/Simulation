@@ -9,6 +9,8 @@ import java.util.List;
 public final class Simulation {
     private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
+    private static final int TURN_SLEEP_MC = 1800;
+    public  static final int TICK_SLEEP_MC = 500;
 
     private static int turnsCounter = 0;
     private static EntityMap map;
@@ -34,7 +36,7 @@ public final class Simulation {
     public static void nextNTurns(int n) {
         for (int i = 0; i < n; i++) {
             nextTurn();
-            sleep(1800);
+            sleep(TURN_SLEEP_MC);
         }
     }
 

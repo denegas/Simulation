@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public final class CreatureMove {
-
+    private static final int HUNGER_HP_LOSS = 1;
     private static EntityMap map;
     private static Coordinates nextCell;
 
@@ -74,7 +74,7 @@ public final class CreatureMove {
     }
 
     private static void hungerLowsPredatorSpeed(Creature predator) {
-        predator.setSpeed(1);
+        predator.setSpeed(Predator.LOW_SPEED);
     }
 
     private static void hungerLowsCreatureHP(Creature creature) {
@@ -82,7 +82,7 @@ public final class CreatureMove {
             creature.kill();
             return;
         }
-        creature.setHealthPoints(creature.getHealthPoints() - 1);
+        creature.setHealthPoints(creature.getHealthPoints() - HUNGER_HP_LOSS);
     }
 
     private static boolean isMultiplyPath(Creature creature, List<Coordinates> path) {

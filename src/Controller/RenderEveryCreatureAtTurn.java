@@ -23,7 +23,7 @@ public class RenderEveryCreatureAtTurn implements Action {
             List<Coordinates> path = PathFinder.getPath(map, creature.getCoordinates(), creature);
             CreatureMove.execute(creature, path, map);
 
-            Simulation.sleep(500);
+            Simulation.sleep(Simulation.TICK_SLEEP_MC);
         }
         cleanMapFromDeadCreatures(map);
 

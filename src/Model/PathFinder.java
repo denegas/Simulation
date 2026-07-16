@@ -14,7 +14,6 @@ public final class PathFinder {
             {-1, 0}
     };
 
-
     private PathFinder() {
     }
 
@@ -68,7 +67,7 @@ public final class PathFinder {
             Coordinates cell = queue.poll();
             for (var dir : DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getCoordinateX() + dir[0], cell.getCoordinateY() + dir[1]);
-                if (!mapHasCell(nextCell) || (!isCellVoid(nextCell) && !isCellTarget(nextCell, target))) {
+                if (mapHasNoCell(nextCell) || (!isCellVoid(nextCell) && !isCellTarget(nextCell, target))) {
                     continue;
                 } else if (visitedDirections.contains(nextCell)) {
                     continue;
@@ -92,14 +91,14 @@ public final class PathFinder {
         return Optional.empty();
     }
 
-    private static boolean mapHasCell(Coordinates cell) {
+    private static boolean mapHasNoCell(Coordinates cell) {
         int border = map.size();
         int x = cell.getCoordinateX();
         int y = cell.getCoordinateY();
         if (x < 0 || y < 0) {
-            return false;
+            return true;
         }
-        return (x < border) && (y < border);
+        return (x >= border) || (y >= border);
     }
 
 
@@ -117,21 +116,21 @@ public final class PathFinder {
     }
 
     private static List<Coordinates> randomNextCell() {
-        Coordinates nextCell;
         Random random = new Random();
-        int counter = 0;
-        while (true) {
-            if (counter > 30) {
-                return new ArrayList<>();
-            }
-            int[] dir = DIRECTIONS[random.nextInt(0, 4)];
+        Coordinates nextCell;
+        Set<int[]> visitedDirections = new HashSet<>();
+
+        while (visitedDirections.size() != DIRECTIONS.length) {
+            int[] dir = DIRECTIONS[random.nextInt(DIRECTIONS.length)];
+            visitedDirections.add(dir);
+
             nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
-            if (!mapHasCell(nextCell) || !isCellVoid(nextCell)) {
-                counter++;
+            if (mapHasNoCell(nextCell) || !isCellVoid(nextCell)) {
                 continue;
             }
             return List.of(nextCell);
         }
+        return List.of();
     }
 
     private static boolean isCellVoid(Coordinates cell) {
