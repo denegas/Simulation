@@ -6,7 +6,7 @@ public class Herbivore extends Creature {
     public static final int SPEED = 1;
 
     public Herbivore(Coordinates coordinates, int healthPoints, int speed) {
-        super(coordinates, EntityType.HERBIVORE, healthPoints, speed, Food.GRASS);
+        super(coordinates, EntityType.HERBIVORE, healthPoints, speed);
     }
 
     @Override

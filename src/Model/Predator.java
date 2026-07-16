@@ -8,7 +8,7 @@ public class Predator extends Creature{
     public static final int ATTACK_POWER = 3;
 
     public Predator(Coordinates coordinates,int healthPoints, int speed) {
-        super(coordinates,EntityType.PREDATOR,healthPoints, speed, Food.HERBIVORE);
+        super(coordinates,EntityType.PREDATOR,healthPoints, speed);
     }
 
     @Override

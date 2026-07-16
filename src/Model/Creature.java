@@ -5,16 +5,14 @@ public abstract class Creature extends Entity {
     public static final int MAX_DISTANCE_TO_MULTIPLY = 4;
     public static final int MAX_TURNS_WITHOUT_FOOD = 7;
     protected int speed;
-    protected final Food foodType;
     protected int healthPoints;
     protected boolean isAlive = true;
     protected int turnsWithoutFood = 0;
     protected boolean canMultiply = true;
 
-    protected Creature(Coordinates coordinates, EntityType entityType, int healthPoints, int speed, Food foodType) {
+    protected Creature(Coordinates coordinates, EntityType entityType, int healthPoints, int speed) {
         super(coordinates, entityType);
         this.speed = speed;
-        this.foodType = foodType;
         this.healthPoints = healthPoints;
     }
 
@@ -56,10 +54,6 @@ public abstract class Creature extends Entity {
         return healthPoints;
     }
 
-    public Food getFoodType() {
-        return foodType;
-    }
-
     public void setTurnsWithoutFood(int newValue) {
         turnsWithoutFood = newValue;
     }
@@ -67,6 +61,4 @@ public abstract class Creature extends Entity {
     public int getTurnsWithoutFood() {
         return turnsWithoutFood;
     }
-
-
 }

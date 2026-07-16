@@ -12,10 +12,6 @@ public class EntityMap {
         this.SIZE = size;
     }
 
-//    public Map<Coordinates, Entity> getMap() {
-//        return map;
-//    }
-
     public void add(Coordinates coordinates, Entity entity) {
         map.put(coordinates, entity);
     }
