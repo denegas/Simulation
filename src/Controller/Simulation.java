@@ -9,6 +9,7 @@ import java.util.List;
 public final class Simulation {
     private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
+    private static final List<Action> turnActionsForNTicks = List.of(new RenderEveryCreatureAtTurn(), new TurnEntityCreator());
     private static final int TURN_SLEEP_MC = 1800;
     public  static final int TICK_SLEEP_MC = 500;
 
@@ -42,12 +43,12 @@ public final class Simulation {
 
     // nextTurnWithEachCreatureMoveRender
     public static void nTicks(int n) {
-        RenderEveryCreatureAtTurn renderEveryCreatureAtTurn = new RenderEveryCreatureAtTurn();
-        TurnEntityCreator turnEntityCreator = new TurnEntityCreator();
         Renderer.render(map);
+
         for (int i = 0; i < n; i++) {
-            renderEveryCreatureAtTurn.execute(map);
-            turnEntityCreator.execute(map);
+            for (Action turnAction : turnActionsForNTicks ){
+                turnAction.execute(map);
+            }
             turnsCounter++;
 
         }
