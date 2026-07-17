@@ -2,8 +2,6 @@ package Controller;
 
 import Model.*;
 import Model.utils.MapUtils;
-import View.Renderer;
-
 import java.util.List;
 
 public class RenderEveryCreatureAtTurn implements Action {
@@ -17,7 +15,7 @@ public class RenderEveryCreatureAtTurn implements Action {
                 continue;
             }
 
-            Renderer.render(map);
+            Simulation.CONSOLE_RENDERER.render(map);
             List<Coordinates> path = PathFinder.getPath(map, creature.getCoordinates(), creature);
             CreatureMove.execute(creature, path, map);
 

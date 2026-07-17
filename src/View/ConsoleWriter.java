@@ -22,4 +22,7 @@ public final class ConsoleWriter {
     public static void printError(){
         System.out.println("error");
     }
+    public static void printTurn(int turn){
+        System.out.println("Turn: " + turn);
+    }
 }

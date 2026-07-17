@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public class EntityCreator {
+public abstract class EntityCreator {
 
     protected static final Random RANDOM = new Random();
     protected static final double HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL = 0.14;

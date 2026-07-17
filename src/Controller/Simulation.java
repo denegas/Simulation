@@ -3,15 +3,18 @@ package Controller;
 import Model.EntityMap;
 import View.ConsoleInput;
 import View.ConsoleWriter;
-import View.Renderer;
+import View.ConsoleRenderer;
 import java.util.List;
 
 public final class Simulation {
+    public static final ConsoleRenderer CONSOLE_RENDERER = new ConsoleRenderer();
+    public static final int TURN_SLEEP_MC = 1800;
+    public static final int TICK_SLEEP_MC = 500;
+
     private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
     private static final List<Action> turnActionsForNTicks = List.of(new RenderEveryCreatureAtTurn(), new TurnEntityCreator());
-    private static final int TURN_SLEEP_MC = 1800;
-    public  static final int TICK_SLEEP_MC = 500;
+
 
     private static int turnsCounter = 0;
     private static EntityMap map;
@@ -31,24 +34,27 @@ public final class Simulation {
         for (Action turnAction : turnActions) {
             turnAction.execute(map);
         }
+
         turnsCounter++;
+        ConsoleWriter.printTurn(turnsCounter);
     }
 
-    public static void nextNTurns(int n) {
-        for (int i = 0; i < n; i++) {
+    public static void nextNTurns(int repeatTimes) {
+        for (int i = 0; i < repeatTimes; i++) {
             nextTurn();
             sleep(TURN_SLEEP_MC);
         }
     }
 
     // nextTurnWithEachCreatureMoveRender
-    public static void nTicks(int n) {
-        Renderer.render(map);
+    public static void nTicks(int repeatTimes) {
+        CONSOLE_RENDERER.render(map);
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < repeatTimes; i++) {
             for (Action turnAction : turnActionsForNTicks ){
                 turnAction.execute(map);
             }
+            ConsoleWriter.printTurn(turnsCounter);
             turnsCounter++;
 
         }

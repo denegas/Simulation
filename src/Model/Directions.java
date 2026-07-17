@@ -7,5 +7,7 @@ public final class Directions {
             {1, 0},
             {-1, 0}
     };
-    private Directions(){}
+
+    private Directions() {
+    }
 }
