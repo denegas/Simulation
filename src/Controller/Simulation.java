@@ -1,9 +1,15 @@
 package Controller;
 
-import Model.EntityMap;
+import Model.map.EntityMap;
+import Model.actions.Action;
+import Model.actions.turnActions.AllCreaturesMove;
+import Model.actions.initializeActions.InitializeEntityCreator;
+import Model.actions.initializeActions.MapCreator;
+import Model.actions.turnActions.MoverAndRendererEachCreature;
+import Model.actions.turnActions.TurnEntityCreator;
 import View.ConsoleInput;
 import View.ConsoleWriter;
-import View.ConsoleRenderer;
+import View.renderer.ConsoleRenderer;
 import java.util.List;
 
 public final class Simulation {
@@ -13,7 +19,7 @@ public final class Simulation {
 
     private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
-    private static final List<Action> turnActionsForNTicks = List.of(new RenderEveryCreatureAtTurn(), new TurnEntityCreator());
+    private static final List<Action> turnActionsForNTicks = List.of(new MoverAndRendererEachCreature(), new TurnEntityCreator());
 
 
     private static int turnsCounter = 0;
