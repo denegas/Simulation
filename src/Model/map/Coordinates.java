@@ -1,8 +1,6 @@
 package Model.map;
 
-import java.util.Comparator;
-
-public class Coordinates implements Comparable<Coordinates> {
+public final class Coordinates {
 
     private final int coordinateX;
     private final int coordinateY;
@@ -18,11 +16,6 @@ public class Coordinates implements Comparable<Coordinates> {
 
     public int getCoordinateY() {
         return coordinateY;
-    }
-
-    @Override
-    public int compareTo(Coordinates coordinates) {
-        return Comparator.comparingInt(Coordinates::getCoordinateX).thenComparingInt(Coordinates::getCoordinateY).compare(this, coordinates);
     }
 
     @Override
