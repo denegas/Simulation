@@ -62,11 +62,12 @@ public class TurnEntityCreator extends EntityCreator implements Action {
     }
 
     private void addMissingFood(EntityType hungryCreature, EntityMap map) {
-        int halfMapSize = map.size()/2;
+        int halfMapSize = map.size() / 2;
         int foodQuantity = RANDOM.nextInt(MIN_FOOD_QUANTITY_TO_CREATE, halfMapSize);
         EntityType foodType = getFoodType(hungryCreature);
         addEntitiesToVoidCells(foodType, foodQuantity, map);
     }
+
     private EntityType getFoodType(EntityType creatureType) {
         return switch (creatureType) {
             case HERBIVORE -> EntityType.GRASS;
@@ -88,7 +89,7 @@ public class TurnEntityCreator extends EntityCreator implements Action {
     }
 
     private void addPredators(EntityMap map) {
-        int halfMapSize = map.size()/2;
+        int halfMapSize = map.size() / 2;
         int predatorsQuantity = RANDOM.nextInt(MIN_PREDATORS_QUANTITY_TO_CREATE, halfMapSize);
         addEntitiesToVoidCells(EntityType.PREDATOR, predatorsQuantity, map);
     }

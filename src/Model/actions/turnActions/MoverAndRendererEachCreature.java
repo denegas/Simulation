@@ -8,6 +8,7 @@ import Model.pathfind.PathFinder;
 import Model.service.CreatureMoveService;
 import Model.entities.creatures.Creature;
 import Model.util.MapUtils;
+
 import java.util.List;
 
 public class MoverAndRendererEachCreature implements Action {

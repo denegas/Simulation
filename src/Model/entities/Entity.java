@@ -23,5 +23,4 @@ public abstract class Entity {
         this.coordinates = coordinates;
     }
 
-
 }
