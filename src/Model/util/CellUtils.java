@@ -14,9 +14,12 @@ public final class CellUtils {
     }
 
     public static boolean isCellTarget(Coordinates cell, EntityType target, EntityMap map) {
-        if (map.get(cell) == null) return false;
+        if (isCellVoid(cell, map)) {
+            return false;
+        }
         return map.get(cell).getType().equals(target);
     }
+
     public static boolean isCellGrass(Coordinates nextCell, EntityMap map) {
         Entity entity = map.get(nextCell);
         if (entity == null) {
@@ -35,7 +38,10 @@ public final class CellUtils {
         if (CellUtils.isCellVoid(cellOne, map) || CellUtils.isCellVoid(cellTwo, map)) {
             return false;
         }
-        return map.get(cellOne).getType().equals(map.get(cellTwo).getType());
+        EntityType firstCreatureType = map.get(cellOne).getType();
+        EntityType secondCreatureType = map.get(cellTwo).getType();
+
+        return firstCreatureType.equals(secondCreatureType);
     }
 
 }

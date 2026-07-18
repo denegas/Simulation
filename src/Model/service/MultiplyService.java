@@ -48,6 +48,7 @@ public final class MultiplyService {
             for (int[] dir : Directions.FOUR_NEAR_DIRECTIONS) {
                 Coordinates cellToAddCreature = new Coordinates(parent.getCoordinates().getCoordinateX() + dir[0],
                         parent.getCoordinates().getCoordinateY() + dir[1]);
+
                 if (CellUtils.isCellVoid(cellToAddCreature, map)) {
                     Creature child;
                     if (CreatureUtils.isHerbivore(parent)) {
