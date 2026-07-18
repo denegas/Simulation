@@ -1,9 +1,9 @@
-import Controller.Simulation;
+import Controller.App;
 
 class Main {
     public static void main(String[] args) {
-//      //  Simulation.nTicks(15);
-       Simulation.userConfiguresSettings();
+        App app = new App();
+        app.start();
     }
 
 }

@@ -7,15 +7,18 @@ import Model.actions.initializeActions.InitializeEntityCreator;
 import Model.actions.initializeActions.MapCreator;
 import Model.actions.turnActions.MoverAndRendererEachCreature;
 import Model.actions.turnActions.TurnEntityCreator;
-import View.ConsoleInput;
 import View.ConsoleWriter;
 import View.renderer.ConsoleRenderer;
+import View.renderer.RenderMode;
+
 import java.util.List;
 
 public final class Simulation {
     public static final ConsoleRenderer CONSOLE_RENDERER = new ConsoleRenderer();
     public static final int TURN_SLEEP_MC = 1800;
     public static final int TICK_SLEEP_MC = 500;
+    public static final int MIN_MAP_SIZE = 4;
+    public static final int MAX_MAP_SIZE = 50;
 
     private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
@@ -24,6 +27,8 @@ public final class Simulation {
 
     private static int turnsCounter = 0;
     private static EntityMap map;
+    private static volatile boolean isRunning = false;
+    private static volatile boolean shouldStop = false;
 
     public static void setMap(EntityMap map) {
         Simulation.map = map;
@@ -57,7 +62,7 @@ public final class Simulation {
         CONSOLE_RENDERER.render(map);
 
         for (int i = 0; i < repeatTimes; i++) {
-            for (Action turnAction : turnActionsForNTicks ){
+            for (Action turnAction : turnActionsForNTicks) {
                 turnAction.execute(map);
             }
             ConsoleWriter.printTurn(turnsCounter);
@@ -66,39 +71,36 @@ public final class Simulation {
         }
     }
 
-    public void startSimulation() {
+    public static void startSimulation(RenderMode renderMode) {
+        Thread simulationThread = new Thread(() -> {
+            isRunning = true;
+            shouldStop = false;
 
+            while (isRunning && !shouldStop) {
+                renderMode.run(1);
+            }
+            isRunning = false;
+        });
+
+        simulationThread.setDaemon(false);
+        simulationThread.start();
     }
 
-    public void pauseSimulation() {
+    public static void pauseSimulation() {
+        shouldStop = true;
 
+        while (isRunning) {
+            Thread.yield();
+        }
+        shouldStop = false;
     }
+
 
     public static void sleep(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    public static void userConfiguresSettings() {
-        ConsoleWriter.printHello();
-        ConsoleWriter.printMapSizeAsk();
-
-        initialize(ConsoleInput.getInt());
-        ConsoleWriter.printOptions();
-        switch (ConsoleInput.getInt()) {
-            case 1:
-                ConsoleWriter.printRepeatsAsk();
-                nextNTurns(ConsoleInput.getInt());
-                break;
-            case 2:
-                ConsoleWriter.printRepeatsAsk();
-                nTicks(ConsoleInput.getInt());
-                break;
-            default:
-                ConsoleWriter.printError();
         }
     }
 }
