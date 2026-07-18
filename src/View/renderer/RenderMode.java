@@ -21,7 +21,7 @@ public enum RenderMode {
         runner.accept(repeats);
     }
 
-    public static Optional<RenderMode> fromCode(int code) {
+    public static Optional<RenderMode> getFromCode(int code) {
         for (RenderMode mode : values()) {
             if (mode.code == code) {
                 return Optional.of(mode);

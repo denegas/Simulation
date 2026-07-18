@@ -45,7 +45,6 @@ public final class Simulation {
         for (Action turnAction : turnActions) {
             turnAction.execute(map);
         }
-
         turnsCounter++;
         ConsoleWriter.printTurn(turnsCounter);
     }

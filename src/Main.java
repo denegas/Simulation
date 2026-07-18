@@ -5,5 +5,4 @@ class Main {
         App app = new App();
         app.start();
     }
-
 }

@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.function.IntFunction;
 
 public final class ConsoleInput {
-    public static final Scanner SCANNER = new Scanner(System.in);
+    private static final Scanner SCANNER = new Scanner(System.in);
     private static final String WORD_TO_START_INFINITY_SIMULATION = "inf";
 
     private ConsoleInput() {
@@ -16,14 +16,14 @@ public final class ConsoleInput {
 
     public static int getMapSize() {
         return readValidInt(
-                mapSize -> (mapSize >= Simulation.MIN_MAP_SIZE && mapSize <= Simulation.MAX_MAP_SIZE)
+                mapSize -> (isValidSize(mapSize))
                         ? Optional.of(mapSize) : Optional.empty(),
                 ConsoleWriter::printMapSizeError
         );
     }
 
     public static RenderMode getRenderMode() {
-        return readValidInt(RenderMode::fromCode, ConsoleWriter::printRenderModError);
+        return readValidInt(RenderMode::getFromCode, ConsoleWriter::printRenderModesError);
     }
 
     public static Optional<Integer> getTurnRepeat() {
@@ -45,6 +45,13 @@ public final class ConsoleInput {
             }
             return Optional.of(repeats);
         }
+    }
+    public static void closeScanner(){
+        SCANNER.close();
+    }
+
+    private static boolean isValidSize(int mapSize){
+        return mapSize >= Simulation.MIN_MAP_SIZE && mapSize <= Simulation.MAX_MAP_SIZE;
     }
 
     private static <T> T readValidInt(IntFunction<Optional<T>> validate, Runnable onInvalid) {

@@ -11,7 +11,7 @@ public class App {
         ConsoleWriter.printMapSizeAsk();
         Simulation.initialize(ConsoleInput.getMapSize());
 
-        ConsoleWriter.printRenderMods();
+        ConsoleWriter.printRenderModes();
         RenderMode renderMode = ConsoleInput.getRenderMode();
 
         ConsoleWriter.printRepeatsAsk();
@@ -23,6 +23,6 @@ public class App {
             renderMode.run(repeats.get());
         }
 
-        ConsoleInput.SCANNER.close();
+        ConsoleInput.closeScanner();
     }
 }
