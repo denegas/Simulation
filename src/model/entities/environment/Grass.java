@@ -1,4 +1,4 @@
-package model.entities.objects;
+package model.entities.environment;
 
 import model.entitymap.Coordinates;
 import model.entities.Entity;

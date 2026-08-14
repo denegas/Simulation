@@ -4,9 +4,9 @@ import model.entities.Entity;
 import model.entities.EntityType;
 import model.entities.creatures.Herbivore;
 import model.entities.creatures.Predator;
-import model.entities.objects.Grass;
-import model.entities.objects.Rock;
-import model.entities.objects.Tree;
+import model.entities.environment.Grass;
+import model.entities.environment.Rock;
+import model.entities.environment.Tree;
 import model.entitymap.Coordinates;
 
 import java.util.Comparator;
