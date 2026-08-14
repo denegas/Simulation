@@ -1,4 +1,4 @@
-import Controller.App;
+import controller.App;
 
 class Main {
     public static void main(String[] args) {
