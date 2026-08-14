@@ -68,7 +68,7 @@ public final class PathFinder {
         while (!queue.isEmpty()) {
             Coordinates cell = queue.poll();
             for (var dir : Directions.NEAR_DIRECTIONS) {
-                Coordinates nextCell = new Coordinates(cell.getX() + dir[0], cell.getY() + dir[1]);
+                Coordinates nextCell = new Coordinates(cell.getX() + dir.getX(), cell.getY() + dir.getY());
 
                 if (!MapUtils.hasMapCell(nextCell, map) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
                     continue;
@@ -116,13 +116,13 @@ public final class PathFinder {
     private static List<Coordinates> randomNextCell() {
 
         Coordinates nextCell;
-        Set<int[]> visitedDirections = new HashSet<>();
+        Set<Coordinates> visitedDirections = new HashSet<>();
 
         while (visitedDirections.size() != Directions.NEAR_DIRECTIONS.length) {
-            int[] dir = Directions.NEAR_DIRECTIONS[PathFinder.RANDOM.nextInt(Directions.NEAR_DIRECTIONS.length)];
+            Coordinates dir = Directions.NEAR_DIRECTIONS[PathFinder.RANDOM.nextInt(Directions.NEAR_DIRECTIONS.length)];
             visitedDirections.add(dir);
 
-            nextCell = new Coordinates(startPosition.getX() + dir[0], startPosition.getY() + dir[1]);
+            nextCell = new Coordinates(startPosition.getX() + dir.getX(), startPosition.getY() + dir.getY());
             if (!MapUtils.hasMapCell(nextCell,map) || !CellUtils.isCellVoid(nextCell, map)) {
                 continue;
             }
