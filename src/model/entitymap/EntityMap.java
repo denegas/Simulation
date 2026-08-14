@@ -1,11 +1,7 @@
 package model.entitymap;
 
 import model.entities.Entity;
-import model.entities.EntityType;
-import model.entities.creatures.Creature;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EntityMap {
 

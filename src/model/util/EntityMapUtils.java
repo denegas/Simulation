@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public final class MapUtils {
+public final class EntityMapUtils {
 
-    private MapUtils() {
+    private EntityMapUtils() {
     }
 
     public static List<Creature> getCreatures(EntityMap map) {

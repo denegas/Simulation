@@ -7,7 +7,7 @@ import model.entitymap.EntityMap;
 import model.pathfind.PathFinder;
 import model.service.CreatureMoveService;
 import model.entities.creatures.Creature;
-import model.util.MapUtils;
+import model.util.EntityMapUtils;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class AllCreaturesMove implements Action {
 
     @Override
     public void execute(EntityMap map) {
-        List<Creature> creatures = MapUtils.getCreatures(map);
+        List<Creature> creatures = EntityMapUtils.getCreatures(map);
         Simulation.CONSOLE_RENDERER.render(map);
 
         for (Creature creature : creatures) {
@@ -25,7 +25,7 @@ public class AllCreaturesMove implements Action {
             List<Coordinates> path = PathFinder.getPath(map, creature.getCoordinates(), creature);
             CreatureMoveService.execute(creature, path, map);
         }
-        MapUtils.cleanMapFromDeadCreatures(map);
+        EntityMapUtils.cleanMapFromDeadCreatures(map);
     }
 
 

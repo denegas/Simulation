@@ -7,7 +7,7 @@ import model.entities.EntityType;
 import model.entities.creatures.Creature;
 import model.util.CellUtils;
 import model.util.CreatureUtils;
-import model.util.MapUtils;
+import model.util.EntityMapUtils;
 
 import java.util.*;
 
@@ -70,7 +70,7 @@ public final class PathFinder {
             for (var dir : Directions.NEAR_DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getX() + dir.getX(), cell.getY() + dir.getY());
 
-                if (!MapUtils.hasMapCell(nextCell, map) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
+                if (!EntityMapUtils.hasMapCell(nextCell, map) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
                     continue;
                 }
                 if (visitedDirections.contains(nextCell)) {
@@ -123,7 +123,7 @@ public final class PathFinder {
             visitedDirections.add(dir);
 
             nextCell = new Coordinates(startPosition.getX() + dir.getX(), startPosition.getY() + dir.getY());
-            if (!MapUtils.hasMapCell(nextCell,map) || !CellUtils.isCellVoid(nextCell, map)) {
+            if (!EntityMapUtils.hasMapCell(nextCell,map) || !CellUtils.isCellVoid(nextCell, map)) {
                 continue;
             }
             return List.of(nextCell);
