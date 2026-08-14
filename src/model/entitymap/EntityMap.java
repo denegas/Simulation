@@ -9,44 +9,44 @@ import java.util.stream.Collectors;
 
 public class EntityMap {
 
-    private final int SIZE;
-    private final Map<Coordinates, Entity> map = new HashMap<>();
+    private final int size;
+    private final Map<Coordinates, Entity> entities = new HashMap<>();
 
     public EntityMap(int size) {
-        this.SIZE = size;
+        this.size = size;
     }
 
     public void add(Coordinates coordinates, Entity entity) {
-        map.put(coordinates, entity);
+        entities.put(coordinates, entity);
     }
 
     public void add(Coordinates coordinates) {
-        map.put(coordinates, null);
+        entities.put(coordinates, null);
     }
 
     public void clearCell(Coordinates coordinates) {
-        map.put(coordinates, null);
+        entities.put(coordinates, null);
     }
 
     public int size() {
-        return this.SIZE;
+        return this.size;
     }
     public Entity get(Coordinates coordinates){
-        return map.get(coordinates);
+        return entities.get(coordinates);
     }
     public Set<Coordinates> keySet(){
-        return map.keySet();
+        return entities.keySet();
     }
     public Collection<Entity> values(){
-        return map.values();
+        return entities.values();
     }
 
     public List<Entity> getNotNullEntities() {
-        return map.values().stream().filter(Objects::nonNull).toList();
+        return entities.values().stream().filter(Objects::nonNull).toList();
     }
 
     public List<Coordinates> getVoidCells() {
-        return map.entrySet()
+        return entities.entrySet()
                 .stream()
                 .filter(e -> e.getValue() == null)
                 .map(e -> e.getKey())
@@ -54,7 +54,7 @@ public class EntityMap {
     }
 
     public Map<Coordinates, Creature> getCellsWithCreatures() {
-        return map.entrySet().stream()
+        return entities.entrySet().stream()
                 .filter(entry -> {
                     if (entry.getValue() == null) {
                         return false;
