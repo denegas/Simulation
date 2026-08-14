@@ -29,8 +29,8 @@ public final class CellUtils {
     }
 
     public static boolean isNeighbours(Coordinates nextCell, Coordinates targetCell) {
-        int dx = Math.abs(nextCell.getCoordinateX() - targetCell.getCoordinateX());
-        int dy = Math.abs(nextCell.getCoordinateY() - targetCell.getCoordinateY());
+        int dx = Math.abs(nextCell.getX() - targetCell.getX());
+        int dy = Math.abs(nextCell.getY() - targetCell.getY());
         return dx + dy == 1;
     }
 

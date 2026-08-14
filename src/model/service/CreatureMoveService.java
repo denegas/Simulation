@@ -137,8 +137,8 @@ public final class CreatureMoveService {
     }
 
     private static boolean canMoveOnTarget(Coordinates oldCell, Coordinates targetCell) {
-        int dx = Math.abs(oldCell.getCoordinateX() - targetCell.getCoordinateX());
-        int dy = Math.abs(oldCell.getCoordinateY() - targetCell.getCoordinateY());
+        int dx = Math.abs(oldCell.getX() - targetCell.getX());
+        int dy = Math.abs(oldCell.getY() - targetCell.getY());
         return dx + dy <= Predator.MAX_SPEED;
     }
 

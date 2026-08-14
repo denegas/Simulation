@@ -16,4 +16,11 @@ public final class CreatureUtils {
     public static boolean isHerbivore(Entity creature) {
         return creature.getType().equals(EntityType.HERBIVORE);
     }
+    public static EntityType getCreatureFoodType(Creature creature){
+        return switch (creature.getType()) {
+            case EntityType.PREDATOR -> EntityType.HERBIVORE;
+            case EntityType.HERBIVORE -> EntityType.GRASS;
+            default -> throw new IllegalArgumentException("Unexpected Creature: " + creature.getType());
+        };
+    }
 }

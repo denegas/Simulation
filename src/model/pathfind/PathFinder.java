@@ -6,6 +6,7 @@ import model.entitymap.EntityMap;
 import model.entities.EntityType;
 import model.entities.creatures.Creature;
 import model.util.CellUtils;
+import model.util.CreatureUtils;
 
 import java.util.*;
 
@@ -28,19 +29,17 @@ public final class PathFinder {
         if (path.isPresent()) {
             return path.get();
         }
+
         return randomNextCell();
     }
 
     private static EntityType setCreatureTarget(Creature creature) {
+
         if (isAvailableToMultiply(creature)) {
 
             return creature.getType();
         }
-        return switch (creature.getType()) {
-            case EntityType.PREDATOR -> EntityType.HERBIVORE;
-            case EntityType.HERBIVORE -> EntityType.GRASS;
-            default -> throw new IllegalArgumentException("Unexpected Creature: " + creature.getType());
-        };
+        return CreatureUtils.getCreatureFoodType(creature);
     }
 
     private static boolean isAvailableToMultiply(Creature creature) {
@@ -67,8 +66,8 @@ public final class PathFinder {
 
         while (!queue.isEmpty()) {
             Coordinates cell = queue.poll();
-            for (var dir : Directions.FOUR_NEAR_DIRECTIONS) {
-                Coordinates nextCell = new Coordinates(cell.getCoordinateX() + dir[0], cell.getCoordinateY() + dir[1]);
+            for (var dir : Directions.NEAR_DIRECTIONS) {
+                Coordinates nextCell = new Coordinates(cell.getX() + dir[0], cell.getY() + dir[1]);
                 if (mapHasNoCell(nextCell) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
                     continue;
                 } else if (visitedDirections.contains(nextCell)) {
@@ -95,8 +94,8 @@ public final class PathFinder {
 
     private static boolean mapHasNoCell(Coordinates cell) {
         int border = map.size();
-        int x = cell.getCoordinateX();
-        int y = cell.getCoordinateY();
+        int x = cell.getX();
+        int y = cell.getY();
         if (x < 0 || y < 0) {
             return true;
         }
@@ -122,11 +121,11 @@ public final class PathFinder {
         Coordinates nextCell;
         Set<int[]> visitedDirections = new HashSet<>();
 
-        while (visitedDirections.size() != Directions.FOUR_NEAR_DIRECTIONS.length) {
-            int[] dir = Directions.FOUR_NEAR_DIRECTIONS[PathFinder.RANDOM.nextInt(Directions.FOUR_NEAR_DIRECTIONS.length)];
+        while (visitedDirections.size() != Directions.NEAR_DIRECTIONS.length) {
+            int[] dir = Directions.NEAR_DIRECTIONS[PathFinder.RANDOM.nextInt(Directions.NEAR_DIRECTIONS.length)];
             visitedDirections.add(dir);
 
-            nextCell = new Coordinates(startPosition.getCoordinateX() + dir[0], startPosition.getCoordinateY() + dir[1]);
+            nextCell = new Coordinates(startPosition.getX() + dir[0], startPosition.getY() + dir[1]);
             if (mapHasNoCell(nextCell) || !CellUtils.isCellVoid(nextCell, map)) {
                 continue;
             }

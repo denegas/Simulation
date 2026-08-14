@@ -45,9 +45,9 @@ public final class MultiplyService {
         List<Creature> parentCreatures = List.of(firstCreature, secondCreature);
 
         for (Creature parent : parentCreatures) {
-            for (int[] dir : Directions.FOUR_NEAR_DIRECTIONS) {
-                Coordinates cellToAddCreature = new Coordinates(parent.getCoordinates().getCoordinateX() + dir[0],
-                        parent.getCoordinates().getCoordinateY() + dir[1]);
+            for (int[] dir : Directions.NEAR_DIRECTIONS) {
+                Coordinates cellToAddCreature = new Coordinates(parent.getCoordinates().getX() + dir[0],
+                        parent.getCoordinates().getY() + dir[1]);
 
                 if (CellUtils.isCellVoid(cellToAddCreature, map)) {
                     Creature child;

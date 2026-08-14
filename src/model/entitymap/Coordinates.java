@@ -2,37 +2,37 @@ package model.entitymap;
 
 public final class Coordinates {
 
-    private final int coordinateX;
-    private final int coordinateY;
+    private final int x;
+    private final int y;
 
-    public Coordinates(int coordinateX, int coordinateY) {
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
+    public Coordinates(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public int getCoordinateX() {
-        return coordinateX;
+    public int getX() {
+        return x;
     }
 
-    public int getCoordinateY() {
-        return coordinateY;
+    public int getY() {
+        return y;
     }
 
     @Override
     public String toString() {
-        return "X: " + getCoordinateX() + " Y: " + getCoordinateY();
+        return "X: " + getX() + " Y: " + getY();
     }
 
     @Override
     public boolean equals(Object o) {
-        Coordinates cord1 = (Coordinates) o;
-        return (this.getCoordinateX() == cord1.getCoordinateX()) && (this.getCoordinateY() == cord1.getCoordinateY());
+        Coordinates other = (Coordinates) o;
+        return (this.getX() == other.getX()) && (this.getY() == other.getY());
     }
 
     @Override
     public int hashCode() {
-        int result = Integer.hashCode(coordinateX);
-        result = 31 * result + Integer.hashCode(coordinateY);
+        int result = Integer.hashCode(x);
+        result = 31 * result + Integer.hashCode(y);
         return result;
     }
 }
