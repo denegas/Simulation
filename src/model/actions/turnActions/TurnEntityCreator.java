@@ -6,6 +6,7 @@ import model.entitymap.EntityMap;
 import model.actions.Action;
 import model.spawning.EntityCreator;
 import model.entities.EntityType;
+import model.util.MapUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class TurnEntityCreator extends EntityCreator implements Action {
         boolean hasPredatorFood = false;
         boolean hasHerbivoreFood = false;
 
-        for (var entity : map.getNotNullEntities()) {
+        for (var entity : MapUtils.getNotNullEntities(map)) {
             switch (entity.getType()) {
                 case EntityType.HERBIVORE:
                     hasPredatorFood = true;
@@ -78,7 +79,7 @@ public class TurnEntityCreator extends EntityCreator implements Action {
 
     private void addEntitiesToVoidCells(EntityType entityTypeToCreate, int quantityToCreate, EntityMap map) {
         for (int i = 0; i < quantityToCreate; i++) {
-            List<Coordinates> voidCells = map.getVoidCells();
+            List<Coordinates> voidCells = MapUtils.getVoidCells(map);
             Coordinates voidCell = voidCells.get(RANDOM.nextInt(voidCells.size()));
             map.add(voidCell, getEntityFromType(entityTypeToCreate, voidCell));
         }

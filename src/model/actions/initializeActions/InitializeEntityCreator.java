@@ -8,6 +8,7 @@ import model.entities.EntityType;
 import model.spawning.EntitySpawnChance;
 import model.entitymap.Coordinates;
 import model.entitymap.EntityMap;
+import model.util.MapUtils;
 
 import java.util.*;
 
@@ -46,7 +47,7 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
     }
 
     private boolean hasNoEntity(EntityType entityType, EntityMap map) {
-        for (Entity entity : map.getNotNullEntities()) {
+        for (Entity entity : MapUtils.getNotNullEntities(map)) {
             if (entity.getType() == entityType) return false;
         }
         return true;
@@ -54,7 +55,7 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
 
     private void addOneEntityToRandomVoidCell(EntityType entityType, EntityMap map) {
 
-        List<Coordinates> voidCells = map.getVoidCells();
+        List<Coordinates> voidCells = MapUtils.getVoidCells(map);
         Coordinates randomCoordinates = voidCells.get(RANDOM.nextInt(voidCells.size()));
 
         map.add(randomCoordinates, getEntityFromType(entityType, randomCoordinates));

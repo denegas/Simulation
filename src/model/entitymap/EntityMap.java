@@ -31,38 +31,21 @@ public class EntityMap {
     public int size() {
         return this.size;
     }
-    public Entity get(Coordinates coordinates){
+
+    public Entity get(Coordinates coordinates) {
         return entities.get(coordinates);
     }
-    public Set<Coordinates> keySet(){
+
+    public Set<Coordinates> keySet() {
         return entities.keySet();
     }
-    public Collection<Entity> values(){
+
+    public Collection<Entity> values() {
         return entities.values();
     }
 
-    public List<Entity> getNotNullEntities() {
-        return entities.values().stream().filter(Objects::nonNull).toList();
+    public Set<Map.Entry<Coordinates, Entity>> entrySet() {
+        return entities.entrySet();
     }
 
-    public List<Coordinates> getVoidCells() {
-        return entities.entrySet()
-                .stream()
-                .filter(e -> e.getValue() == null)
-                .map(e -> e.getKey())
-                .toList();
-    }
-
-    public Map<Coordinates, Creature> getCellsWithCreatures() {
-        return entities.entrySet().stream()
-                .filter(entry -> {
-                    if (entry.getValue() == null) {
-                        return false;
-                    }
-                    EntityType type = entry.getValue().getType();
-                    return type.equals(EntityType.HERBIVORE) || type.equals(EntityType.PREDATOR);
-                })
-                .collect(Collectors
-                        .toMap(Map.Entry::getKey, e -> (Creature) e.getValue()));
-    }
 }
