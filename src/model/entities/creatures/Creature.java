@@ -38,16 +38,16 @@ public abstract class Creature extends Entity {
         return !isAlive;
     }
 
-    public void makeMove(Coordinates newCoordinates) {
-        setCoordinates(newCoordinates);
+    public void makeMove(Coordinates Coordinates) {
+        setCoordinates(Coordinates);
     }
 
     public int getSpeed() {
         return this.speed;
     }
 
-    public void setSpeed(int newValue) {
-        this.speed = newValue;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public void setHealthPoints(int healthPoints) {
@@ -58,8 +58,8 @@ public abstract class Creature extends Entity {
         return healthPoints;
     }
 
-    public void setTurnsWithoutFood(int newValue) {
-        turnsWithoutFood = newValue;
+    public void setTurnsWithoutFood(int turnsWithoutFood) {
+        this.turnsWithoutFood = turnsWithoutFood;
     }
 
     public int getTurnsWithoutFood() {
