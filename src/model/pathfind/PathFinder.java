@@ -7,6 +7,7 @@ import model.entities.EntityType;
 import model.entities.creatures.Creature;
 import model.util.CellUtils;
 import model.util.CreatureUtils;
+import model.util.MapUtils;
 
 import java.util.*;
 
@@ -68,17 +69,21 @@ public final class PathFinder {
             Coordinates cell = queue.poll();
             for (var dir : Directions.NEAR_DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getX() + dir[0], cell.getY() + dir[1]);
-                if (mapHasNoCell(nextCell) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
+
+                if (!MapUtils.hasMapCell(nextCell, map) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
                     continue;
-                } else if (visitedDirections.contains(nextCell)) {
+                }
+                if (visitedDirections.contains(nextCell)) {
                     continue;
-                } else if (CellUtils.isCellVoid(nextCell, map)) {
+                }
+                if (CellUtils.isCellVoid(nextCell, map)) {
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
                     queue.add(nextCell);
                     continue;
 
-                } else if (CellUtils.isCellTarget(nextCell, target, map)) {
+                }
+                if (CellUtils.isCellTarget(nextCell, target, map)) {
 
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
@@ -92,15 +97,7 @@ public final class PathFinder {
         return Optional.empty();
     }
 
-    private static boolean mapHasNoCell(Coordinates cell) {
-        int border = map.size();
-        int x = cell.getX();
-        int y = cell.getY();
-        if (x < 0 || y < 0) {
-            return true;
-        }
-        return (x >= border) || (y >= border);
-    }
+
 
 
     private static List<Coordinates> buildPath(Map<Coordinates, Coordinates> parent, Coordinates target) {
@@ -126,7 +123,7 @@ public final class PathFinder {
             visitedDirections.add(dir);
 
             nextCell = new Coordinates(startPosition.getX() + dir[0], startPosition.getY() + dir[1]);
-            if (mapHasNoCell(nextCell) || !CellUtils.isCellVoid(nextCell, map)) {
+            if (!MapUtils.hasMapCell(nextCell,map) || !CellUtils.isCellVoid(nextCell, map)) {
                 continue;
             }
             return List.of(nextCell);
