@@ -14,18 +14,18 @@ import java.util.List;
 public class AllCreaturesMove implements Action {
 
     @Override
-    public void execute(EntityMap map) {
-        List<Creature> creatures = EntityMapUtils.getCreatures(map);
-        Simulation.CONSOLE_RENDERER.render(map);
+    public void execute(EntityMap entityMap) {
+        List<Creature> creatures = EntityMapUtils.getCreatures(entityMap);
+        Simulation.CONSOLE_RENDERER.render(entityMap);
 
         for (Creature creature : creatures) {
             if (creature.isDead()) {
                 continue;
             }
-            List<Coordinates> path = PathFinder.getPath(map, creature.getCoordinates(), creature);
-            CreatureMoveService.execute(creature, path, map);
+            List<Coordinates> path = PathFinder.getPath(entityMap, creature.getCoordinates(), creature);
+            CreatureMoveService.execute(creature, path, entityMap);
         }
-        EntityMapUtils.cleanMapFromDeadCreatures(map);
+        EntityMapUtils.cleanMapFromDeadCreatures(entityMap);
     }
 
 

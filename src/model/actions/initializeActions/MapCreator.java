@@ -10,7 +10,7 @@ public class MapCreator implements Action {
     public void execute(EntityMap entityMap) {
 
         fillMap(entityMap);
-        Simulation.setMap(entityMap);
+        Simulation.setEntityMap(entityMap);
 
     }
 

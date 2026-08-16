@@ -9,19 +9,19 @@ public final class CellUtils {
     private CellUtils() {
     }
 
-    public static boolean isCellVoid(Coordinates cell, EntityMap map) {
-        return map.get(cell) == null;
+    public static boolean isCellVoid(Coordinates cell, EntityMap entityMap) {
+        return entityMap.get(cell) == null;
     }
 
-    public static boolean isCellTarget(Coordinates cell, EntityType target, EntityMap map) {
-        if (isCellVoid(cell, map)) {
+    public static boolean isCellTarget(Coordinates cell, EntityType target, EntityMap entityMap) {
+        if (isCellVoid(cell, entityMap)) {
             return false;
         }
-        return map.get(cell).getType().equals(target);
+        return entityMap.get(cell).getType().equals(target);
     }
 
-    public static boolean isCellGrass(Coordinates nextCell, EntityMap map) {
-        Entity entity = map.get(nextCell);
+    public static boolean isCellGrass(Coordinates nextCell, EntityMap entityMap) {
+        Entity entity = entityMap.get(nextCell);
         if (entity == null) {
             return false;
         }
@@ -34,12 +34,12 @@ public final class CellUtils {
         return dx + dy == 1;
     }
 
-    public static boolean isSameCreaturesOnCells(Coordinates cellOne, Coordinates cellTwo, EntityMap map) {
-        if (CellUtils.isCellVoid(cellOne, map) || CellUtils.isCellVoid(cellTwo, map)) {
+    public static boolean isSameCreaturesOnCells(Coordinates cellOne, Coordinates cellTwo, EntityMap entityMap) {
+        if (CellUtils.isCellVoid(cellOne, entityMap) || CellUtils.isCellVoid(cellTwo, entityMap)) {
             return false;
         }
-        EntityType firstCreatureType = map.get(cellOne).getType();
-        EntityType secondCreatureType = map.get(cellTwo).getType();
+        EntityType firstCreatureType = entityMap.get(cellOne).getType();
+        EntityType secondCreatureType = entityMap.get(cellTwo).getType();
 
         return firstCreatureType.equals(secondCreatureType);
     }

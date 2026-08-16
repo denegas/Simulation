@@ -26,24 +26,24 @@ public final class Simulation {
 
 
     private static int turnsCounter = 0;
-    private static EntityMap map;
+    private static EntityMap entityMap;
     private static volatile boolean isRunning = false;
     private static volatile boolean shouldStop = false;
 
-    public static void setMap(EntityMap map) {
-        Simulation.map = map;
+    public static void setEntityMap(EntityMap entityMap) {
+        Simulation.entityMap = entityMap;
     }
 
     public static void initialize(int mapSize) {
-        map = new EntityMap(mapSize);
+        entityMap = new EntityMap(mapSize);
         for (Action initAction : initActions) {
-            initAction.execute(map);
+            initAction.execute(entityMap);
         }
     }
 
     public static void nextTurn() {
         for (Action turnAction : turnActions) {
-            turnAction.execute(map);
+            turnAction.execute(entityMap);
         }
         turnsCounter++;
         ConsoleWriter.printTurn(turnsCounter);
@@ -58,11 +58,11 @@ public final class Simulation {
 
     // nextTurnWithEachCreatureMoveRender
     public static void nTicks(int repeatTimes) {
-        CONSOLE_RENDERER.render(map);
+        CONSOLE_RENDERER.render(entityMap);
 
         for (int i = 0; i < repeatTimes; i++) {
             for (Action turnAction : turnActionsForNTicks) {
-                turnAction.execute(map);
+                turnAction.execute(entityMap);
             }
             ConsoleWriter.printTurn(turnsCounter);
             turnsCounter++;

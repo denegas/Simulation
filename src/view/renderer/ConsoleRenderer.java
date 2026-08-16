@@ -16,12 +16,12 @@ public final class ConsoleRenderer implements Renderer {
 
     }
 
-    private static void renderOneMap(EntityMap map) {
+    private static void renderOneMap(EntityMap entityMap) {
 
-        int mapSize = map.size();
+        int mapSize = entityMap.size();
         for (int x = 0; x < mapSize; x++) {
             for (int y = 0; y < mapSize; y++) {
-                Entity entity = map.get(new Coordinates(x, y));
+                Entity entity = entityMap.get(new Coordinates(x, y));
 
                 if (isExist(entity)) {
                     printVoid();

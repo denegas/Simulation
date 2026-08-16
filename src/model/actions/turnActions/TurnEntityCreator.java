@@ -42,7 +42,7 @@ public class TurnEntityCreator extends EntityCreator implements Action {
                 increaseCounter(entry.getKey());
             }
         }
-        Simulation.setMap(map);
+        Simulation.setEntityMap(map);
     }
 
     private static Map<EntityType, Boolean> getEntityTypeBooleanMap(EntityMap map) {

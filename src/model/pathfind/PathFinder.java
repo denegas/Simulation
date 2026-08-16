@@ -15,14 +15,14 @@ import java.util.*;
 public final class PathFinder {
 
     private static final Random RANDOM = new Random();
-    private static EntityMap map;
+    private static EntityMap entityMap;
     private static Coordinates startPosition;
 
     private PathFinder() {
     }
 
     public static List<Coordinates> getPath(EntityMap map, Coordinates startPosition, Creature creature) {
-        PathFinder.map = map;
+        PathFinder.entityMap = map;
         PathFinder.startPosition = startPosition;
         EntityType target = setCreatureTarget(creature);
 
@@ -50,7 +50,7 @@ public final class PathFinder {
     private static boolean hasPartnersNear(Creature creature) {
         Optional<List<Coordinates>> path = getShortestPathToTarget(creature.getType());
         if (path.isPresent()) {
-            Creature partner = (Creature) map.get(path.get().getLast());
+            Creature partner = (Creature) entityMap.get(path.get().getLast());
             return path.get().size() <= Creature.MAX_DISTANCE_TO_MULTIPLY && partner.isCanMultiply();
         }
         return false;
@@ -70,20 +70,20 @@ public final class PathFinder {
             for (var dir : Directions.NEAR_DIRECTIONS) {
                 Coordinates nextCell = new Coordinates(cell.getX() + dir.getX(), cell.getY() + dir.getY());
 
-                if (!EntityMapUtils.hasMapCell(nextCell, map) || (!CellUtils.isCellVoid(nextCell, map) && !CellUtils.isCellTarget(nextCell, target, map))) {
+                if (!EntityMapUtils.hasMapCell(nextCell, entityMap) || (!CellUtils.isCellVoid(nextCell, entityMap) && !CellUtils.isCellTarget(nextCell, target, entityMap))) {
                     continue;
                 }
                 if (visitedDirections.contains(nextCell)) {
                     continue;
                 }
-                if (CellUtils.isCellVoid(nextCell, map)) {
+                if (CellUtils.isCellVoid(nextCell, entityMap)) {
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
                     queue.add(nextCell);
                     continue;
 
                 }
-                if (CellUtils.isCellTarget(nextCell, target, map)) {
+                if (CellUtils.isCellTarget(nextCell, target, entityMap)) {
 
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
@@ -123,7 +123,7 @@ public final class PathFinder {
             visitedDirections.add(dir);
 
             nextCell = new Coordinates(startPosition.getX() + dir.getX(), startPosition.getY() + dir.getY());
-            if (!EntityMapUtils.hasMapCell(nextCell,map) || !CellUtils.isCellVoid(nextCell, map)) {
+            if (!EntityMapUtils.hasMapCell(nextCell, entityMap) || !CellUtils.isCellVoid(nextCell, entityMap)) {
                 continue;
             }
             return List.of(nextCell);

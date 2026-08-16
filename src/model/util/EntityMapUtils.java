@@ -28,8 +28,8 @@ public final class EntityMapUtils {
         }
     }
 
-    public static boolean hasMapCell(Coordinates coordinates, EntityMap map) {
-        int border = map.size();
+    public static boolean hasMapCell(Coordinates coordinates, EntityMap entityMap) {
+        int border = entityMap.size();
         int x = coordinates.getX();
         int y = coordinates.getY();
         if (x < 0 || y < 0) {

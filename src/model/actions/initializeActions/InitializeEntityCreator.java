@@ -20,7 +20,7 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
 
         addMissingCreatures(map);
 
-        Simulation.setMap(map);
+        Simulation.setEntityMap(map);
     }
 
     private void initializeEntities(EntityMap map) {

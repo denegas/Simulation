@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 public final class CreatureMoveService {
-    private static EntityMap map;
+    private static EntityMap entityMap;
     private static Coordinates nextCell;
 
     private CreatureMoveService() {
@@ -25,7 +25,7 @@ public final class CreatureMoveService {
             return;
         }
 
-        CreatureMoveService.map = map;
+        CreatureMoveService.entityMap = map;
         Coordinates oldCell = creature.getCoordinates();
         Coordinates targetCell = path.getLast();
         nextCell = getNextCell(creature, path);
@@ -65,7 +65,7 @@ public final class CreatureMoveService {
     }
 
     private static void herbivoreMove(Creature herbivore) {
-        if (CellUtils.isCellGrass(nextCell, map)) {
+        if (CellUtils.isCellGrass(nextCell, entityMap)) {
             restoreAfterEating(herbivore);
 
         } else {
@@ -93,14 +93,14 @@ public final class CreatureMoveService {
     }
 
     private static boolean canAttack(Coordinates nextCell, Coordinates targetCell) {
-        Entity targetEntity = map.get(targetCell);
+        Entity targetEntity = entityMap.get(targetCell);
         boolean herbivoreStillAtTarget = (targetEntity != null) && CreatureUtils.isHerbivore(targetEntity);
 
         return (herbivoreStillAtTarget && CellUtils.isNeighbours(nextCell, targetCell));
     }
 
     private static void predatorAttack(Creature predator, Coordinates oldCell, Coordinates targetCell) {
-        Herbivore attackedHerbivore = (Herbivore) map.get(targetCell);
+        Herbivore attackedHerbivore = (Herbivore) entityMap.get(targetCell);
         if (isSuccessfulPredatorAttack()) {
 
             predatorDamagesHerbivore(attackedHerbivore);
@@ -111,7 +111,7 @@ public final class CreatureMoveService {
                     nextCell = targetCell;
                 }
                 attackedHerbivore.kill();
-                map.clearCell(targetCell);
+                entityMap.clearCell(targetCell);
             }
 
         } else { // if predator fails it's attack
@@ -143,9 +143,9 @@ public final class CreatureMoveService {
     }
 
     private static void finishMove(Creature creature, Coordinates oldCell, Coordinates nextCell) {
-        map.clearCell(oldCell);
+        entityMap.clearCell(oldCell);
         creature.makeMove(nextCell);
-        map.add(nextCell, creature);
-        Simulation.setMap(map);
+        entityMap.add(nextCell, creature);
+        Simulation.setEntityMap(entityMap);
     }
 }
