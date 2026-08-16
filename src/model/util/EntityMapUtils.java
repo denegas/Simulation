@@ -29,13 +29,14 @@ public final class EntityMapUtils {
     }
 
     public static boolean hasMapCell(Coordinates coordinates, EntityMap entityMap) {
-        int border = entityMap.size();
+        int borderX = entityMap.getWidth();
+        int borderY = entityMap.getHeight();
         int x = coordinates.getX();
         int y = coordinates.getY();
         if (x < 0 || y < 0) {
             return false;
         }
-        return (x < border) && (y < border);
+        return (x < borderX) && (y < borderY);
     }
 
     public static List<Coordinates> getVoidCells(EntityMap entityMap) {

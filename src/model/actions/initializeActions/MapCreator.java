@@ -15,9 +15,10 @@ public class MapCreator implements Action {
     }
 
     private static void fillMap(EntityMap entityMap) {
-        int mapSize = entityMap.size();
-        for (int i = 0; i < mapSize; i++) {
-            for (int j = 0; j < mapSize; j++) {
+        int mapWidth = entityMap.getWidth();
+        int mapHeight = entityMap.getHeight();
+        for (int i = 0; i < mapWidth; i++) {
+            for (int j = 0; j < mapHeight; j++) {
                 entityMap.add(new Coordinates(i, j));
             }
         }

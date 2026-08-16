@@ -34,8 +34,8 @@ public final class Simulation {
         Simulation.entityMap = entityMap;
     }
 
-    public static void initialize(int mapSize) {
-        entityMap = new EntityMap(mapSize);
+    public static void initialize(int mapHeight, int mapWidth) {
+        entityMap = new EntityMap(mapWidth, mapHeight);
         for (Action initAction : initActions) {
             initAction.execute(entityMap);
         }

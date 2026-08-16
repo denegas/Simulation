@@ -5,11 +5,13 @@ import java.util.*;
 
 public class EntityMap {
 
-    private final int size;
+    private final int width;
+    private final int height;
     private final Map<Coordinates, Entity> entities = new HashMap<>();
 
-    public EntityMap(int size) {
-        this.size = size;
+    public EntityMap(int width,int height) {
+        this.width = width;
+        this.height = height;
     }
 
     public void add(Coordinates coordinates, Entity entity) {
@@ -24,8 +26,11 @@ public class EntityMap {
         entities.put(coordinates, null);
     }
 
-    public int size() {
-        return this.size;
+    public int getWidth(){
+        return width;
+    }
+    public int getHeight(){
+        return height;
     }
 
     public Entity get(Coordinates coordinates) {
