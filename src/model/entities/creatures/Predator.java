@@ -5,6 +5,7 @@ import model.entities.EntityType;
 
 public class Predator extends Creature {
 
+    public static final EntityType TARGET = EntityType.HERBIVORE;
     public static final int MAX_HEALTH_POINTS = 10;
     public static final int MAX_SPEED = 2;
     public static final int LOW_SPEED = 1;
@@ -20,4 +21,8 @@ public class Predator extends Creature {
         setHealthPoints(MAX_HEALTH_POINTS);
     }
 
+    @Override
+    public EntityType getTarget() {
+        return TARGET;
+    }
 }

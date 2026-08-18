@@ -21,10 +21,10 @@ public final class PathFinder {
     private PathFinder() {
     }
 
-    public static List<Coordinates> getPath(EntityMap map, Coordinates startPosition, Creature creature) {
+    public static  List<Coordinates> getPath(EntityMap map, Coordinates startPosition, EntityType target) {
         PathFinder.entityMap = map;
         PathFinder.startPosition = startPosition;
-        EntityType target = setCreatureTarget(creature);
+
 
         Optional<List<Coordinates>> path = getShortestPathToTarget(target);
         if (path.isPresent()) {

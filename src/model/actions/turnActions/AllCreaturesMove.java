@@ -22,7 +22,7 @@ public class AllCreaturesMove implements Action {
             if (creature.isDead()) {
                 continue;
             }
-            List<Coordinates> path = PathFinder.getPath(entityMap, creature.getCoordinates(), creature);
+            List<Coordinates> path = PathFinder.getPath(entityMap, creature.getCoordinates(), creature.getTarget());
             CreatureMoveService.execute(creature, path, entityMap);
         }
         EntityMapUtils.cleanMapFromDeadCreatures(entityMap);

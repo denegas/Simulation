@@ -30,6 +30,8 @@ public abstract class Creature extends Entity {
 
     public abstract void restoreHealthPoints();
 
+    public abstract EntityType getTarget();
+
     public void kill() {
         this.isAlive = false;
     }

@@ -23,7 +23,7 @@ public class MoverAndRendererEachCreature implements Action {
             }
 
             Simulation.CONSOLE_RENDERER.render(entityMap);
-            List<Coordinates> path = PathFinder.getPath(entityMap, creature.getCoordinates(), creature);
+            List<Coordinates> path = PathFinder.getPath(entityMap, creature.getCoordinates(), creature.getTarget());
             CreatureMoveService.execute(creature, path, entityMap);
 
             Simulation.sleep(Simulation.TICK_SLEEP_MC);
