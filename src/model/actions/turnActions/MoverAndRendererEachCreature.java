@@ -15,7 +15,7 @@ public class MoverAndRendererEachCreature implements Action {
 
     @Override
     public void execute(EntityMap entityMap) {
-        List<Creature> creatures = EntityMapUtils.getCreatures(entityMap);
+        List<Creature> creatures = EntityMapUtils.getEntitiesBy(Creature.class, entityMap);
 
         for (Creature creature : creatures) {
             if (creature.isDead()) {

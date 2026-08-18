@@ -15,7 +15,7 @@ public class AllCreaturesMove implements Action {
 
     @Override
     public void execute(EntityMap entityMap) {
-        List<Creature> creatures = EntityMapUtils.getCreatures(entityMap);
+        List<Creature> creatures = EntityMapUtils.getEntitiesBy(Creature.class,entityMap);
         Simulation.CONSOLE_RENDERER.render(entityMap);
 
         for (Creature creature : creatures) {

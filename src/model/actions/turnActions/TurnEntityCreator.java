@@ -1,6 +1,7 @@
 package model.actions.turnActions;
 
 import controller.Simulation;
+import model.entities.Entity;
 import model.entitymap.Coordinates;
 import model.entitymap.EntityMap;
 import model.actions.Action;
@@ -45,11 +46,11 @@ public class TurnEntityCreator extends EntityCreator implements Action {
         Simulation.setEntityMap(map);
     }
 
-    private static Map<EntityType, Boolean> getEntityTypeBooleanMap(EntityMap map) {
+    private static Map<EntityType, Boolean> getEntityTypeBooleanMap(EntityMap entityMap) {
         boolean hasPredatorFood = false;
         boolean hasHerbivoreFood = false;
 
-        for (var entity : EntityMapUtils.getNotNullEntities(map)) {
+        for (var entity : EntityMapUtils.getEntitiesBy(Entity.class, entityMap)) {
             switch (entity.getType()) {
                 case EntityType.HERBIVORE:
                     hasPredatorFood = true;

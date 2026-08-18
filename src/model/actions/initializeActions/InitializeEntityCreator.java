@@ -46,8 +46,8 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
         }
     }
 
-    private boolean hasNoEntity(EntityType entityType, EntityMap map) {
-        for (Entity entity : EntityMapUtils.getNotNullEntities(map)) {
+    private boolean hasNoEntity(EntityType entityType, EntityMap entityMap) {
+        for (Entity entity : EntityMapUtils.getEntitiesBy(Entity.class, entityMap)) {
             if (entity.getType() == entityType) return false;
         }
         return true;
