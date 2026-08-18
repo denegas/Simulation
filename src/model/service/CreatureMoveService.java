@@ -32,18 +32,14 @@ public final class CreatureMoveService {
 
         HungryService.apply(creature);
 
-        if (MultiplyService.isMultiplyPath(creature, path, map)) {
-            nextCell = MultiplyService.multiplyMove(creature, nextCell, path, map);
+
+        if (CreatureUtils.isHerbivore(creature)) {
+            herbivoreMove(creature);
 
         } else {
-
-            if (CreatureUtils.isHerbivore(creature)) {
-                herbivoreMove(creature);
-
-            } else {
-                predatorMove(creature, oldCell, targetCell);
-            }
+            predatorMove(creature, oldCell, targetCell);
         }
+
 
         finishMove(creature, oldCell, nextCell);
     }

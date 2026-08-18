@@ -34,28 +34,6 @@ public final class PathFinder {
         return randomNextCell();
     }
 
-    private static EntityType setCreatureTarget(Creature creature) {
-
-        if (isAvailableToMultiply(creature)) {
-
-            return creature.getType();
-        }
-        return CreatureUtils.getCreatureFoodType(creature);
-    }
-
-    private static boolean isAvailableToMultiply(Creature creature) {
-        return hasPartnersNear(creature) && creature.isCanMultiply();
-    }
-
-    private static boolean hasPartnersNear(Creature creature) {
-        Optional<List<Coordinates>> path = getShortestPathToTarget(creature.getType());
-        if (path.isPresent()) {
-            Creature partner = (Creature) entityMap.get(path.get().getLast());
-            return path.get().size() <= Creature.MAX_DISTANCE_TO_MULTIPLY && partner.isCanMultiply();
-        }
-        return false;
-    }
-
     private static Optional<List<Coordinates>> getShortestPathToTarget(EntityType target) {
         Queue<Coordinates> queue = new LinkedList<>();
         queue.add(startPosition);
@@ -96,9 +74,6 @@ public final class PathFinder {
         }
         return Optional.empty();
     }
-
-
-
 
     private static List<Coordinates> buildPath(Map<Coordinates, Coordinates> parent, Coordinates target) {
         List<Coordinates> path = new ArrayList<>();

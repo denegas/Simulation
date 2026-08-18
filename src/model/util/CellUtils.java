@@ -34,14 +34,4 @@ public final class CellUtils {
         return dx + dy == 1;
     }
 
-    public static boolean isSameCreaturesOnCells(Coordinates cellOne, Coordinates cellTwo, EntityMap entityMap) {
-        if (CellUtils.isCellVoid(cellOne, entityMap) || CellUtils.isCellVoid(cellTwo, entityMap)) {
-            return false;
-        }
-        EntityType firstCreatureType = entityMap.get(cellOne).getType();
-        EntityType secondCreatureType = entityMap.get(cellTwo).getType();
-
-        return firstCreatureType.equals(secondCreatureType);
-    }
-
 }
