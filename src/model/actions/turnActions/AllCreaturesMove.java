@@ -19,7 +19,7 @@ public class AllCreaturesMove implements Action {
         Simulation.CONSOLE_RENDERER.render(entityMap);
 
         for (Creature creature : creatures) {
-            if (creature.isDead()) {
+            if (!creature.isAlive()) {
                 continue;
             }
             List<Coordinates> path = PathFinder.getPath(entityMap, creature.getCoordinates(), creature.getTarget());

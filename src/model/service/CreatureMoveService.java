@@ -129,7 +129,7 @@ public final class CreatureMoveService {
     }
 
     private static boolean isPredatorKilledHerbivore(Herbivore herbivore) {
-        return herbivore.isDead();
+        return !herbivore.isAlive();
     }
 
     private static boolean canMoveOnTarget(Coordinates oldCell, Coordinates targetCell) {

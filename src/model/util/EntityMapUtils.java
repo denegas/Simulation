@@ -29,7 +29,7 @@ public final class EntityMapUtils {
 
     public static void cleanMapFromDeadCreatures(EntityMap entityMap) {
         for (Creature creature : getEntitiesBy(Creature.class, entityMap)) {
-            if (creature.isDead()) {
+            if (!creature.isAlive()) {
                 entityMap.clearCell(creature.getCoordinates());
             }
         }

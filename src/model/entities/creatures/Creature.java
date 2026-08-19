@@ -33,8 +33,8 @@ public abstract class Creature extends Entity {
         this.isAlive = false;
     }
 
-    public boolean isDead() {
-        return !isAlive;
+    public boolean isAlive() {
+        return isAlive;
     }
 
     public void makeMove(Coordinates Coordinates) {

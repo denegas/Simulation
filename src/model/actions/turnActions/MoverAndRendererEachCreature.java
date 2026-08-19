@@ -18,7 +18,7 @@ public class MoverAndRendererEachCreature implements Action {
         List<Creature> creatures = EntityMapUtils.getEntitiesBy(Creature.class, entityMap);
 
         for (Creature creature : creatures) {
-            if (creature.isDead()) {
+            if (!creature.isAlive()) {
                 continue;
             }
 
