@@ -1,16 +1,17 @@
 package model.entities.creatures;
 
+import model.entities.Entity;
+import model.entities.environment.Grass;
 import model.entitymap.Coordinates;
-import model.entities.EntityType;
 
 public class Herbivore extends Creature {
 
     public static final int MAX_HEALTH_POINTS = 15;
     public static final int SPEED = 1;
-    public static final EntityType TARGET = EntityType.GRASS;
+    public static final Class<Grass> TARGET = Grass.class;
 
     public Herbivore(Coordinates coordinates, int healthPoints, int speed) {
-        super(coordinates, EntityType.HERBIVORE, healthPoints, speed);
+        super(coordinates, healthPoints, speed);
     }
 
     @Override
@@ -19,7 +20,7 @@ public class Herbivore extends Creature {
     }
 
     @Override
-    public EntityType getTarget() {
+    public Class<? extends Entity> getTarget() {
         return TARGET;
     }
 }

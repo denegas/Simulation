@@ -2,7 +2,6 @@ package model.entities.creatures;
 
 import model.entitymap.Coordinates;
 import model.entities.Entity;
-import model.entities.EntityType;
 
 public abstract class Creature extends Entity {
 
@@ -12,15 +11,23 @@ public abstract class Creature extends Entity {
     protected boolean isAlive = true;
     protected int turnsWithoutFood = 0;
 
-    protected Creature(Coordinates coordinates, EntityType entityType, int healthPoints, int speed) {
-        super(coordinates, entityType);
+    protected Creature(Coordinates coordinates, int healthPoints, int speed) {
+        this.coordinates = coordinates;
         this.speed = speed;
         this.healthPoints = healthPoints;
     }
 
     public abstract void restoreHealthPoints();
 
-    public abstract EntityType getTarget();
+    public abstract Class<? extends Entity> getTarget();
+    protected Coordinates coordinates;
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+    protected void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
     public void kill() {
         this.isAlive = false;

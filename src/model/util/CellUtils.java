@@ -1,9 +1,9 @@
 package model.util;
 
+import model.entities.environment.Grass;
 import model.entitymap.Coordinates;
 import model.entities.Entity;
 import model.entitymap.EntityMap;
-import model.entities.EntityType;
 
 public final class CellUtils {
     private CellUtils() {
@@ -13,11 +13,12 @@ public final class CellUtils {
         return entityMap.get(cell) == null;
     }
 
-    public static boolean isCellTarget(Coordinates cell, EntityType target, EntityMap entityMap) {
+    public static boolean isCellTarget(Coordinates cell, Class<? extends Entity> target, EntityMap entityMap) {
         if (isCellVoid(cell, entityMap)) {
             return false;
         }
-        return entityMap.get(cell).getType().equals(target);
+
+        return target.isInstance(entityMap.get(cell));
     }
 
     public static boolean isCellGrass(Coordinates nextCell, EntityMap entityMap) {
@@ -25,7 +26,7 @@ public final class CellUtils {
         if (entity == null) {
             return false;
         }
-        return entity.getType().equals(EntityType.GRASS);
+        return entity.getClass() == Grass.class;
     }
 
     public static boolean isNeighbours(Coordinates nextCell, Coordinates targetCell) {

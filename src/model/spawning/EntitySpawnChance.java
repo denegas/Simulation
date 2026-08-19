@@ -1,7 +1,7 @@
 package model.spawning;
 
-import model.entities.EntityType;
+import model.entities.Entity;
 
-public record EntitySpawnChance(EntityType type, double chance) {
+public record EntitySpawnChance(Class<? extends Entity> type, double chance) {
 
 }

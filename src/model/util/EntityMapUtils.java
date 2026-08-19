@@ -13,7 +13,7 @@ public final class EntityMapUtils {
     private EntityMapUtils() {
     }
 
-    public static <T extends Entity> List<T> getEntitiesBy(Class<T> type, EntityMap map) {
+    public static <T extends Entity> List<T> getEntitiesBy(Class<T> entityClass, EntityMap map) {
         return map.entrySet()
                 .stream()
                 .filter(entry -> {
@@ -21,9 +21,9 @@ public final class EntityMapUtils {
                         return false;
                     }
 
-                    return type.isAssignableFrom(entry.getValue().getClass());
+                    return entityClass.isAssignableFrom(entry.getValue().getClass());
                 })
-                .map(entry -> type.cast(entry.getValue()))
+                .map(entry -> entityClass.cast(entry.getValue()))
                 .collect(Collectors.toList());
     }
 

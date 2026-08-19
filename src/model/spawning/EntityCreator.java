@@ -1,7 +1,6 @@
 package model.spawning;
 
 import model.entities.Entity;
-import model.entities.EntityType;
 import model.entities.creatures.Herbivore;
 import model.entities.creatures.Predator;
 import model.entities.environment.Grass;
@@ -24,23 +23,32 @@ public abstract class EntityCreator {
     protected static final double ROCK_SPAWN_CHANCE_PER_ONE_CELL = 0.03;
 
     protected static final List<EntitySpawnChance> spawnChances = Stream.of(
-            new EntitySpawnChance(EntityType.HERBIVORE, HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL),
-            new EntitySpawnChance(EntityType.PREDATOR, PREDATOR_SPAWN_CHANCE_PER_ONE_CELL),
-            new EntitySpawnChance(EntityType.GRASS, GRASS_SPAWN_CHANCE_PER_ONE_CELL),
-            new EntitySpawnChance(EntityType.ROCK, ROCK_SPAWN_CHANCE_PER_ONE_CELL),
-            new EntitySpawnChance(EntityType.TREE, TREE_SPAWN_CHANCE_PER_ONE_CELL)
+            new EntitySpawnChance(Herbivore.class, HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(Predator.class, PREDATOR_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(Grass.class, GRASS_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(Rock.class, ROCK_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(Tree.class, TREE_SPAWN_CHANCE_PER_ONE_CELL)
     )
             .sorted(Comparator.comparingDouble(EntitySpawnChance::chance))
             .toList();
 
-    protected Entity getEntityFromType(EntityType type, Coordinates cell) {
-        return switch (type) {
-            case EntityType.HERBIVORE -> new Herbivore(cell, Herbivore.MAX_HEALTH_POINTS, Herbivore.SPEED);
-            case EntityType.PREDATOR -> new Predator(cell, Predator.MAX_HEALTH_POINTS, Predator.MAX_SPEED);
-            case EntityType.GRASS -> new Grass(cell);
-            case EntityType.ROCK -> new Rock(cell);
-            case EntityType.TREE -> new Tree(cell);
-            default -> throw new IllegalArgumentException("Unexpected entity type: " + type);
-        };
+    protected Entity getEntityFromClass(Class<? extends Entity> entityClass, Coordinates coordinates) {
+        if (entityClass == Herbivore.class) {
+            return new Herbivore(coordinates, Herbivore.MAX_HEALTH_POINTS, Herbivore.SPEED);
+        }
+        if (entityClass == Predator.class) {
+            return new Predator(coordinates, Predator.MAX_HEALTH_POINTS, Predator.MAX_SPEED);
+        }
+        if (entityClass == Grass.class) {
+            return new Grass();
+        }
+        if (entityClass == Rock.class) {
+            return new Rock();
+        }
+        if (entityClass == Tree.class) {
+            return new Tree();
+        }
+
+        throw new IllegalArgumentException("Unexpected entity class: " + entityClass);
     }
 }

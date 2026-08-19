@@ -1,9 +1,9 @@
 package model.pathfind;
 
+import model.entities.Entity;
 import model.entitymap.Coordinates;
 import model.entitymap.Directions;
 import model.entitymap.EntityMap;
-import model.entities.EntityType;
 import model.entities.creatures.Creature;
 import model.util.CellUtils;
 import model.util.CreatureUtils;
@@ -21,7 +21,7 @@ public final class PathFinder {
     private PathFinder() {
     }
 
-    public static  List<Coordinates> getPath(EntityMap map, Coordinates startPosition, EntityType target) {
+    public static List<Coordinates> getPath(EntityMap map, Coordinates startPosition, Class<? extends Entity> target) {
         PathFinder.entityMap = map;
         PathFinder.startPosition = startPosition;
 
@@ -34,7 +34,7 @@ public final class PathFinder {
         return randomNextCell();
     }
 
-    private static Optional<List<Coordinates>> getShortestPathToTarget(EntityType target) {
+    private static Optional<List<Coordinates>> getShortestPathToTarget(Class<? extends Entity> target) {
         Queue<Coordinates> queue = new LinkedList<>();
         queue.add(startPosition);
 
@@ -65,6 +65,7 @@ public final class PathFinder {
 
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
+
                     return Optional.of(buildPath(parent, nextCell));
                 }
                 parent.put(nextCell, cell);

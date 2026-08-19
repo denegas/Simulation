@@ -2,11 +2,14 @@ package model.actions.turnActions;
 
 import controller.Simulation;
 import model.entities.Entity;
+import model.entities.creatures.Creature;
+import model.entities.creatures.Herbivore;
+import model.entities.creatures.Predator;
+import model.entities.environment.Grass;
 import model.entitymap.Coordinates;
 import model.entitymap.EntityMap;
 import model.actions.Action;
 import model.spawning.EntityCreator;
-import model.entities.EntityType;
 import model.util.EntityMapUtils;
 
 import java.util.List;
@@ -24,19 +27,19 @@ public class TurnEntityCreator extends EntityCreator implements Action {
 
     @Override
     public void execute(EntityMap map) {
-        Map<EntityType, Boolean> hasFoodForCreature = getEntityTypeBooleanMap(map);
+        Map<Class<? extends Creature>, Boolean> hasFoodForCreature = getEntityTypeBooleanMap(map);
 
         for (var entry : hasFoodForCreature.entrySet()) {
 
             if (withoutPredatorFoodCounter > MAX_TURNS_WITHOUT_FOOD) {
-                addMissingFood(EntityType.PREDATOR, map);
+                addMissingFoodFor(Predator.class, map);
                 withoutPredatorFoodCounter = 0;
             }
             if (withoutHerbivoreFoodCounter > MAX_TURNS_WITHOUT_FOOD) {
-                addMissingFood(EntityType.HERBIVORE, map);
+                addMissingFoodFor(Herbivore.class, map);
                 withoutHerbivoreFoodCounter = 0;
             }
-            if (hasNoPredators(map)) {
+            if (hasNoEntitiesBy(Predator.class, map)) {
                 addPredators(map);
             }
             if (hasNoFood(entry)) {
@@ -46,70 +49,73 @@ public class TurnEntityCreator extends EntityCreator implements Action {
         Simulation.setEntityMap(map);
     }
 
-    private static Map<EntityType, Boolean> getEntityTypeBooleanMap(EntityMap entityMap) {
+    private static Map<Class<? extends Creature>, Boolean> getEntityTypeBooleanMap(EntityMap entityMap) {
         boolean hasPredatorFood = false;
         boolean hasHerbivoreFood = false;
 
         for (var entity : EntityMapUtils.getEntitiesBy(Entity.class, entityMap)) {
-            switch (entity.getType()) {
-                case EntityType.HERBIVORE:
-                    hasPredatorFood = true;
-                    break;
-                case EntityType.GRASS:
-                    hasHerbivoreFood = true;
-                    break;
+            if (entity instanceof Herbivore){
+                hasPredatorFood = true;
+
+            } else if (entity instanceof Grass){
+                hasHerbivoreFood = true;
             }
+
         }
-        return Map.of(EntityType.HERBIVORE, hasHerbivoreFood, EntityType.PREDATOR, hasPredatorFood);
+        return Map.of(Herbivore.class, hasHerbivoreFood, Predator.class, hasPredatorFood);
     }
 
-    private void addMissingFood(EntityType hungryCreature, EntityMap map) {
+    private void addMissingFoodFor(Class<? extends Creature> hungryCreature, EntityMap map) {
         int halfMapSize = (map.getWidth()+ map.getHeight()) / 2;
         int foodQuantity = RANDOM.nextInt(MIN_FOOD_QUANTITY_TO_CREATE, halfMapSize);
-        EntityType foodType = getFoodType(hungryCreature);
+        Class<? extends Entity> foodType = getFoodType(hungryCreature);
         addEntitiesToVoidCells(foodType, foodQuantity, map);
     }
 
-    private EntityType getFoodType(EntityType creatureType) {
-        return switch (creatureType) {
-            case HERBIVORE -> EntityType.GRASS;
-            case PREDATOR -> EntityType.HERBIVORE;
-            default -> throw new IllegalArgumentException("Unexpected creature type: " + creatureType);
-        };
+    private Class<? extends Entity> getFoodType(Class<? extends Creature> creatureClass) {
+
+        if (Herbivore.class.isAssignableFrom(creatureClass)){
+            return Grass.class;
+        }
+        if (Predator.class.isAssignableFrom(creatureClass)){
+            return Herbivore.class;
+        }
+        throw new IllegalArgumentException("Unexpected creature class: " + creatureClass);
     }
 
-    private void addEntitiesToVoidCells(EntityType entityTypeToCreate, int quantityToCreate, EntityMap map) {
+    private void addEntitiesToVoidCells(Class<? extends Entity> entityToCreate, int quantityToCreate, EntityMap map) {
         for (int i = 0; i < quantityToCreate; i++) {
             List<Coordinates> voidCells = EntityMapUtils.getVoidCells(map);
             Coordinates voidCell = voidCells.get(RANDOM.nextInt(voidCells.size()));
-            map.add(voidCell, getEntityFromType(entityTypeToCreate, voidCell));
+            map.add(voidCell, getEntityFromClass(entityToCreate, voidCell));
         }
     }
 
-    private boolean hasNoPredators(EntityMap map) {
-        return map.values().stream().filter(Objects::nonNull).noneMatch(e -> e.getType().equals(EntityType.PREDATOR));
+    private boolean hasNoEntitiesBy(Class<? extends Entity> entityClass, EntityMap entityMap) {
+        return entityMap.values()
+                .stream()
+                .filter(Objects::nonNull)
+                .noneMatch(e -> entityClass.isInstance(e));
     }
 
-    private void addPredators(EntityMap map) {
-        int halfMapSize = (map.getWidth()+ map.getHeight()) / 2;
+    private void addPredators(EntityMap entityMap) {
+        int halfMapSize = (entityMap.getWidth()+ entityMap.getHeight()) / 2;
         int predatorsQuantity = RANDOM.nextInt(MIN_PREDATORS_QUANTITY_TO_CREATE, halfMapSize);
-        addEntitiesToVoidCells(EntityType.PREDATOR, predatorsQuantity, map);
+        addEntitiesToVoidCells(Predator.class, predatorsQuantity, entityMap);
     }
 
-    private static boolean hasNoFood(Map.Entry<EntityType, Boolean> entryWithCreatureAndFood) {
+    private static boolean hasNoFood(Map.Entry<Class<? extends Creature>, Boolean> entryWithCreatureAndFood) {
         return !entryWithCreatureAndFood.getValue();
     }
 
-    private void increaseCounter(EntityType entityType) {
-        switch (entityType) {
-            case HERBIVORE:
-                withoutHerbivoreFoodCounter++;
-                break;
-            case PREDATOR:
-                withoutPredatorFoodCounter++;
-                break;
-            default:
-                throw new IllegalArgumentException("unexpected entityType: " + entityType);
+    private void increaseCounter(Class<? extends Creature> entityClass) {
+
+        if (entityClass.isAssignableFrom(Herbivore.class)){
+            withoutHerbivoreFoodCounter++;
+        } else if (entityClass.isAssignableFrom(Predator.class)){
+            withoutPredatorFoodCounter++;
+        } else{
+            throw new IllegalArgumentException("Unexpected entityClass: " + entityClass);
         }
     }
 }
