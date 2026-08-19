@@ -9,6 +9,8 @@ import model.entitymap.Coordinates;
 import model.entities.Entity;
 import model.entitymap.EntityMap;
 
+import java.util.Map;
+
 
 public final class ConsoleRenderer implements Renderer {
 
@@ -20,6 +22,13 @@ public final class ConsoleRenderer implements Renderer {
     private static final String TREE_VIEW = "🌴";
     private static final String VOID_VIEW = "--";
 
+    private static final Map<Class<? extends Entity>, String> entityView = Map.of(
+            Predator.class, PREDATOR_VIEW,
+            Herbivore.class, HERBIVORE_VIEW,
+            Grass.class, GRASS_VIEW,
+            Rock.class, ROCK_VIEW,
+            Tree.class, TREE_VIEW
+    );
 
 
     @Override
@@ -58,25 +67,10 @@ public final class ConsoleRenderer implements Renderer {
     }
 
     private static void printEntity(Entity entity) {
-        System.out.print(getEntityView(entity.getClass()) + SPACE_BETWEEN_ENTITIES);
+        System.out.print(getEntityView(entity) + SPACE_BETWEEN_ENTITIES);
     }
-    //TODO: place view and classes in map
-    private static String getEntityView(Class<? extends Entity> entityClass){
-        if (entityClass == Predator.class){
-            return PREDATOR_VIEW;
-        }
-        if (entityClass == Herbivore.class){
-            return HERBIVORE_VIEW;
-        }
-        if (entityClass == Grass.class){
-            return GRASS_VIEW;
-        }
-        if (entityClass == Tree.class){
-            return TREE_VIEW;
-        }
-        if (entityClass == Rock.class){
-            return ROCK_VIEW;
-        }
-        throw new IllegalArgumentException("Unexpected Entity class: " + entityClass);
+
+    private static String getEntityView(Entity entity) {
+        return entityView.get(entity.getClass());
     }
 }
