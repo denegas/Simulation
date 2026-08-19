@@ -1,6 +1,6 @@
 package model.actions.turnActions;
 
-import controller.Simulation;
+
 import model.actions.Action;
 import model.entitymap.Coordinates;
 import model.entitymap.EntityMap;
@@ -16,7 +16,6 @@ public class AllCreaturesMove implements Action {
     @Override
     public void execute(EntityMap entityMap) {
         List<Creature> creatures = EntityMapUtils.getEntitiesBy(Creature.class,entityMap);
-        Simulation.CONSOLE_RENDERER.render(entityMap);
 
         for (Creature creature : creatures) {
             if (!creature.isAlive()) {

@@ -1,6 +1,5 @@
 package model.actions.turnActions;
 
-import controller.Simulation;
 import model.entities.Entity;
 import model.entities.creatures.Creature;
 import model.entities.creatures.Herbivore;
@@ -46,7 +45,6 @@ public class TurnEntityCreator extends EntityCreator implements Action {
                 increaseCounter(entry.getKey());
             }
         }
-        Simulation.setEntityMap(map);
     }
 
     private static Map<Class<? extends Creature>, Boolean> getEntityTypeBooleanMap(EntityMap entityMap) {

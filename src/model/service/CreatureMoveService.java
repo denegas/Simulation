@@ -1,6 +1,5 @@
 package model.service;
 
-import controller.Simulation;
 import model.entitymap.Coordinates;
 import model.entitymap.EntityMap;
 import model.entities.Entity;
@@ -142,6 +141,5 @@ public final class CreatureMoveService {
         entityMap.clearCell(oldCell);
         creature.makeMove(nextCell);
         entityMap.add(nextCell, creature);
-        Simulation.setEntityMap(entityMap);
     }
 }

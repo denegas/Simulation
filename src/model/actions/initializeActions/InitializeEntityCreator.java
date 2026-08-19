@@ -1,6 +1,6 @@
 package model.actions.initializeActions;
 
-import controller.Simulation;
+
 import model.actions.Action;
 import model.entities.creatures.Herbivore;
 import model.entities.creatures.Predator;
@@ -20,7 +20,6 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
 
         addMissingCreatures(map);
 
-        Simulation.setEntityMap(map);
     }
 
     private void initializeEntities(EntityMap map) {

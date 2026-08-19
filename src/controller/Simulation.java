@@ -5,51 +5,47 @@ import model.actions.Action;
 import model.actions.turnActions.AllCreaturesMove;
 import model.actions.initializeActions.InitializeEntityCreator;
 import model.actions.initializeActions.MapCreator;
-import model.actions.turnActions.MoverAndRendererEachCreature;
 import model.actions.turnActions.TurnEntityCreator;
 import view.ConsoleWriter;
-import view.renderer.ConsoleRenderer;
-import view.renderer.RenderMode;
+import view.renderer.Renderer;
 
 import java.util.List;
 
 public final class Simulation {
-    public static final ConsoleRenderer CONSOLE_RENDERER = new ConsoleRenderer();
     public static final int TURN_SLEEP_MC = 1800;
     public static final int TICK_SLEEP_MC = 500;
     public static final int MIN_MAP_SIZE = 4;
     public static final int MAX_MAP_SIZE = 50;
+    public Renderer renderer;
 
     private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
-    private static final List<Action> turnActionsForNTicks = List.of(new MoverAndRendererEachCreature(), new TurnEntityCreator());
+    private static final List<Action> turnActionsForNTicks = List.of(new TurnEntityCreator());
 
 
     private static int turnsCounter = 0;
-    private static EntityMap entityMap;
-    private static volatile boolean isRunning = false;
-    private static volatile boolean shouldStop = false;
+    private EntityMap entityMap;
 
-    public static void setEntityMap(EntityMap entityMap) {
-        Simulation.entityMap = entityMap;
-    }
+    public Simulation(EntityMap entityMap, Renderer renderer) {
+        this.renderer = renderer;
+        this.entityMap = entityMap;
 
-    public static void initialize(int mapHeight, int mapWidth) {
-        entityMap = new EntityMap(mapWidth, mapHeight);
         for (Action initAction : initActions) {
             initAction.execute(entityMap);
         }
     }
 
-    public static void nextTurn() {
+    public void nextTurn() {
         for (Action turnAction : turnActions) {
             turnAction.execute(entityMap);
         }
+        renderer.render(entityMap);
         turnsCounter++;
+
         ConsoleWriter.printTurn(turnsCounter);
     }
 
-    public static void nextNTurns(int repeatTimes) {
+    public void nextNTurns(int repeatTimes) {
         for (int i = 0; i < repeatTimes; i++) {
             nextTurn();
             sleep(TURN_SLEEP_MC);
@@ -57,8 +53,8 @@ public final class Simulation {
     }
 
     // nextTurnWithEachCreatureMoveRender
-    public static void nTicks(int repeatTimes) {
-        CONSOLE_RENDERER.render(entityMap);
+    public void nTicks(int repeatTimes) {
+        renderer.render(entityMap);
 
         for (int i = 0; i < repeatTimes; i++) {
             for (Action turnAction : turnActionsForNTicks) {
@@ -70,32 +66,16 @@ public final class Simulation {
         }
     }
 
-    public static void startSimulation(RenderMode renderMode) {
-        Thread simulationThread = new Thread(() -> {
-            isRunning = true;
-            shouldStop = false;
+    public void startSimulation() {
 
-            while (isRunning && !shouldStop) {
-                renderMode.run(1);
-            }
-            isRunning = false;
-        });
-
-        simulationThread.setDaemon(false);
-        simulationThread.start();
     }
 
-    public static void pauseSimulation() {
-        shouldStop = true;
+    public void pauseSimulation() {
 
-        while (isRunning) {
-            Thread.yield();
-        }
-        shouldStop = false;
     }
 
 
-    public static void sleep(int millis) {
+    public void sleep(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
