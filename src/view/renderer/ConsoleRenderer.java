@@ -15,12 +15,12 @@ import java.util.Map;
 public final class ConsoleRenderer implements Renderer {
 
     private static final String SPACE_BETWEEN_ENTITIES = " ";
-    private static final String PREDATOR_VIEW = "🦁";
-    private static final String HERBIVORE_VIEW = "🦓";
-    private static final String GRASS_VIEW = "🍀";
-    private static final String ROCK_VIEW = "🌑";
-    private static final String TREE_VIEW = "🌴";
-    private static final String VOID_VIEW = "--";
+    private static final String PREDATOR_VIEW = "🦁️ ";
+    private static final String HERBIVORE_VIEW = "🦓️ ";
+    private static final String GRASS_VIEW = "🍀️ ";
+    private static final String ROCK_VIEW = "\uD83E\uDEA8️ ";
+    private static final String TREE_VIEW = "\uD83C\uDF33️ ";
+    private static final String VOID_VIEW = "⬛️ ";
 
     private static final Map<Class<? extends Entity>, String> entityView = Map.of(
             Predator.class, PREDATOR_VIEW,
