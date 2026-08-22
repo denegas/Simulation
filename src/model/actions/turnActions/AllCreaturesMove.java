@@ -4,10 +4,10 @@ package model.actions.turnActions;
 import model.actions.Action;
 import model.entitymap.Coordinates;
 import model.entitymap.EntityMap;
-import model.pathfind.PathFinder;
 import model.service.CreatureMoveService;
 import model.entities.creatures.Creature;
 import model.util.EntityMapUtils;
+import resources.SimulationConfig;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class AllCreaturesMove implements Action {
             if (!creature.isAlive()) {
                 continue;
             }
-            List<Coordinates> path = PathFinder.getPath(entityMap, creature.getCoordinates(), creature.getTarget());
+            List<Coordinates> path = SimulationConfig.PATH_FINDER.getPath(entityMap, creature.getCoordinates(), creature.getTarget());
             CreatureMoveService.execute(creature, path, entityMap);
         }
         EntityMapUtils.cleanMapFromDeadCreatures(entityMap);
