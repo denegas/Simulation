@@ -14,7 +14,6 @@ import java.util.Map;
 
 public final class ConsoleRenderer implements Renderer {
 
-    private static final String SPACE_BETWEEN_ENTITIES = " ";
     private static final String PREDATOR_VIEW = "🦁️ ";
     private static final String HERBIVORE_VIEW = "🦓️ ";
     private static final String GRASS_VIEW = "🍀️ ";
@@ -63,11 +62,11 @@ public final class ConsoleRenderer implements Renderer {
     }
 
     private static void printVoid() {
-        System.out.print(VOID_VIEW + SPACE_BETWEEN_ENTITIES);
+        System.out.print(VOID_VIEW);
     }
 
     private static void printEntity(Entity entity) {
-        System.out.print(getEntityView(entity) + SPACE_BETWEEN_ENTITIES);
+        System.out.print(getEntityView(entity));
     }
 
     private static String getEntityView(Entity entity) {

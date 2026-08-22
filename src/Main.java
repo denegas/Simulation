@@ -3,7 +3,7 @@ import model.entitymap.EntityMap;
 import view.renderer.ConsoleRenderer;
 import view.renderer.Renderer;
 
-class Main {
+public class Main {
     public static void main(String[] args) {
         EntityMap entityMap = new EntityMap(10,10);
         Renderer consoleRenderer = new ConsoleRenderer();
