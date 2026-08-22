@@ -1,6 +1,6 @@
 package view;
 
-import controller.Simulation;
+import resources.SimulationConfig;
 
 public final class ConsoleWriter {
 
@@ -17,7 +17,7 @@ public final class ConsoleWriter {
 
     public static void printMapSizeError() {
         System.out.println("Map size must be between " +
-                Simulation.MIN_MAP_SIZE + " and " + Simulation.MAX_MAP_SIZE + "!");
+                SimulationConfig.MIN_MAP_SIZE + " and " + SimulationConfig.MAX_MAP_SIZE + "!");
     }
 
     public static void printRenderModes() {

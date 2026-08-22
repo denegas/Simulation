@@ -6,25 +6,24 @@ import model.actions.turnActions.AllCreaturesMove;
 import model.actions.initializeActions.InitializeEntityCreator;
 import model.actions.initializeActions.MapCreator;
 import model.actions.turnActions.TurnEntityCreator;
+import resources.SimulationConfig;
 import view.ConsoleWriter;
 import view.renderer.Renderer;
 
 import java.util.List;
 
 public final class Simulation {
-    public static final int TURN_SLEEP_MC = 1800;
-    public static final int TICK_SLEEP_MC = 500;
-    public static final int MIN_MAP_SIZE = 4;
-    public static final int MAX_MAP_SIZE = 50;
-    public Renderer renderer;
+
+    private final Renderer renderer;
+    private final EntityMap entityMap;
 
     private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
     private static final List<Action> turnActionsForNTicks = List.of(new TurnEntityCreator());
 
 
-    private static int turnsCounter = 0;
-    private EntityMap entityMap;
+    private int turnsCounter = 0;
+
 
     public Simulation(EntityMap entityMap, Renderer renderer) {
         this.renderer = renderer;
@@ -48,7 +47,7 @@ public final class Simulation {
     public void nextNTurns(int repeatTimes) {
         for (int i = 0; i < repeatTimes; i++) {
             nextTurn();
-            sleep(TURN_SLEEP_MC);
+            sleep(SimulationConfig.TURN_SLEEP_MC);
         }
     }
 
