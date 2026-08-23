@@ -33,19 +33,19 @@ public abstract class EntityCreator {
             .toList();
 
     protected Entity getEntityFromClass(Class<? extends Entity> entityClass, Coordinates coordinates) {
-        if (entityClass == Herbivore.class) {
+        if (entityClass.isAssignableFrom(Herbivore.class)) {
             return new Herbivore(coordinates, Herbivore.MAX_HEALTH_POINTS, Herbivore.SPEED);
         }
-        if (entityClass == Predator.class) {
+        if (entityClass.isAssignableFrom(Predator.class)) {
             return new Predator(coordinates, Predator.MAX_HEALTH_POINTS, Predator.MAX_SPEED);
         }
-        if (entityClass == Grass.class) {
+        if (entityClass.isAssignableFrom(Grass.class)) {
             return new Grass();
         }
-        if (entityClass == Rock.class) {
+        if (entityClass.isAssignableFrom(Rock.class)) {
             return new Rock();
         }
-        if (entityClass == Tree.class) {
+        if (entityClass.isAssignableFrom(Tree.class)) {
             return new Tree();
         }
 
