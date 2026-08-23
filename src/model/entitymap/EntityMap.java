@@ -36,10 +36,6 @@ public class EntityMap {
         return Optional.ofNullable(entities.get(coordinates));
     }
 
-    public Set<Coordinates> keySet() {
-        return entities.keySet();
-    }
-
     public Collection<Entity> values() {
         return entities.values();
     }
