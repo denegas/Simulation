@@ -5,6 +5,7 @@ import model.entities.creatures.Creature;
 import model.entitymap.Coordinates;
 import model.entitymap.EntityMap;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,13 +17,8 @@ public final class EntityMapUtils {
     public static <T extends Entity> List<T> getEntitiesBy(Class<T> entityClass, EntityMap map) {
         return map.entrySet()
                 .stream()
-                .filter(entry -> {
-                    if (entry.getValue() == null) {
-                        return false;
-                    }
-
-                    return entityClass.isAssignableFrom(entry.getValue().getClass());
-                })
+                .filter(entry ->
+                     entityClass.isAssignableFrom(entry.getValue().getClass()))
                 .map(entry -> entityClass.cast(entry.getValue()))
                 .collect(Collectors.toList());
     }
@@ -47,10 +43,15 @@ public final class EntityMapUtils {
     }
 
     public static List<Coordinates> getVoidCells(EntityMap entityMap) {
-        return entityMap.entrySet()
-                .stream()
-                .filter(e -> e.getValue() == null)
-                .map(e -> e.getKey())
-                .toList();
+        List<Coordinates> voidCells = new ArrayList<>();
+        for (int x = 0; x < entityMap.getWidth(); x++) {
+            for (int y = 0; y < entityMap.getHeight(); y++) {
+                Coordinates coordinates = new Coordinates(x, y);
+                if (hasMapCell(coordinates, entityMap) && CellUtils.isCellVoid(coordinates, entityMap)) {
+                    voidCells.add(coordinates);
+                }
+            }
+        }
+        return voidCells;
     }
 }

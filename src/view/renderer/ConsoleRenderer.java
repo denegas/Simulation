@@ -10,6 +10,7 @@ import model.entities.Entity;
 import model.entitymap.EntityMap;
 
 import java.util.Map;
+import java.util.Optional;
 
 
 public final class ConsoleRenderer implements Renderer {
@@ -44,21 +45,18 @@ public final class ConsoleRenderer implements Renderer {
         int mapHeight = entityMap.getHeight();
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
-                Entity entity = entityMap.get(new Coordinates(x, y));
 
-                if (!isExists(entity)) {
+                Optional<Entity> entity = entityMap.get(new Coordinates(x, y));
+
+                if (entity.isEmpty()) {
                     printVoid();
                 } else {
-                    printEntity(entity);
+                    printEntity(entity.get());
                 }
             }
             //next row
             System.out.println();
         }
-    }
-
-    private static boolean isExists(Entity entity) {
-        return entity != null;
     }
 
     private static void printVoid() {

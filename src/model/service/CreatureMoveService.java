@@ -10,6 +10,7 @@ import model.util.CellUtils;
 import model.util.CreatureUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public final class CreatureMoveService {
@@ -19,18 +20,17 @@ public final class CreatureMoveService {
     private CreatureMoveService() {
     }
 
-    public static void execute(Creature creature, List<Coordinates> path, EntityMap map) {
+    public static void execute(Creature creature, List<Coordinates> path, EntityMap entityMap) {
         if (path.isEmpty()) {
             return;
         }
 
-        CreatureMoveService.entityMap = map;
+        CreatureMoveService.entityMap = entityMap;
         Coordinates oldCell = creature.getCoordinates();
         Coordinates targetCell = path.getLast();
         nextCell = getNextCell(creature, path);
 
         HungryService.apply(creature);
-
 
         if (CreatureUtils.isHerbivore(creature)) {
             herbivoreMove(creature);
@@ -88,29 +88,38 @@ public final class CreatureMoveService {
     }
 
     private static boolean canAttack(Coordinates nextCell, Coordinates targetCell) {
-        Entity targetEntity = entityMap.get(targetCell);
-        boolean herbivoreStillAtTarget = (targetEntity != null) && CreatureUtils.isHerbivore(targetEntity);
+        Optional<Entity> targetEntity = entityMap.get(targetCell);
+        if (targetEntity.isEmpty()) {
+            return false;
+        }
+
+        boolean herbivoreStillAtTarget = CreatureUtils.isHerbivore(targetEntity.get());
 
         return (herbivoreStillAtTarget && CellUtils.isNeighbours(nextCell, targetCell));
     }
 
     private static void predatorAttack(Creature predator, Coordinates oldCell, Coordinates targetCell) {
-        Herbivore attackedHerbivore = (Herbivore) entityMap.get(targetCell);
-        if (isSuccessfulPredatorAttack()) {
+        Optional<Entity> attackedHerbivoreOptional = entityMap.get(targetCell);
 
-            predatorDamagesHerbivore(attackedHerbivore);
-            if (isPredatorKilledHerbivore(attackedHerbivore)) {
-                restoreAfterEating(predator);
+        if (attackedHerbivoreOptional.isPresent()) {
 
-                if (canMoveOnTarget(oldCell, targetCell)) {
-                    nextCell = targetCell;
+            if (isSuccessfulPredatorAttack()) {
+                Herbivore attackedHerbivore = (Herbivore) attackedHerbivoreOptional.get();
+                predatorDamagesHerbivore(attackedHerbivore);
+
+                if (isPredatorKilledHerbivore(attackedHerbivore)) {
+                    restoreAfterEating(predator);
+
+                    if (canMoveOnTarget(oldCell, targetCell)) {
+                        nextCell = targetCell;
+                    }
+                    attackedHerbivore.kill();
+                    entityMap.clearCell(targetCell);
                 }
-                attackedHerbivore.kill();
-                entityMap.clearCell(targetCell);
-            }
 
-        } else { // if predator fails it's attack
-            HungryService.addHungryTurn(predator);
+            } else { // if predator fails it's attack
+                HungryService.addHungryTurn(predator);
+            }
         }
     }
 

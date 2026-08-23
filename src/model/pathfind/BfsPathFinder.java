@@ -16,8 +16,8 @@ public final class BfsPathFinder implements PathFinder {
     private EntityMap entityMap;
     private Coordinates startPosition;
 
-    public List<Coordinates> getPath(EntityMap map, Coordinates startPosition, Class<? extends Entity> target) {
-        this.entityMap = map;
+    public List<Coordinates> getPath(EntityMap entityMap, Coordinates startPosition, Class<? extends Entity> target) {
+        this.entityMap = entityMap;
         this.startPosition = startPosition;
 
 
@@ -54,10 +54,8 @@ public final class BfsPathFinder implements PathFinder {
                     visitedDirections.add(nextCell);
                     queue.add(nextCell);
                     continue;
-
                 }
                 if (CellUtils.isCellTarget(nextCell, target, entityMap)) {
-
                     parent.put(nextCell, cell);
                     visitedDirections.add(nextCell);
 
@@ -90,7 +88,7 @@ public final class BfsPathFinder implements PathFinder {
         Set<Coordinates> visitedDirections = new HashSet<>();
 
         while (visitedDirections.size() != Directions.NEAR_DIRECTIONS.length) {
-            Coordinates dir = Directions.NEAR_DIRECTIONS[BfsPathFinder.RANDOM.nextInt(Directions.NEAR_DIRECTIONS.length)];
+            Coordinates dir = Directions.NEAR_DIRECTIONS[RANDOM.nextInt(Directions.NEAR_DIRECTIONS.length)];
             visitedDirections.add(dir);
 
             nextCell = new Coordinates(startPosition.getX() + dir.getX(), startPosition.getY() + dir.getY());

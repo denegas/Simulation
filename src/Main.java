@@ -8,7 +8,7 @@ public class Main {
         EntityMap entityMap = new EntityMap(10,10);
         Renderer consoleRenderer = new ConsoleRenderer();
         Simulation simulation = new Simulation(entityMap, consoleRenderer);
-        simulation.nextNTurns(25);
+        simulation.nextNTurns(250);
 
     }
 }

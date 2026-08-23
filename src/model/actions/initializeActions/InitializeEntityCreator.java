@@ -22,14 +22,14 @@ public final class InitializeEntityCreator extends EntityCreator implements Acti
 
     }
 
-    private void initializeEntities(EntityMap map) {
-        Set<Coordinates> allCells = map.keySet();
+    private void initializeEntities(EntityMap entityMap) {
+        List<Coordinates> allCells = EntityMapUtils.getVoidCells(entityMap);
         for (var cell : allCells) {
             double randomChance = RANDOM.nextDouble();
             for (EntitySpawnChance spawnChance : spawnChances) {
                 if (randomChance <= spawnChance.chance()) {
                     Class<? extends Entity> type = spawnChance.type();
-                    map.add(cell, getEntityFromClass(type, cell));
+                    entityMap.add(cell, getEntityFromClass(type, cell));
                     break;
                 }
             }

@@ -4,7 +4,6 @@ import model.entitymap.EntityMap;
 import model.actions.Action;
 import model.actions.turnActions.AllCreaturesMove;
 import model.actions.initializeActions.InitializeEntityCreator;
-import model.actions.initializeActions.MapCreator;
 import model.actions.turnActions.TurnEntityCreator;
 import resources.SimulationConfig;
 import view.ConsoleWriter;
@@ -17,7 +16,7 @@ public final class Simulation {
     private final Renderer renderer;
     private final EntityMap entityMap;
 
-    private static final List<Action> initActions = List.of(new MapCreator(), new InitializeEntityCreator());
+    private static final List<Action> initActions = List.of(new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
     private static final List<Action> turnActionsForNTicks = List.of(new TurnEntityCreator());
 

@@ -19,15 +19,9 @@ public class EntityMap {
         entities.put(coordinates, entity);
     }
 
-// TODO: del this method and change the map to not keeping null
-    public void add(Coordinates coordinates) {
-        validate(coordinates);
-        entities.put(coordinates, null);
-    }
-
     public void clearCell(Coordinates coordinates) {
         validate(coordinates);
-        entities.put(coordinates, null);
+        entities.remove(coordinates);
     }
 
     public int getWidth(){
@@ -37,9 +31,9 @@ public class EntityMap {
         return height;
     }
 
-    public Entity get(Coordinates coordinates) {
+    public Optional<Entity> get(Coordinates coordinates) {
         validate(coordinates);
-        return entities.get(coordinates);
+        return Optional.ofNullable(entities.get(coordinates));
     }
 
     public Set<Coordinates> keySet() {
@@ -53,8 +47,11 @@ public class EntityMap {
     public Set<Map.Entry<Coordinates, Entity>> entrySet() {
         return entities.entrySet();
     }
+
     private void validate(Coordinates coordinates){
-        if(coordinates.getX() >= this.width || coordinates.getY() >= this.height){
+        int x = coordinates.getX();
+        int y = coordinates.getY();
+        if((x > this.width || y > this.height) || x < 0 || y < 0) {
             throw new RuntimeException("entityMap doesnt has coordinates: " + coordinates);
         }
     }

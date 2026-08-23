@@ -5,12 +5,14 @@ import model.entitymap.Coordinates;
 import model.entities.Entity;
 import model.entitymap.EntityMap;
 
+import java.util.Optional;
+
 public final class CellUtils {
     private CellUtils() {
     }
 
     public static boolean isCellVoid(Coordinates cell, EntityMap entityMap) {
-        return entityMap.get(cell) == null;
+        return entityMap.get(cell).isEmpty();
     }
 
     public static boolean isCellTarget(Coordinates cell, Class<? extends Entity> target, EntityMap entityMap) {
@@ -18,15 +20,16 @@ public final class CellUtils {
             return false;
         }
 
-        return target.isInstance(entityMap.get(cell));
+        return target.isInstance(entityMap.get(cell).orElseThrow());
     }
 
     public static boolean isCellGrass(Coordinates nextCell, EntityMap entityMap) {
-        Entity entity = entityMap.get(nextCell);
-        if (entity == null) {
+        Optional<Entity> entity = entityMap.get(nextCell);
+        if (entity.isEmpty()) {
+
             return false;
         }
-        return entity.getClass() == Grass.class;
+        return entity.get().getClass() == Grass.class;
     }
 
     public static boolean isNeighbours(Coordinates nextCell, Coordinates targetCell) {
