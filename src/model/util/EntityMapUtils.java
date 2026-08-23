@@ -34,8 +34,8 @@ public final class EntityMapUtils {
     public static boolean hasMapCell(Coordinates coordinates, EntityMap entityMap) {
         int borderX = entityMap.getWidth();
         int borderY = entityMap.getHeight();
-        int x = coordinates.getX();
-        int y = coordinates.getY();
+        int x = coordinates.x();
+        int y = coordinates.y();
         if (x < 0 || y < 0) {
             return false;
         }

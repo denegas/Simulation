@@ -41,7 +41,7 @@ public final class BfsPathFinder implements PathFinder {
         while (!queue.isEmpty()) {
             Coordinates cell = queue.poll();
             for (var dir : Directions.NEAR_DIRECTIONS) {
-                Coordinates nextCell = new Coordinates(cell.getX() + dir.getX(), cell.getY() + dir.getY());
+                Coordinates nextCell = new Coordinates(cell.x() + dir.x(), cell.y() + dir.y());
 
                 if (!EntityMapUtils.hasMapCell(nextCell, entityMap) || (!CellUtils.isCellVoid(nextCell, entityMap) && !CellUtils.isCellTarget(nextCell, target, entityMap))) {
                     continue;
@@ -91,7 +91,7 @@ public final class BfsPathFinder implements PathFinder {
             Coordinates dir = Directions.NEAR_DIRECTIONS[RANDOM.nextInt(Directions.NEAR_DIRECTIONS.length)];
             visitedDirections.add(dir);
 
-            nextCell = new Coordinates(startPosition.getX() + dir.getX(), startPosition.getY() + dir.getY());
+            nextCell = new Coordinates(startPosition.x() + dir.x(), startPosition.y() + dir.y());
             if (!EntityMapUtils.hasMapCell(nextCell, entityMap) || !CellUtils.isCellVoid(nextCell, entityMap)) {
                 continue;
             }

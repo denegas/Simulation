@@ -45,8 +45,8 @@ public class EntityMap {
     }
 
     private void validate(Coordinates coordinates){
-        int x = coordinates.getX();
-        int y = coordinates.getY();
+        int x = coordinates.x();
+        int y = coordinates.y();
         if((x >= this.width || y >= this.height) || x < 0 || y < 0) {
             throw new RuntimeException("entityMap doesnt has coordinates: " + coordinates);
         }
