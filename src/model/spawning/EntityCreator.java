@@ -7,6 +7,7 @@ import model.entities.environment.Grass;
 import model.entities.environment.Rock;
 import model.entities.environment.Tree;
 import model.entitymap.Coordinates;
+import resources.SimulationConfig;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,18 +17,12 @@ import java.util.stream.Stream;
 public abstract class EntityCreator {
 
     protected static final Random RANDOM = new Random();
-    protected static final double HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL = 0.14;
-    protected static final double PREDATOR_SPAWN_CHANCE_PER_ONE_CELL = 0.1;
-    protected static final double GRASS_SPAWN_CHANCE_PER_ONE_CELL = 0.09;
-    protected static final double TREE_SPAWN_CHANCE_PER_ONE_CELL = 0.05;
-    protected static final double ROCK_SPAWN_CHANCE_PER_ONE_CELL = 0.03;
-
     protected static final List<EntitySpawnChance> spawnChances = Stream.of(
-            new EntitySpawnChance(Herbivore.class, HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL),
-            new EntitySpawnChance(Predator.class, PREDATOR_SPAWN_CHANCE_PER_ONE_CELL),
-            new EntitySpawnChance(Grass.class, GRASS_SPAWN_CHANCE_PER_ONE_CELL),
-            new EntitySpawnChance(Rock.class, ROCK_SPAWN_CHANCE_PER_ONE_CELL),
-            new EntitySpawnChance(Tree.class, TREE_SPAWN_CHANCE_PER_ONE_CELL)
+            new EntitySpawnChance(Herbivore.class, SimulationConfig.HERBIVORE_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(Predator.class, SimulationConfig.PREDATOR_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(Grass.class, SimulationConfig.GRASS_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(Rock.class, SimulationConfig.ROCK_SPAWN_CHANCE_PER_ONE_CELL),
+            new EntitySpawnChance(Tree.class, SimulationConfig.TREE_SPAWN_CHANCE_PER_ONE_CELL)
     )
             .sorted(Comparator.comparingDouble(EntitySpawnChance::chance))
             .toList();
