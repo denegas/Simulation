@@ -43,8 +43,8 @@ public final class ConsoleRenderer implements Renderer {
 
         int mapWidth = entityMap.getWidth();
         int mapHeight = entityMap.getHeight();
-        for (int x = 0; x < mapWidth; x++) {
-            for (int y = 0; y < mapHeight; y++) {
+        for (int y = 0; y < mapHeight; y++) {
+            for (int x = 0; x < mapWidth; x++) {
 
                 Optional<Entity> entity = entityMap.get(new Coordinates(x, y));
 
