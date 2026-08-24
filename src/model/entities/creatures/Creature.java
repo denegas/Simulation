@@ -7,7 +7,6 @@ import model.entitymap.EntityMap;
 
 public abstract class Creature extends Entity {
 
-    public static final int MAX_TURNS_WITHOUT_FOOD = 7;
     protected int speed;
     protected int healthPoints;
     protected boolean isAlive = true;

@@ -5,10 +5,10 @@ import view.renderer.Renderer;
 
 public class Main {
     public static void main(String[] args) {
-        EntityMap entityMap = new EntityMap(2,3);
+        EntityMap entityMap = new EntityMap(6,10);
         Renderer consoleRenderer = new ConsoleRenderer();
         Simulation simulation = new Simulation(entityMap, consoleRenderer);
-        simulation.nextNTurns(250);
+        simulation.nextNTurns(200);
 
     }
 }

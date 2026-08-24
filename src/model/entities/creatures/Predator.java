@@ -15,18 +15,14 @@ import java.util.Random;
 public class Predator extends Creature {
 
     public static final Class<? extends Entity> TARGET = Herbivore.class;
-    public static final int MAX_HEALTH_POINTS = 10;
-    public static final int MAX_SPEED = 2;
-    public static final int LOW_SPEED = 1;
-    public static final double ATTACK_CHANCE = 0.9;
-    public static final int ATTACK_POWER = 3;
+
 
     public Predator(Coordinates coordinates, int healthPoints, int speed) {
         super(coordinates, healthPoints, speed);
     }
 
     private void restoreHealthPoints() {
-        setHealthPoints(MAX_HEALTH_POINTS);
+        setHealthPoints(SimulationConfig.PREDATOR_MAX_HEALTH_POINTS);
     }
 
     @Override
@@ -58,7 +54,7 @@ public class Predator extends Creature {
     }
 
     private Coordinates getNextCell(List<Coordinates> path) {
-        int step = Math.min(speed, path.size() - MAX_SPEED);
+        int step = Math.min(speed, path.size() - SimulationConfig.PREDATOR_MAX_SPEED);
         step = Math.max(step, 0);
 
         return path.get(step);
@@ -83,7 +79,7 @@ public class Predator extends Creature {
 
             if (isHerbivoreDied(attackedHerbivore)) {
                 restoreHealthPoints();
-                speed = MAX_SPEED;
+                speed = SimulationConfig.PREDATOR_MAX_SPEED;
                 turnsWithoutFood = 0;
 
                 if (canMoveOnTarget(coordinates, targetCell)) {
@@ -101,11 +97,11 @@ public class Predator extends Creature {
     private boolean isSuccessfulAttack() {
         Random random = new Random();
         double chanceToFailAttack = random.nextDouble();
-        return chanceToFailAttack < ATTACK_CHANCE;
+        return chanceToFailAttack < SimulationConfig.PREDATOR_ATTACK_CHANCE;
     }
 
     private void damageHerbivore(Herbivore herbivore) {
-        herbivore.setHealthPoints(herbivore.getHealthPoints() - ATTACK_POWER);
+        herbivore.setHealthPoints(herbivore.getHealthPoints() - SimulationConfig.PREDATOR_ATTACK_POWER);
         if (herbivore.getHealthPoints() < 1) {
             herbivore.kill();
         }
@@ -118,6 +114,6 @@ public class Predator extends Creature {
     private boolean canMoveOnTarget(Coordinates oldCell, Coordinates targetCell) {
         int dx = Math.abs(oldCell.x() - targetCell.x());
         int dy = Math.abs(oldCell.y() - targetCell.y());
-        return dx + dy <= MAX_SPEED;
+        return dx + dy <= SimulationConfig.PREDATOR_MAX_SPEED;
     }
 }

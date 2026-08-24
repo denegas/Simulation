@@ -12,8 +12,6 @@ import java.util.List;
 
 public class Herbivore extends Creature {
 
-    public static final int MAX_HEALTH_POINTS = 15;
-    public static final int SPEED = 1;
     public static final Class<Grass> TARGET = Grass.class;
 
     public Herbivore(Coordinates coordinates, int healthPoints, int speed) {
@@ -21,7 +19,7 @@ public class Herbivore extends Creature {
     }
 
     private void restoreHealthPoints() {
-        setHealthPoints(MAX_HEALTH_POINTS);
+        setHealthPoints(SimulationConfig.HERBIVORE_MAX_HEALTH_POINTS);
     }
 
     @Override
@@ -37,7 +35,7 @@ public class Herbivore extends Creature {
             return;
         }
 
-        int step = Math.min(SPEED, path.size() - SPEED);
+        int step = Math.min(SimulationConfig.HERBIVORE_SPEED, path.size() - SimulationConfig.HERBIVORE_SPEED);
         Coordinates nextCell = path.get(step);
 
         HungryService.apply(this);

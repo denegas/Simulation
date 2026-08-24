@@ -29,10 +29,10 @@ public abstract class EntityCreator {
 
     protected Entity getEntityFromClass(Class<? extends Entity> entityClass, Coordinates coordinates) {
         if (entityClass.isAssignableFrom(Herbivore.class)) {
-            return new Herbivore(coordinates, Herbivore.MAX_HEALTH_POINTS, Herbivore.SPEED);
+            return new Herbivore(coordinates, SimulationConfig.HERBIVORE_MAX_HEALTH_POINTS, SimulationConfig.HERBIVORE_SPEED);
         }
         if (entityClass.isAssignableFrom(Predator.class)) {
-            return new Predator(coordinates, Predator.MAX_HEALTH_POINTS, Predator.MAX_SPEED);
+            return new Predator(coordinates, SimulationConfig.PREDATOR_MAX_HEALTH_POINTS, SimulationConfig.PREDATOR_MAX_SPEED);
         }
         if (entityClass.isAssignableFrom(Grass.class)) {
             return new Grass();

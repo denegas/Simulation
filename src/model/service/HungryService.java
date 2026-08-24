@@ -1,16 +1,16 @@
 package model.service;
 
 import model.entities.creatures.Creature;
-import model.entities.creatures.Predator;
 import model.util.CreatureUtils;
+import resources.SimulationConfig;
 
 public final class HungryService {
-    private static final int HUNGER_HP_LOSS = 1;
+
 
     private HungryService(){}
 
     public static void apply(Creature creature) {
-        if (creature.getTurnsWithoutFood() > Creature.MAX_TURNS_WITHOUT_FOOD) {
+        if (creature.getTurnsWithoutFood() > SimulationConfig.CREATURE_MAX_TURNS_WITHOUT_FOOD_BEFORE_HUNGER) {
             hungerEffect(creature);
         }
     }
@@ -26,7 +26,7 @@ public final class HungryService {
     }
 
     private static void hungerLowsPredatorSpeed(Creature predator) {
-        predator.setSpeed(Predator.LOW_SPEED);
+        predator.setSpeed(SimulationConfig.PREDATOR_LOW_SPEED);
     }
 
     private static void hungerLowsCreatureHP(Creature creature) {
@@ -34,6 +34,6 @@ public final class HungryService {
             creature.kill();
             return;
         }
-        creature.setHealthPoints(creature.getHealthPoints() - HUNGER_HP_LOSS);
+        creature.setHealthPoints(creature.getHealthPoints() - SimulationConfig.HUNGER_HP_LOSS);
     }
 }
