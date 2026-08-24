@@ -2,6 +2,8 @@ package model.entities.creatures;
 
 import model.entitymap.Coordinates;
 import model.entities.Entity;
+import model.entitymap.EntityMap;
+
 
 public abstract class Creature extends Entity {
 
@@ -16,8 +18,6 @@ public abstract class Creature extends Entity {
         this.speed = speed;
         this.healthPoints = healthPoints;
     }
-
-    public abstract void restoreHealthPoints();
 
     public abstract Class<? extends Entity> getTarget();
     protected Coordinates coordinates;
@@ -37,9 +37,7 @@ public abstract class Creature extends Entity {
         return isAlive;
     }
 
-    public void makeMove(Coordinates Coordinates) {
-        setCoordinates(Coordinates);
-    }
+    public abstract void makeMove(EntityMap entityMap);
 
     public int getSpeed() {
         return this.speed;
