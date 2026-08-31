@@ -20,16 +20,6 @@ public final class ConsoleWriter {
                 SimulationConfig.MIN_MAP_SIZE + " and " + SimulationConfig.MAX_MAP_SIZE + "!");
     }
 
-    public static void printRenderModes() {
-        System.out.println("""
-                1. Render after one turn
-                2. Render after each animal move""");
-    }
-
-    public static void printRenderModesError() {
-        System.out.println("You must choose one of available render mods!");
-    }
-
     public static void printRepeatsAsk() {
         System.out.println("write a repeat times or write \"inf\" to start infinity simulation");
     }
