@@ -18,7 +18,6 @@ public final class Simulation {
 
     private static final List<Action> initActions = List.of(new InitializeEntityCreator());
     private static final List<Action> turnActions = List.of(new AllCreaturesMove(), new TurnEntityCreator());
-    private static final List<Action> turnActionsForNTicks = List.of(new TurnEntityCreator());
 
 
     private int turnsCounter = 0;
@@ -47,20 +46,6 @@ public final class Simulation {
         for (int i = 0; i < repeatTimes; i++) {
             nextTurn();
             sleep(SimulationConfig.TURN_SLEEP_MC);
-        }
-    }
-
-    // nextTurnWithEachCreatureMoveRender
-    public void nTicks(int repeatTimes) {
-        renderer.render(entityMap);
-
-        for (int i = 0; i < repeatTimes; i++) {
-            for (Action turnAction : turnActionsForNTicks) {
-                turnAction.execute(entityMap);
-            }
-            ConsoleWriter.printTurn(turnsCounter);
-            turnsCounter++;
-
         }
     }
 
