@@ -3,9 +3,13 @@ package model.entities.creatures;
 import model.entitymap.Coordinates;
 import model.entities.Entity;
 import model.entitymap.EntityMap;
+import model.service.HungryService;
+import resources.SimulationConfig;
 
 
 public abstract class Creature extends Entity {
+    protected final HungryService hungryService = new HungryService(SimulationConfig.CREATURE_MAX_TURNS_WITHOUT_FOOD_BEFORE_HUNGER,
+                                                                    SimulationConfig.HUNGER_HP_LOSS, SimulationConfig.PREDATOR_LOW_SPEED);
 
     protected int speed;
     protected int healthPoints;

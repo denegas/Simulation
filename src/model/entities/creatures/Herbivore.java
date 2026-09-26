@@ -4,7 +4,6 @@ import model.entities.Entity;
 import model.entities.environment.Grass;
 import model.entitymap.Coordinates;
 import model.entitymap.EntityMap;
-import model.service.HungryService;
 import model.util.CellUtils;
 import resources.SimulationConfig;
 
@@ -31,14 +30,14 @@ public class Herbivore extends Creature {
     public void makeMove(EntityMap entityMap) {
         List<Coordinates> path = SimulationConfig.PATH_FINDER.getPath(entityMap,coordinates, TARGET);
         if (path.isEmpty()){
-            HungryService.addHungryTurn(this);
+            hungryService.addHungryTurn(this);
             return;
         }
 
         int step = Math.min(SimulationConfig.HERBIVORE_SPEED, path.size() - SimulationConfig.HERBIVORE_SPEED);
         Coordinates nextCell = path.get(step);
 
-        HungryService.apply(this);
+        hungryService.apply(this);
 
         if (CellUtils.isCellGrass(nextCell, entityMap)){
             restoreHealthPoints();

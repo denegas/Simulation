@@ -2,38 +2,44 @@ package model.service;
 
 import model.entities.creatures.Creature;
 import model.util.CreatureUtils;
-import resources.SimulationConfig;
 
 public final class HungryService {
 
+    private final int turnsBeforeHunger;
+    private final int hungerHpLoss;
+    private final int predatorLowSpeed;
 
-    private HungryService(){}
+    public HungryService(int turnsBeforeHunger, int hungerHpLoss, int predatorLowSpeed){
+        this.hungerHpLoss = hungerHpLoss;
+        this.turnsBeforeHunger = turnsBeforeHunger;
+        this.predatorLowSpeed = predatorLowSpeed;
+    }
 
-    public static void apply(Creature creature) {
-        if (creature.getTurnsWithoutFood() > SimulationConfig.CREATURE_MAX_TURNS_WITHOUT_FOOD_BEFORE_HUNGER) {
+    public void apply(Creature creature) {
+        if (creature.getTurnsWithoutFood() > turnsBeforeHunger) {
             hungerEffect(creature);
         }
     }
-    public static void addHungryTurn(Creature creature) {
+    public void addHungryTurn(Creature creature) {
         creature.setTurnsWithoutFood(creature.getTurnsWithoutFood() + 1);
     }
 
-    private static void hungerEffect(Creature creature) {
+    private void hungerEffect(Creature creature) {
         if (CreatureUtils.isPredator(creature)) {
             hungerLowsPredatorSpeed(creature);
         }
         hungerLowsCreatureHP(creature);
     }
 
-    private static void hungerLowsPredatorSpeed(Creature predator) {
-        predator.setSpeed(SimulationConfig.PREDATOR_LOW_SPEED);
+    private void hungerLowsPredatorSpeed(Creature predator) {
+        predator.setSpeed(predatorLowSpeed);
     }
 
-    private static void hungerLowsCreatureHP(Creature creature) {
+    private void hungerLowsCreatureHP(Creature creature) {
         if (creature.getHealthPoints() < 1) {
             creature.kill();
             return;
         }
-        creature.setHealthPoints(creature.getHealthPoints() - SimulationConfig.HUNGER_HP_LOSS);
+        creature.setHealthPoints(creature.getHealthPoints() - hungerHpLoss);
     }
 }
