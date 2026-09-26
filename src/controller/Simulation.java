@@ -12,6 +12,7 @@ import view.renderer.Renderer;
 import java.util.List;
 
 public final class Simulation {
+    public volatile boolean isRunning = false;
 
     private final Renderer renderer;
     private final EntityMap entityMap;
@@ -42,19 +43,18 @@ public final class Simulation {
         ConsoleWriter.printTurn(turnsCounter);
     }
 
-    public void nextNTurns(int repeatTimes) {
-        for (int i = 0; i < repeatTimes; i++) {
+    public void startSimulation() {
+        isRunning = true;
+
+        while (isRunning){
             nextTurn();
             sleep(SimulationConfig.TURN_SLEEP_MC);
         }
-    }
-
-    public void startSimulation() {
 
     }
 
     public void pauseSimulation() {
-
+        isRunning = false;
     }
 
 

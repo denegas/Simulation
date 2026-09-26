@@ -37,4 +37,8 @@ public final class ConsoleWriter {
     public static void printTurn(int turn) {
         System.out.println("Turn: " + turn);
     }
+
+    public static void printSimulationAlreadyStarted(){
+        System.out.println("Simulation started already!");
+    }
 }
