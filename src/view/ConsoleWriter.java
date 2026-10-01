@@ -40,7 +40,7 @@ public final class ConsoleWriter {
     public static void printSimulationIsWaiting(){
         System.out.println("Simulation is waiting for start...");
     }
-    public static void printCommands(String startCommand, String pauseCommand, String exitCommand){
-        System.out.printf("Please write one of these commands ( %s | %s | %s )\n".formatted(startCommand,pauseCommand,exitCommand));
+    public static void printCommands(String startCommand, String pauseCommand,String nextTurnCommand, String exitCommand){
+        System.out.printf("Please write one of these commands ( %s | %s | %s | %s)\n".formatted(startCommand,pauseCommand,nextTurnCommand,exitCommand));
     }
 }

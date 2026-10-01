@@ -68,6 +68,7 @@ public class SimulationManager {
                     default ->{
                         ConsoleWriter.printCommands(SimulationConfig.WORD_TO_START_SIMULATION,
                                 SimulationConfig.WORD_TO_PAUSE_SIMULATION,
+                                SimulationConfig.WORD_TO_SHOW_NEXT_TURN,
                                 SimulationConfig.WORD_TO_EXIT);
                     }
                 }
