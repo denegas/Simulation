@@ -42,10 +42,6 @@ public abstract class Creature extends Entity {
 
     public abstract void makeMove(EntityMap entityMap);
 
-    public int getSpeed() {
-        return this.speed;
-    }
-
     public void setSpeed(int speed) {
         this.speed = speed;
     }
