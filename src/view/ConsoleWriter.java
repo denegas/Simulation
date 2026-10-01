@@ -1,6 +1,5 @@
 package view;
 
-import resources.SimulationConfig;
 
 public final class ConsoleWriter {
 

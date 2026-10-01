@@ -2,15 +2,14 @@ package controller;
 
 
 import resources.SimulationConfig;
+import view.ConsoleInput;
 import view.ConsoleWriter;
 
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SimulationManager {
     private final Simulation simulation;
-    private final Scanner SCANNER;
     private final ExecutorService service = Executors.newFixedThreadPool(2);
     private final Object lock = new Object();
 
@@ -19,7 +18,6 @@ public class SimulationManager {
 
     public SimulationManager(Simulation simulation) {
         this.simulation = simulation;
-        this.SCANNER = new Scanner(System.in);
     }
 
     public void execute() {
@@ -46,7 +44,7 @@ public class SimulationManager {
         service.submit(() -> {
 
             while (!terminated) {
-                String line = SCANNER.nextLine().trim().toLowerCase();
+                String line = ConsoleInput.getString().trim().toLowerCase();
 
                 switch (line) {
                     case SimulationConfig.WORD_TO_PAUSE_SIMULATION -> simulation.pauseSimulation();
@@ -61,7 +59,6 @@ public class SimulationManager {
                         synchronized (lock) {
                             terminated = true;
                             simulation.pauseSimulation();
-                            SCANNER.close();
                             lock.notify();
                         }
                     }
