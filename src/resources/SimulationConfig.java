@@ -36,5 +36,8 @@ public final class SimulationConfig {
     public static final int HERBIVORE_MAX_HEALTH_POINTS = 15;
     public static final int HERBIVORE_SPEED = 1;
 
+    public static final String WORD_TO_EXIT = "exit";
+    public static final String WORD_TO_PAUSE_SIMULATION = "stop";
+    public static final String WORD_TO_START_SIMULATION = "start";
 
 }

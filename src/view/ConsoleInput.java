@@ -18,7 +18,7 @@ public final class ConsoleInput {
         return readValidInt(
                 mapSize -> (isValidSize(mapSize))
                         ? Optional.of(mapSize) : Optional.empty(),
-                ConsoleWriter::printMapSizeError
+                () ->{ConsoleWriter.printMapSizeError(SimulationConfig.MIN_MAP_SIZE,SimulationConfig.MAX_MAP_SIZE);}
         );
     }
     public static String getString(){

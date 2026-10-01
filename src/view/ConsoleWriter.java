@@ -15,9 +15,9 @@ public final class ConsoleWriter {
         System.out.println("write a map size(map height and map width)");
     }
 
-    public static void printMapSizeError() {
+    public static void printMapSizeError(int minMapSize,int maxMapSize) {
         System.out.println("Map size must be between " +
-                SimulationConfig.MIN_MAP_SIZE + " and " + SimulationConfig.MAX_MAP_SIZE + "!");
+                minMapSize + " and " + maxMapSize + "!");
     }
 
     public static void printRepeatsAsk() {
@@ -41,7 +41,7 @@ public final class ConsoleWriter {
     public static void printSimulationIsWaiting(){
         System.out.println("Simulation is waiting for start...");
     }
-    public static void printCommands(){
-        System.out.println("Please write one of these commands (start|stop|br)");
+    public static void printCommands(String startCommand, String pauseCommand, String exitCommand){
+        System.out.printf("Please write one of these commands ( %s | %s | %s )\n".formatted(startCommand,pauseCommand,exitCommand));
     }
 }
