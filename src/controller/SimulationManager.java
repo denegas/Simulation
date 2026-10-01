@@ -59,6 +59,7 @@ public class SimulationManager {
                         synchronized (lock) {
                             terminated = true;
                             simulation.pauseSimulation();
+                            ConsoleInput.closeScanner();
                             lock.notify();
                         }
                     }
