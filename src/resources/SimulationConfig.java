@@ -39,5 +39,6 @@ public final class SimulationConfig {
     public static final String WORD_TO_EXIT = "exit";
     public static final String WORD_TO_PAUSE_SIMULATION = "stop";
     public static final String WORD_TO_START_SIMULATION = "start";
+    public static final String WORD_TO_SHOW_NEXT_TURN = "next";
 
 }
